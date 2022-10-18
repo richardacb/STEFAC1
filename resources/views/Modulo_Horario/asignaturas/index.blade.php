@@ -30,6 +30,17 @@
     @endif
 
     <div class="container-fluid">
+        <h1>Listado de Asignaturas</h1>
+        <div class="row">
+            <div class="col-xl-12">
+                @can('Modulo_Horario.asignaturas.create')
+                    <a class="btn btn-primary btn-sm float-right" href="{{ route('asignaturas.create') }}">PPPPPPPPPPPPP</a>
+                @endcan
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
         <div class="row">
             <div class="col-xl-12">
                 <div class="card">
