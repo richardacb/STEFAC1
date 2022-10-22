@@ -38,6 +38,10 @@ Route::get('admin/usuarios/{usuario}/editar',[App\Http\Controllers\Modulo_Perfil
 
 Route::put('admin/usuarios/{id}',[App\Http\Controllers\Modulo_PerfildeUsuario\UsuariosController::class, 'actualizar'])->name('usuarios.actualizar');
 
+Route::get('admin/change-password', [App\Http\Controllers\HomeController::class, 'changePassword'])->name('change-password');
+
+Route::post('admin/change-password', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('update-password');
+
 // Route::post('estudiantes.import',[App\Http\Controllers\Modulo_PerfildeUsuario\EstudiantesController::class, 'importar_estudiantes'])->name('estudiantes.import');
 
 // Route::post('grupos.import',[App\Http\Controllers\Modulo_PerfildeUsuario\GruposController::class, 'importar_grupos'])->name('grupos.import');
@@ -67,6 +71,8 @@ Route::resource('Modulo_Horario.afectaciones', App\Http\Controllers\Modulo_Horar
 // Route::post('horario.index', [App\Http\Controllers\Modulo_Horario\BuscarController::class, 'index'])->name('horario.index');
 
 Route::post('horario/buscar', action:[App\Http\Controllers\Modulo_Horario\BuscarController::class, 'buscar'])->name('horario/buscar');
+
+Route::post('afectaciones/insertar', action:[App\Http\Controllers\Modulo_Horario\AfectacionesController::class, 'insertar'])->name('afectaciones/insertar');
 
 Route::get('balancedecarga.export', [App\Http\Controllers\Modulo_Horario\BalancedecargaController::class, 'exportExcel'])->name('balancedecarga.export');
 

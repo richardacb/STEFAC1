@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('planificacion_id');
             $table->integer('anno');
             $table->integer('semana');
+            $table->integer('estado');
             $table->timestamps();
 
             $table->foreign('planificacion_id')->references('id')->on('planificacions')->onDelete('cascade')->cascadeOnUpdate();

@@ -54,11 +54,11 @@
                                                 @method('delete')
                                                 @can('Modulo_Horario.locales.edit')
                                                 <a class="btn btn-primary btn-sm"
-                                                    href="{{ route('locales.edit', $l->id) }}"><i
+                                                    href="{{ route('locales.edit', $l->id) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Local"><i
                                                     class="fa fa-edit"></i></a>
                                                 @endcan
                                                 @can('Modulo_Horario.locales.destroy')
-                                                <button class="btn btn-danger btn-sm" type="submit"><i
+                                                <button class="btn btn-danger btn-sm" type="submit" data-bs-toggle="tooltip" data-bs-placement="right" title="Eliminar Local"><i
                                                     class="fa fa-trash-alt"></i></button>
                                                 @endcan
                                             </form>

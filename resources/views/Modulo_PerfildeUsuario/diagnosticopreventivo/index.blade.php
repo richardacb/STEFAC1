@@ -3,7 +3,7 @@
 @section('title', 'STE')
 
 @section('content_header')
-    <h1>Lista de Diagnosticos preventivos</h1>
+    <h1>Lista de Diagnósticos preventivos</h1>
 @stop
 
 @section('content')
@@ -15,7 +15,7 @@
 <div class="card">
     <div class="card-header ">
         @can('Modulo_PerfildeUsuario.diagnosticopreventivo.create')
-            <a href="{{ route('diagnosticopreventivo.create') }}" class="btn btn-primary ">Insertar diagnostico</a>
+            <a href="{{ route('diagnosticopreventivo.create') }}" class="btn btn-primary ">Insertar diagnóstico</a>
         @endcan
         <nav class="navbar navbar-expand-lg navbar-light bg-light float-right ">
             <i class="fa fa-chart-pie fa-lg "></i>
@@ -59,10 +59,10 @@
                     <tr>
                         <td>{{ $dp->nombre_estudiante }}</td>
                         <td>{{ $dp->grupo }}</td>
-                        <td>{{ $dp->anno }}</td>
+                        <td>{{ $dp->id }}</td>
                         <td>
-                            <a class="btn btn-primary btn-sm float-right" href="{{ route('diagnosticopreventivo.edit', $dp->dp_id) }}"><i class="fa fa-edit"></i></a>
-                            <a class="btn btn-primary btn-sm float-right mr-2" href="{{ route('usuarios.show', $dp->id) }}"><i
+                            <a class="btn btn-primary btn-sm float-right" href="{{ route('diagnosticopreventivo.edit', $dp->dp_id) }}"><i class="fa fa-edit" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Diagnóstico Preventivo"></i></a>
+                            <a class="btn btn-primary btn-sm float-right mr-2" href="{{ route('usuarios.show', $dp->id) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Mostar Datos del Diagnóstico"><i
                                 class="fa fa-user"></i></a>
                         </td>
                     </tr>

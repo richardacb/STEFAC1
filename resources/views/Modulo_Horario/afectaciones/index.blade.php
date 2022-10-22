@@ -33,7 +33,6 @@
                             <thead class="bg-primary text-white">
                                 <tr>
                                     <th>Profesor Afectado</th>
-                                    <th>Profesor Suplente</th>
                                     <th>año</th>
                                     <th>Semana</th>
                                     <th>Dia</th>
@@ -45,7 +44,6 @@
                                 @foreach ($afectaciones as $a)
                                     <tr>
                                         <td>{{ $a->afectado }}</td>
-                                        <td>{{ $a->suplente }}</td>
                                         <td>{{ $a->anno }}</td>
                                         <td>{{ $a->semana }}</td>
                                         <td>{{ $a->dia }}</td>
@@ -57,11 +55,11 @@
                                                 @method('delete')
                                                 @can('Modulo_Horario.afectaciones.edit')
                                                 <a class="btn btn-primary btn-sm"
-                                                    href="{{ route('afectaciones.edit', $a->id) }}"><i
+                                                    href="{{ route('afectaciones.edit', $a->id) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Afectación"><i
                                                     class="fa fa-edit"></i></a>
                                                 @endcan
                                                 @can('Modulo_Horario.afectaciones.destroy')
-                                                <button class="btn btn-danger btn-sm" type="submit"><i
+                                                <button class="btn btn-danger btn-sm" type="submit" data-bs-toggle="tooltip" data-bs-placement="right" title="Eliminar Afectación"><i
                                                     class="fa fa-trash-alt"></i></button>
                                                 @endcan
                                             </form>

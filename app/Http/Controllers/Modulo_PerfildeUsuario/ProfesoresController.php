@@ -74,15 +74,11 @@ class ProfesoresController extends Controller
         FROM users WHERE users.id NOT IN (SELECT users.id FROM users
         INNER JOIN profesores ON users.id = profesores.user_id) AND users.tipo_de_usuario = "Profesor" AND users.anno = ' . session()->get('anno') . '
         ');
-        $grupos = Grupos::all()->where('anno',session()->get('anno'));
-        $asignaturas = Asignaturas::all()->where('anno',session()->get('anno'));
-        // $anno = [
-        //     '1' => 'Primer Año',
-        //     '2' => 'Segundo Año',
-        //     '3' => 'Tercero Año',
-        //     '4' => 'Cuarto Año',
-        //     '5' => 'Quinto Año'
-        // ];
+        //$grupos = Grupos::all()->where('anno',session()->get('anno'));
+        $grupos = Grupos::where('anno', $anno)->pluck('name', 'id')->toArray();
+        //$asignaturas = Asignaturas::all()->where('anno',session()->get('anno'));
+        $asignaturas = Asignaturas::where('anno', $anno)->pluck('nombre', 'id')->toArray();
+
         return view('Modulo_PerfildeUsuario.profesores.create', compact('users', 'grupos', 'asignaturas'));
     }
 
@@ -96,18 +92,15 @@ class ProfesoresController extends Controller
     {
 
         $rules = [
-            'user_id' => 'required|unique:profesores',
+            'user_id' => 'required',
             'grupos_id' => 'required',
-            // 'anno' => 'required',
             'tipo_de_clases' => 'required',
             'asignaturas_id' => 'required',
         ];
 
         $messages = [
             'user_id.required' => 'Campo Requerido',
-            'user_id.unique' => 'Campo Unico',
             'grupos_id.required' => 'Campo Requerido',
-            // 'anno.required' => 'Campo Requerido',
             'tipo_de_clases.required' => 'Campo Requerido',
             'asignaturas_id.required' => 'Campo Requerido',
 
@@ -144,16 +137,14 @@ class ProfesoresController extends Controller
     public function edit($id)
     {
         $profesores = Profesores::findOrFail($id);
-        $grupos = Grupos::pluck('name', 'id')->toArray();
-        $asignaturas = Asignaturas::pluck('nombre', 'id')->toArray();
-        $anno = [
-            '1' => 'Primer Año',
-            '2' => 'Segundo Año',
-            '3' => 'Tercero Año',
-            '4' => 'Cuarto Año',
-            '5' => 'Quinto Año'
-        ];
-        return view('Modulo_PerfildeUsuario.profesores.edit', compact('profesores', 'grupos', 'anno', 'asignaturas'));
+
+        $anno  = session()->get('anno') ;
+        //$grupos = Grupos::all()->where('anno', $anno);
+        $grupos = Grupos::where('anno', $anno)->pluck('name', 'id')->toArray();
+       //$asignaturas = Asignaturas::all()->where('anno', $anno);
+        $asignaturas = Asignaturas::where('anno', $anno)->pluck('nombre', 'id')->toArray();
+
+        return view('Modulo_PerfildeUsuario.profesores.edit', compact('profesores', 'grupos','asignaturas'));
     }
 
     /**
@@ -169,14 +160,12 @@ class ProfesoresController extends Controller
 
         $rules = [
             'grupos_id' => 'required',
-            'anno' => 'required',
             'tipo_de_clases' => 'required',
             'asignaturas_id' => 'required',
         ];
 
         $messages = [
             'grupos_id.required' => 'Campo Requerido',
-            'anno.required' => 'Campo Requerido',
             'tipo_de_clases.required' => 'Campo Requerido',
             'asignaturas_id.required' => 'Campo Requerido',
         ];

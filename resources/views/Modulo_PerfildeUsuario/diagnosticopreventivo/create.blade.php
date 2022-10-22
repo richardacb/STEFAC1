@@ -20,10 +20,10 @@
             <div class="form-group">
                 <select name="user_id" id="user_id" class="form-control mr-sm-2 form-select">
                     <option value="0" selected="selected">--Seleccione--</option>
-                    @foreach ( $users as $user)
-                    <option value="{{ $user->id }}">
-                        {{ $user->nombre_estudiante }}
-                    </option>
+                    @foreach ($users as $user)
+                        <option value="{{ $user->id }}">
+                            {{ $user->nombre_estudiante }}
+                        </option>
                     @endforeach
                 </select>
                 @error('user_id')
@@ -38,7 +38,8 @@
     </div>
 </div>
 @section('js')
-<script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('js/diagnosticopreventino.js') }}"></script>
 @endsection
 
 

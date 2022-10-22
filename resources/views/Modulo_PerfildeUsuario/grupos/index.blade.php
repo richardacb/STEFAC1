@@ -43,12 +43,12 @@
                                 @csrf
                                 @method('delete')
                                 @can('Modulo_PerfildeUsuario.grupos.edit')
-                                    <a class="btn btn-primary btn-sm" href="{{ route('grupos.edit', $grupo->id) }}"><i
+                                    <a class="btn btn-primary btn-sm" href="{{ route('grupos.edit', $grupo->id) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Grupo"><i
                                             class="fa fa-edit"></i></a>
                                 @endcan
 
                                 @can('Modulo_PerfildeUsuario.grupos.destroy')
-                                    <button class="btn btn-danger btn-sm " type="submit"><i
+                                    <button class="btn btn-danger btn-sm " type="submit" data-bs-toggle="tooltip" data-bs-placement="right" title="Eliminar Grupo"><i
                                             class="fa fa-trash-alt"></i></button>
                                 @endcan
 

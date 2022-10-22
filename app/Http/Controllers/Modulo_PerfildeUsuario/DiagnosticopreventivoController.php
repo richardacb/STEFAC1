@@ -68,27 +68,23 @@ class DiagnosticopreventivoController extends Controller
         $count_creencia_religiosaHER = count(DB::table('diagnosticopreventivo')->where("creencia_religiosa", "Hermandad")->get());
         $count_creencia_religiosaPM = count(DB::table('diagnosticopreventivo')->where("creencia_religiosa", "Palo Monte")->get());
 
+        session()->put('anno', User::find(auth()->id())->anno);
+        $anno  = session()->get('anno') ;
 
 
-        // $users=DB::table('users')
-        // ->join('diagnosticopreventivo','users.id','=','diagnosticopreventivo.user_id')
-        // ->select('users.*')
-        // ->get();
-
-        $diagnosticopreventivo = DB::select('SELECT e.user_id as id, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante, e.anno, e.grupo, e.dp_id
-        FROM users INNER JOIN (SELECT e.user_id, e.anno, g.name as grupo, e.dp_id
-                               FROM (SELECT e.user_id, e.grupos_id, e.anno, dp.id as dp_id
+        $diagnosticopreventivo = DB::select('SELECT e.user_id, users.anno as id, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante,e.grupo, e.dp_id
+        FROM users INNER JOIN (SELECT e.user_id, g.name as grupo, e.dp_id
+                               FROM (SELECT e.user_id, e.grupos_id,dp.id as dp_id
                                      FROM estudiantes as e INNER JOIN diagnosticopreventivo as dp ON e.user_id = dp.user_id) as e
                                INNER JOIN profesores as p ON e.grupos_id = p.grupos_id
                                INNER JOIN grupos as g ON e.grupos_id = g.id
-                               WHERE p.user_id = ' . auth()->id() . ') as e ON users.id = e.user_id AND users.tipo_de_usuario = "Estudiante";
+                               WHERE p.user_id = ' . auth()->id() . ') as e ON users.id = e.user_id AND users.tipo_de_usuario = "Estudiante" AND users.anno = ' . $anno . '
         ');
 
         //  $diagnosticopreventivo= Diagnosticopreventivo::all();
         return view(
             'Modulo_PerfildeUsuario.diagnosticopreventivo.index',
             compact(
-                //'users',
                 'diagnosticopreventivo',
                 'count_consumoSA',
                 'count_consumoRA',
@@ -139,24 +135,15 @@ class DiagnosticopreventivoController extends Controller
         $grupo_social = ['Hippies' => 'Hippies', 'Rockeros' => 'Rockeros', 'Raperos' => 'Raperos', 'Góticos' => 'Góticos', 'Emos' => 'Emos', 'Punk' => 'Punk', 'Heavyes' => 'Heavyes', 'Darks' => 'Darks',];
         $creencia_religiosa = ['Ateos' => 'Ateos', 'Católicos' => 'Católicos', 'Cristianos' => 'Cristianos', 'Protestantes' => 'Protestantes', 'Santería' => 'Santería', 'Yoruba' => 'Yoruba', 'Hermandad' => 'Hermandad', 'Palo Monte' => 'Palo Monte'];
 
-        // $idpro = Profesores::findOrFail(auth()->id());
-        // echo $idpro;
-
-        // $users = DB::table('users')
-        //     ->where("tipo_de_usuario", "Estudiante")
-        //     ->select('users.*')
-        //     ->get();
-
-
+        $anno  = session()->get('anno') ;
         $users = DB::select('SELECT e.user_id as id, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante
         FROM users INNER JOIN (SELECT e.user_id
                                FROM (SELECT e.user_id, e.grupos_id
                                    FROM estudiantes as e
                                    WHERE e.user_id NOT IN (SELECT e.user_id
                                    FROM estudiantes as e INNER JOIN diagnosticopreventivo as dp ON e.user_id = dp.user_id)) as e
-
                                INNER JOIN profesores as p ON e.grupos_id = p.grupos_id
-                               WHERE p.user_id = ' . auth()->id() . ') as e ON users.id = e.user_id AND users.tipo_de_usuario = "Estudiante";;
+                               WHERE p.user_id = ' . auth()->id() . ') as e ON users.id = e.user_id AND users.tipo_de_usuario = "Estudiante" AND users.anno = ' . $anno . '
         ');
 
         // $estudiantes= Estudiantes::all();

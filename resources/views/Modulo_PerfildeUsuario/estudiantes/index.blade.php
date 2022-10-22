@@ -19,10 +19,6 @@
                 <a href="{{ route('estudiantes.create') }}" class="btn btn-primary ">Insertar datos al estudiante</a>
             @endcan
 
-            {{--  @can('Import.EstudiantesImport')
-                <button type="button" class="btn btn-danger float-right" data-toggle="modal"
-                    data-target=".importar_estudiantes">Importar datos de estudiates</button>
-            @endcan  --}}
         </div>
     </div>
 
@@ -44,11 +40,11 @@
                             {{ $e->users->segundo_nombre }} {{ $e->users->primer_apellido }}
                             {{ $e->users->segundo_apellido }}
                         </td>
-                        <td>{{ $e->anno }}</td>
+                        <td>{{ $e->users->anno }}</td>
                         <td>{{ $e->grupos->name }}</td>
                         <td>
-                        <a class="btn btn-primary btn-sm float-right" href="{{ route('estudiantes.edit', $e->id) }}"><i class="fa fa-edit"></i></a>
-                        <a class="btn btn-success btn-sm float-right mr-2" href="{{ route('usuarios.show', $e->users->id) }}"><i
+                        <a class="btn btn-primary btn-sm float-right" href="{{ route('estudiantes.edit', $e->id) }}"><i class="fa fa-edit" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Estudiante"></i></a>
+                        <a class="btn btn-success btn-sm float-right mr-2" href="{{ route('usuarios.show', $e->users->id) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Mostrar Datos del Estudiante"><i
                             class="fa fa-user"></i></a>
                     </td>
                     </tr>

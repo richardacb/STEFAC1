@@ -49,21 +49,23 @@ function colocar($dia, $truno, $id_grupo)
                                                                                                                 FROM asignaciones
                                                                                                                 WHERE asignaciones.planificacion_id IN (SELECT planificacions.id
                                                                                                                                                 FROM planificacions
-                                                                                                                                                WHERE planificacions.grupos_id = ' . $id_grupo . ')))))
+                                                                                                                                                WHERE planificacions.grupos_id = ' . $id_grupo . ')))
+                                                AND asignaciones.estado = 1 ))
 
 ');
 
     $local = DB::select('SELECT locales.*
             FROM locales
             WHERE locales.id IN (SELECT disponibilidad.locales_id
-            FROM disponibilidad
-                                                                                    WHERE disponibilidad.dia = ' . $dia . '
-                                                                                    AND disponibilidad.turno = ' . $truno . '
-                                            AND disponibilidad.id IN (SELECT asignaciones.disponibilidad_id
-                                                                            FROM asignaciones
-                                                                            WHERE asignaciones.planificacion_id IN (SELECT planificacions.id
-                                                                                                            FROM planificacions
-                                                                                                            WHERE planificacions.grupos_id = ' . $id_grupo . ')))
+                                FROM disponibilidad
+                                WHERE disponibilidad.dia = ' . $dia . '
+                                AND disponibilidad.turno = ' . $truno . '
+                                AND disponibilidad.id IN (SELECT asignaciones.disponibilidad_id
+                                                            FROM asignaciones
+                                                            WHERE asignaciones.planificacion_id IN (SELECT planificacions.id
+                                                                                                    FROM planificacions
+                                                                                                    WHERE planificacions.grupos_id = ' . $id_grupo . ')
+                                                            AND asignaciones.estado = 1                                        ))
     ');
 
     if (!empty($local)) {

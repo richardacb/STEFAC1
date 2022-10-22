@@ -88,7 +88,7 @@ $(document).ready(function Validarfrecuencias5to(e){
 $(function () {
     $("#asignaturas_id").on("change", filtrarProf);
 });
-function filtrarProf () {
+function filtrarProf() {
     let asignaturas_id = $(this).val();
     console.log(asignaturas_id);
     //Ajax
@@ -263,6 +263,38 @@ function onSelectHorario(e) {
         }
     );
 }
+//Funcion para actualizar las afectaciones en el Horario
+// $(function () {
+//     $("#create_afect").on("submit", onUpdateAfect);
+// });
+// function onUpdateAfect(e) {
+//     e.preventDefault();
+//     let profesor_afectado_id = document.getElementById(
+//         "profesor_afectado_id"
+//     ).value;
+//     let semana = document.getElementById("semana").value;
+//     let dia = document.getElementById("dia").value;
+//     let turno = document.getElementById("turno").value;
+//     let anno = document.getElementById("anno").value;
+//     // console.log(afectado);
+//     // console.log(semana);
+//     // console.log(dia);
+//     // console.log(turno);
+//     // console.log(anno);
 
-//Codigo de Jose
-
+//     //Ajax
+//     $.post(
+//         `/api/afectaciones/`,
+//         {
+//             profesor_afectado_id,
+//             semana,
+//             dia,
+//             turno,
+//             anno,
+//         },
+//         (data) => {
+//             window.location.href = "/admin/afectaciones";
+//         }
+//         //console.log(data);
+//     );
+// }

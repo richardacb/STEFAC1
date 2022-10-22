@@ -39,12 +39,12 @@
                                 @csrf
                                 @method('delete')
 
-                                    <a class="btn btn-primary btn-sm" href="{{ route('roles.edit', $role->id) }}"><i
+                                    <a class="btn btn-primary btn-sm" href="{{ route('roles.edit', $role->id) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Rol"><i
                                             class="fa fa-edit"></i></a>
 
 
 
-                                    <button class="btn btn-danger btn-sm " type="submit"><i
+                                    <button class="btn btn-danger btn-sm " type="submit" data-bs-toggle="tooltip" data-bs-placement="right" title="Eliminar Rol"><i
                                             class="fa fa-trash-alt"></i></button>
 
 
