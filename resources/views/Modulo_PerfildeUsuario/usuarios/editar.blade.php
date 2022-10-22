@@ -18,7 +18,6 @@
                     <div class="card">
                         <div class="card-header">{{ __('Editar Usuario') }}</div>
                         <div class="card-body">
-                            {{-- <form method="POST" action="{{ route('usuarios.actualizar', ["id" => $users->id]) }}"> --}}
                                 <form action="{{ url('admin/usuarios/'.$users->id) }}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')

@@ -22,5 +22,7 @@ class DatabaseSeeder extends Seeder
         // ]); 
         $this->call(RoleSeeder::class); 
         $this->call(UserSeeder::class); 
+        $this->call(SesionSeeder::class); 
+        $this->call(Tipo_de_localesSeeder::class);
     }
 }

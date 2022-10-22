@@ -10,6 +10,15 @@
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap5.min.css') }}">
 @endsection
+{{-- <div class="card">
+    <div class="card-body">
+        {!! Form::open(['route' => 'usuarios.store']) !!}
+        @include('Modulo_PerfildeUsuario.usuarios.form')
+        <a href="{{ route('usuarios.index') }}" class="btn btn-danger">Cancelar</a>
+        {!! Form::submit('Registrar Usuarios', ['class' => 'btn btn-primary']) !!}
+        {!! Form::close() !!}
+    </div>
+</div> --}}
 <div class="card">
     <div class="card-body">
         <div class="container">
