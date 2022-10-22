@@ -28,18 +28,6 @@
             <strong>{{ session('info') }}</strong>
         </div>
     @endif
-
-    <div class="container-fluid">
-        <h1>Listado de Asignaturas</h1>
-        <div class="row">
-            <div class="col-xl-12">
-                @can('Modulo_Horario.asignaturas.create')
-                    <a class="btn btn-primary btn-sm float-right" href="{{ route('asignaturas.create') }}">PPPPPPPPPPPPP</a>
-                @endcan
-            </div>
-        </div>
-    </div>
-
     <div class="container-fluid">
         <div class="row">
             <div class="col-xl-12">
@@ -71,11 +59,11 @@
                                                 @method('delete')
                                                 @can('Modulo_Horario.asignaturas.edit')
                                                     <a class="btn btn-primary btn-sm"
-                                                        href="{{ route('asignaturas.edit', $asignatura->id) }}"><i
+                                                        href="{{ route('asignaturas.edit', $asignatura->id) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Asignatura"><i
                                                         class="fa fa-edit"></i></a>
                                                 @endcan
                                                 @can('Modulo_Horario.asignaturas.destroy')
-                                                    <button class="btn btn-danger btn-sm" type="submit"><i
+                                                    <button class="btn btn-danger btn-sm" type="submit" data-bs-toggle="tooltip" data-bs-placement="right" title="Eliminar Asignatura"><i
                                                         class="fa fa-trash-alt"></i></button>
                                                 @endcan
                                             </form>

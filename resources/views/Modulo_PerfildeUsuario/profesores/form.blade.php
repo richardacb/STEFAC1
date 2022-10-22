@@ -4,27 +4,17 @@
             <legend class="legend-personalizado">Datos personales del profesor</legend>
             <div class="row">
                 <div class="col-sm-12 col-md-6">
-                    {{--  <div class="form-group">
-                        <label for="" class="form-label">Años Académicos</label>
-                        <select name="anno" id="annoprof" class="form-control mr-sm-2 form-select">
-                            <option value="{{ $anno }}" selected="selected">{{$anno}}</option>
-                        </select>
-                        @error('anno')
-                            <strong class="error-message text-danger"> {{ 'Campos Requeridos' }} </strong>
-                        @enderror
-                    </div>  --}}
+
+
                     <div class="form-group">
-                        <label for="" class="form-label">Grupos</label>
-                        <select name="grupos_id" id="grupos_idprof" class="form-control mr-sm-2 form-select">
-                            <option value="0" selected="selected">--Seleccione el Grupo--</option>
-                            @foreach ($grupos as $g)
-                                <option value="{{ $g->id }}">
-                                    {{ $g->name }}
-                                </option>
-                            @endforeach
-                        </select>
+                        {!! Form::label('name', 'Grupos:') !!}
+                        {!! Form::select('grupos_id', $grupos, null, [
+                            'class' => 'form-control',
+                            'id' => 'grupos_idprof',
+                            'placeholder' => '--Seleccione--',
+                        ]) !!}
                         @error('grupos_id')
-                            <strong class="error-message text-danger"> {{ 'Campos Requeridos' }} </strong>
+                            <strong class="error-message text-danger"> {{ $message }} </strong>
                         @enderror
                     </div>
 
@@ -41,6 +31,17 @@
                     </div>
 
                     <div class="form-group">
+                        {!! Form::label('name', 'Asignaturas:') !!}
+                        {!! Form::select('asignaturas_id', $asignaturas, null, [
+                            'class' => 'form-control',
+                            'id' => 'asignaturas_id',
+                            'placeholder' => '--Seleccione--',
+                        ]) !!}
+                        @error('asignaturas_id')
+                            <strong class="error-message text-danger"> {{ $message }} </strong>
+                        @enderror
+                    </div>
+                    {{--  <div class="form-group">
                         <label for="" class="form-label">Asignaturas</label>
                         <select name="asignaturas_id" id="asignaturas_id" class="form-control mr-sm-2 form-select">
                             <option value="0" selected="selected">--Seleccione la Asignatura--</option>
@@ -53,7 +54,7 @@
                         @error('asignaturas_id')
                             <strong class="error-message text-danger"> {{ 'Campos Requeridos' }} </strong>
                         @enderror
-                    </div>
+                    </div>  --}}
 
                 </div>
             </div>

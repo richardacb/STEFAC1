@@ -46,9 +46,9 @@
 
                         <td width="120px">
                             @can('Modulo_PerfildeUsuario.profesores.edit')
-                                 <a class="btn btn-primary btn-sm float-right" href="{{ route('profesores.edit', $profesor->id) }}"><i class="fa fa-edit"></i></a>
+                                 <a class="btn btn-primary btn-sm float-right" href="{{ route('profesores.edit', $profesor->id) }}"><i class="fa fa-edit" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Profesor"></i></a>
                             @endcan
-                            <a class="btn btn-success btn-sm float-right mr-2" href="{{ route('usuarios.show', $profesor->users->id) }}"><i
+                            <a class="btn btn-success btn-sm float-right mr-2" href="{{ route('usuarios.show', $profesor->users->id) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Mostrar Datos del Profesor"><i
                                 class="fa fa-user"></i></a>
 
                         </td>

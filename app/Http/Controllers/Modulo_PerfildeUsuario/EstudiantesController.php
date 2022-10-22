@@ -36,12 +36,6 @@ class EstudiantesController extends Controller
 
         session()->put('anno', User::find(auth()->id())->anno);
 
-        // $count_anno_1 = count(DB::table("users")->join('estudiantes', 'users.id', '=', 'estudiantes.user_id')->where("anno", "1")->get());
-        // $count_anno_2 = count(DB::table("users")->join('estudiantes', 'users.id', '=', 'estudiantes.user_id')->where("anno", "2")->get());
-        // $count_anno_3 = count(DB::table("users")->join('estudiantes', 'users.id', '=', 'estudiantes.user_id')->where("anno", "3")->get());
-        // $count_anno_4 = count(DB::table("users")->join('estudiantes', 'users.id', '=', 'estudiantes.user_id')->where("anno", "4")->get());
-        // $count_anno_5 = count(DB::table("users")->join('estudiantes', 'users.id', '=', 'estudiantes.user_id')->where("anno", "5")->get());
-
         $users = DB::table('users')
             ->join('estudiantes', 'users.id', '=', 'estudiantes.user_id')
             ->select('users.*')
@@ -100,7 +94,8 @@ class EstudiantesController extends Controller
     {
 
         $anno  = session()->get('anno') ;
-        $grupos = Grupos::all()->where('anno', $anno);
+        //$grupos = Grupos::all()->where('anno', $anno);
+        $grupos = Grupos::where('anno', $anno)->pluck('name', 'id')->toArray();
         $tipo_estudiante = [
             'Becado Nacional' => 'Becado Nacional',
             'Extranjero Financiado por un Gobierno' => 'Extranjero Financiado por un Gobierno',
@@ -126,38 +121,38 @@ class EstudiantesController extends Controller
     public function store(Request $request)
     {
 
-        $rules = [
-            'user_id' => 'required|unique:estudiantes',
-            'grupos_id' => 'required',
-            'periodo_lectivo' => 'required',
-            'tipo_curso' => 'required',
-            'plan_estudio' => 'required',
-            'organizacion_pe' => 'required',
-            'via_ingreso' => 'required',
-            'situacion_escolar' => 'required',
-            'tipo_estudiante' => 'required',
-            'direccion_completa' => 'required',
-            'nombre_madre' => 'required',
-            'cohorte_estudiantil' => 'required',
-        ];
-        $messages = [
-            'user_id.required' => 'Campo Requerido',
-            'user_id.unique' => 'Campo Unico',
-            'grupos_id.required' => 'Campo Requerido',
-            'periodo_lectivo.required' => 'Campo Requerido',
-            'tipo_curso.required' => 'Campo Requerido',
-            'plan_estudio.required' => 'Campo Requerido',
-            'organizacion_pe.required' => 'Campo Requerido',
-            'via_ingreso.required' => 'Campo Requerido',
-            'situacion_escolar.required' => 'Campo Requerido',
-            'tipo_estudiante.required' => 'Campo Requerido',
-            'direccion_completa.required' => 'Campo Requerido',
-            'nombre_madre.required' => 'Campo Requerido',
-            'cohorte_estudiantil.required' => 'Campo Requerido',
+        // $rules = [
+        //     'user_id' => 'required|unique:estudiantes',
+        //     'grupos_id' => 'required',
+        //     'periodo_lectivo' => 'required',
+        //     'tipo_curso' => 'required',
+        //     'plan_estudio' => 'required',
+        //     'organizacion_pe' => 'required',
+        //     'via_ingreso' => 'required',
+        //     'situacion_escolar' => 'required',
+        //     'tipo_estudiante' => 'required',
+        //     'direccion_completa' => 'required',
+        //     'nombre_madre' => 'required',
+        //     'cohorte_estudiantil' => 'required',
+        // ];
+        // $messages = [
+        //     'user_id.required' => 'Campo Requerido',
+        //     'user_id.unique' => 'Campo Unico',
+        //     'grupos_id.required' => 'Campo Requerido',
+        //     'periodo_lectivo.required' => 'Campo Requerido',
+        //     'tipo_curso.required' => 'Campo Requerido',
+        //     'plan_estudio.required' => 'Campo Requerido',
+        //     'organizacion_pe.required' => 'Campo Requerido',
+        //     'via_ingreso.required' => 'Campo Requerido',
+        //     'situacion_escolar.required' => 'Campo Requerido',
+        //     'tipo_estudiante.required' => 'Campo Requerido',
+        //     'direccion_completa.required' => 'Campo Requerido',
+        //     'nombre_madre.required' => 'Campo Requerido',
+        //     'cohorte_estudiantil.required' => 'Campo Requerido',
 
 
-        ];
-        $this->validate($request, $rules, $messages);
+        // ];
+        // $this->validate($request, $rules, $messages);
 
         $estudiantes = Estudiantes::create($request->all());
 
@@ -175,7 +170,10 @@ class EstudiantesController extends Controller
 
         $estudiantes = Estudiantes::findOrFail($id);
 
-        $grupos = Grupos::pluck('name', 'id')->toArray();
+        $anno  = session()->get('anno') ;
+        //$grupos = Grupos::all()->where('anno', $anno);
+        $grupos = Grupos::where('anno', $anno)->pluck('name', 'id')->toArray();
+
         $tipo_estudiante = [
             'Becado Nacional' => 'Becado Nacional',
             'Extranjero Financiado por un Gobierno' => 'Extranjero Financiado por un Gobierno',
@@ -200,36 +198,36 @@ class EstudiantesController extends Controller
     {
         $estudiantes = Estudiantes::findOrFail($id);
 
-        $rules = [
-            'grupos_id' => 'required',
-            'anno' => 'required',
-            'periodo_lectivo' => 'required',
-            'tipo_curso' => 'required',
-            'plan_estudio' => 'required',
-            'organizacion_pe' => 'required',
-            'via_ingreso' => 'required',
-            'situacion_escolar' => 'required',
-            'tipo_estudiante' => 'required',
-            'direccion_completa' => 'required',
-            'nombre_madre' => 'required',
-            'cohorte_estudiantil' => 'required',
-        ];
-        $messages = [
-            'grupos_id.required' => 'Campo Requerido',
-            'anno.required' => 'Campo Requerido',
-            'periodo_lectivo.required' => 'Campo Requerido',
-            'tipo_curso.required' => 'Campo Requerido',
-            'plan_estudio.required' => 'Campo Requerido',
-            'organizacion_pe.required' => 'Campo Requerido',
-            'via_ingreso.required' => 'Campo Requerido',
-            'situacion_escolar.required' => 'Campo Requerido',
-            'tipo_estudiante.required' => 'Campo Requerido',
-            'direccion_completa.required' => 'Campo Requerido',
-            'nombre_madre.required' => 'Campo Requerido',
-            'cohorte_estudiantil.required' => 'Campo Requerido',
-        ];
+        // $rules = [
+        //     'grupos_id' => 'required',
+        //     'anno' => 'required',
+        //     'periodo_lectivo' => 'required',
+        //     'tipo_curso' => 'required',
+        //     'plan_estudio' => 'required',
+        //     'organizacion_pe' => 'required',
+        //     'via_ingreso' => 'required',
+        //     'situacion_escolar' => 'required',
+        //     'tipo_estudiante' => 'required',
+        //     'direccion_completa' => 'required',
+        //     'nombre_madre' => 'required',
+        //     'cohorte_estudiantil' => 'required',
+        // ];
+        // $messages = [
+        //     'grupos_id.required' => 'Campo Requerido',
+        //     'anno.required' => 'Campo Requerido',
+        //     'periodo_lectivo.required' => 'Campo Requerido',
+        //     'tipo_curso.required' => 'Campo Requerido',
+        //     'plan_estudio.required' => 'Campo Requerido',
+        //     'organizacion_pe.required' => 'Campo Requerido',
+        //     'via_ingreso.required' => 'Campo Requerido',
+        //     'situacion_escolar.required' => 'Campo Requerido',
+        //     'tipo_estudiante.required' => 'Campo Requerido',
+        //     'direccion_completa.required' => 'Campo Requerido',
+        //     'nombre_madre.required' => 'Campo Requerido',
+        //     'cohorte_estudiantil.required' => 'Campo Requerido',
+        // ];
 
-        $this->validate($request, $rules, $messages);
+        // $this->validate($request, $rules, $messages);
 
         $estudiantes->update($request->all());
 

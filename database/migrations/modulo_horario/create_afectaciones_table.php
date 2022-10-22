@@ -17,7 +17,6 @@ return new class extends Migration
             $table->engine="InnoDB";
             $table->bigIncrements('id');
             $table->unsignedBigInteger('profesores_afectados_id');
-            $table->unsignedBigInteger('profesores_suplentes_id');
             $table->integer('dia');
             $table->integer('semana');
             $table->integer('turno');
@@ -25,7 +24,6 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('profesores_afectados_id')->references('user_id')->on('profesores');
-            $table->foreign('profesores_suplentes_id')->references('user_id')->on('profesores');
         });
     }
 

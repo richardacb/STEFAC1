@@ -4,7 +4,7 @@
 
 @section('content_header')
 
-<form method="POST" action="http://localhost/STE(Con todo en talla)/STE(Con todo en talla)/app/generar_horario/generar_horario.php" /*action="{{ route('generarhorario.generar') }}"*/>
+<form method="POST" action="http://localhost/STEFAC1/app/generar_horario/generar_horario.php" /*action="{{ route('generarhorario.generar') }}"*/>
     @csrf
     <div class="mb-3">
         <label for="" class="form-label">Sección a Impartir</label>

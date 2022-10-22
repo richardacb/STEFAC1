@@ -35,26 +35,8 @@
             @enderror
         </div>
         <div class="mb-3">
-            <label for="" class="form-label">Profesor Suplente</label>
-            <select name="profesor_suplente_id" id="profesor_suplente_id" class="form-control mr-sm-2 form-select">
-                @foreach ($profesores as $pr)
-                    @if ($pr->id === $afectacion->profesores_suplentes_id)
-                        <option value="{{ $pr->id }}">{{ $pr->nombre }}</option>
-                    @endif
-                @endforeach
-                @foreach ($profesores as $pr)
-                    @if ($pr->id !== $afectacion->profesores_suplentes_id)
-                        <option value="{{ $pr->id }}">{{ $pr->nombre }}</option>
-                    @endif
-                @endforeach
-            </select>
-            @error('profesor_id')
-                <strong class="error-message text-danger"> {{ "Campos Requeridos" }} </strong>
-            @enderror
-        </div>
-        <div class="mb-3">
             <label for="" class="form-label">Semana</label>
-            <input type="text" class="form-control" id="semana" name="semana"
+            <input type="number" class="form-control" id="semana" name="semana"
                 placeholder="Ingrese la Semana Afectada" value="{{ $afectacion->semana }}">
             @error('semana')
                 <strong class="error-message text-danger"> {{ $message }} </strong>
@@ -86,7 +68,7 @@
         </div>
         <div class="mb-3">
             <label for="" class="form-label">Turno de Clases</label>
-            <input type="text" class="form-control" id="turno" name="turno"
+            <input type="number" class="form-control" id="turno" name="turno" value="{{ $afectacion->turno }}" min="1" max="6"
                 placeholder="Ingrese el Turno Afectado">
             @error('turno')
                 <strong class="error-message text-danger"> {{ $message }} </strong>
@@ -94,8 +76,8 @@
         </div>
         <div class="mb-3">
             <label for="" class="form-label">Año Docente</label>
-            <input type="text" class="form-control" id="anno" name="anno"
-                placeholder="Ingrese el Año Docente">
+            <input type="number" class="form-control" id="anno" name="anno" min="{{ $anno }}"
+            max="{{ $anno }}" value="{{ $anno }}">
             @error('anno')
                 <strong class="error-message text-danger"> {{ $message }} </strong>
             @enderror

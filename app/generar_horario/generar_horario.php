@@ -19,7 +19,7 @@ function generar($seccion, $anno, $semana, $conn)
     //seleccionar los balances de cargas correspondientes al anno y a la semana
     $sql = "SELECT balance_de_carga.*
     FROM balance_de_carga INNER JOIN asignaturas ON balance_de_carga.asignaturas_id = asignaturas.id
-    WHERE balance_de_carga.semana = '$semana' AND asignaturas.anno = '$anno'";
+    WHERE balance_de_carga.semana = '$semana' AND asignaturas.anno = '$anno' ORDER BY balance_de_carga.frecuencia DESC";
 
     $result = $conn->query($sql);
 
@@ -49,12 +49,12 @@ function generar($seccion, $anno, $semana, $conn)
                     foreach ($disponibilidad as $ld) {
 
                         //comprobar si disponibilidad actual no esta ocupada
-                        if (!ocupada($p['id'], $ld['id'], $bc['id_asig'], $tc, $conn)) {
+                        if (!ocupada($p['id'], $ld['id'], $bc['id_asig'], $tc, $anno, $semana, $conn)) {
 
                             //comprobar que no se imparta más de 1 turno de la misma asignatura el mismo dia al mismo grupo
                             //comprobar que un mismo grupo no este en varios locales el mismo dia y el mismo turno
                             //comprobar que un profesor no este el mismo dia y el mismo turno en más de 1 local a la vez
-                            if (!comprobar($p['id_asig'], $p['id_grupo'], $p['id_prof'], $ld['dia'], $ld['turno'], $conn)) {
+                            if (!comprobar($p['id_asig'], $p['id_grupo'], $p['id_prof'], $ld['dia'], $ld['turno'], $anno, $semana, $conn)) {
                                 //relacionar disponibilidad con planificacion en relaciones
                                 relacionar($ld['id'], $p['id'], $anno, $semana, $conn);
 
@@ -66,7 +66,6 @@ function generar($seccion, $anno, $semana, $conn)
             }
         }
     }
-
 }
 //
 
@@ -115,7 +114,10 @@ function devolver_planif($bc_id_asig, $tc, $conn)
                                                      WHERE profesores.tipo_de_clases LIKE '$tc'
                                                      OR profesores.tipo_de_clases LIKE '%,$tc'
                                                      OR profesores.tipo_de_clases LIKE '$tc,%'
-                                                     OR profesores.tipo_de_clases LIKE '%,$tc,%')";
+                                                     OR profesores.tipo_de_clases LIKE '%,$tc,%')
+                                                     GROUP by planificacions.id
+                                                     ORDER BY COUNT( planificacions.profesores_id)
+                                                     DESC";
 
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
@@ -203,7 +205,7 @@ function devolver_locales($id_asig, $seccion, $tc, $conn)
 }
 
 
-function ocupada($id_planif, $id_disp, $id_asig, $tc, $conn)
+function ocupada($id_planif, $id_disp, $id_asig, $tc, $anno, $semana, $conn)
 {
 
 
@@ -229,7 +231,7 @@ function ocupada($id_planif, $id_disp, $id_asig, $tc, $conn)
     $sql = "SELECT disponibilidad.id
     FROM disponibilidad
     WHERE disponibilidad.id NOT IN (SELECT asignaciones.disponibilidad_id
-                                        FROM asignaciones)
+                                        FROM asignaciones WHERE asignaciones.anno = '$anno' AND asignaciones.semana = '$semana')
                                         AND disponibilidad.locales_id IN (SELECT locales.id
                                                                             FROM locales
                                                                             WHERE locales.tipo_de_locales_id = (SELECT id FROM tipo_de_locales WHERE tipo = '$tipo_de_local'))";
@@ -268,6 +270,7 @@ function ocupada($id_planif, $id_disp, $id_asig, $tc, $conn)
                                   FROM planificacions
                                   WHERE planificacions.asignaturas_id = '$id_mat'
                                   AND planificacions.profesores_id = '$id_prof')
+                                  AND asignaciones.anno = '$anno' AND asignaciones.semana = '$semana'
                                   GROUP BY asignaciones.disponibilidad_id
                                   ORDER BY COUNT(asignaciones.disponibilidad_id)
                                   LIMIT 1";
@@ -282,7 +285,7 @@ function ocupada($id_planif, $id_disp, $id_asig, $tc, $conn)
 }
 
 
-function comprobar($id_asig, $id_grupo, $id_prof, $dia, $turno, $conn)
+function comprobar($id_asig, $id_grupo, $id_prof, $dia, $turno, $anno, $semana, $conn)
 {
     //comprobar que no se imparta más de 1 turno de la misma asignatura el mismo dia al mismo grupo
     $sql = "SELECT disponibilidad.dia
@@ -292,7 +295,8 @@ function comprobar($id_asig, $id_grupo, $id_prof, $dia, $turno, $conn)
                                     WHERE planificacion_id IN (SELECT planificacions.id
                                                         FROM planificacions
                                                         WHERE planificacions.asignaturas_id = '$id_asig'
-                                                        AND planificacions.grupos_id = '$id_grupo'))
+                                                        AND planificacions.grupos_id = '$id_grupo')
+                                                        AND asignaciones.anno = '$anno' AND asignaciones.semana = '$semana')
                                                         ORDER BY disponibilidad.dia DESC
                                                         LIMIT 1
 ";
@@ -305,7 +309,8 @@ function comprobar($id_asig, $id_grupo, $id_prof, $dia, $turno, $conn)
                                                             FROM asignaciones
                                                             WHERE planificacion_id IN (SELECT planificacions.id
                                                                                 FROM planificacions
-                                                                                WHERE planificacions.grupos_id = '$id_grupo'))
+                                                                                WHERE planificacions.grupos_id = '$id_grupo')
+                                                                                AND asignaciones.anno = '$anno' AND asignaciones.semana = '$semana')
 ";
     //comprobar que un profesor no este el mismo dia y el mismo turno en más de 1 local a la vez
     $sql2 = "SELECT disponibilidad.id
@@ -316,12 +321,24 @@ function comprobar($id_asig, $id_grupo, $id_prof, $dia, $turno, $conn)
                                                             FROM asignaciones
                                                             WHERE planificacion_id IN (SELECT planificacions.id
                                                                                 FROM planificacions
-                                                                                WHERE planificacions.profesores_id = '$id_prof'))
+                                                                                WHERE planificacions.profesores_id = '$id_prof')
+                                                                                AND asignaciones.anno = '$anno' AND asignaciones.semana = '$semana')
 ";
+    //comprobar que un profesor no este afcetado ese turno de ese dia de esa semana de ese anno
+    $sql3 = "SELECT a.id FROM afectaciones as a
+            WHERE a.profesores_afectados_id = '$id_prof'
+            AND a.dia = '$dia'
+            AND a.semana ='$semana'
+            AND a.turno='$turno'
+            AND a.anno='$anno'
+";
+
+
 
     $result = $conn->query($sql);
     $result1 = $conn->query($sql1);
     $result2 = $conn->query($sql2);
+    $result3 = $conn->query($sql3);
     $dia2 = $result->fetch_assoc();
 
     if ($dia2 == null) {
@@ -330,7 +347,7 @@ function comprobar($id_asig, $id_grupo, $id_prof, $dia, $turno, $conn)
         $value = $dia - $dia2['dia'];
     }
 
-    if (($value <= 0) || ($result1->num_rows > 0) || ($result2->num_rows > 0)) {
+    if (($value <= 0) || ($result1->num_rows > 0) || ($result2->num_rows > 0) || ($result3->num_rows > 0)) {
         return true;
     } else {
         return false;
@@ -339,7 +356,7 @@ function comprobar($id_asig, $id_grupo, $id_prof, $dia, $turno, $conn)
 
 function relacionar($id_disp, $id_planif, $anno, $semana, $conn)
 {
-    $sql = "INSERT INTO asignaciones (disponibilidad_id, planificacion_id, anno, semana)
-    VALUES ('$id_disp', '$id_planif', '$anno','$semana')";
+    $sql = "INSERT INTO asignaciones (disponibilidad_id, planificacion_id, anno, semana, estado)
+    VALUES ('$id_disp', '$id_planif', '$anno','$semana', 1)";
     $conn->query($sql);
 }

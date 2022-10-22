@@ -74,11 +74,11 @@
                                     @method('delete')
                                     @can('Modulo_Horario.planificacion.edit')
                                         <a class="btn btn-primary btn-sm"
-                                            href="{{ route('planificacion.edit', $p) }}"><i
+                                            href="{{ route('planificacion.edit', $p) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Carga Docente"><i
                                             class="fa fa-edit"></i></a>
                                     @endcan
                                     @can('Modulo_Horario.planificacion.destroy')
-                                        <button class="btn btn-danger btn-sm" type="submit"><i
+                                        <button class="btn btn-danger btn-sm" type="submit" data-bs-toggle="tooltip" data-bs-placement="right" title="Eliminar Carga Docente"><i
                                             class="fa fa-trash-alt"></i></button>
                                     @endcan
                                 </form>

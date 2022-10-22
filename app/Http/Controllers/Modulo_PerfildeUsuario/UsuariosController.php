@@ -121,7 +121,6 @@ class UsuariosController extends Controller
         $users->segundo_apellido = $request->get('segundo_apellido');
         $users->tipo_de_usuario = $request->get('tipo_de_usuario');
         $users->username = $request->get('username');
-        $users->password = bcrypt($request->get('password'));
         $users->email = $request->get('email');
         $users->sexo = $request->get('sexo');
         $users->anno = $request->get('anno');
