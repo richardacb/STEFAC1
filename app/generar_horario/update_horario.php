@@ -5,13 +5,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo  $profesor_afectado_id = $_POST["profesor_afectado_id"];
     echo  $anno = $_POST["anno"];
     echo $semana = $_POST["semana"];
-   echo $dia = $_POST["dia"];
-   echo  $turno = $_POST["turno"];
+    echo $dia = $_POST["dia"];
+    echo  $turno = $_POST["turno"];
 
     update($profesor_afectado_id, $anno, $semana, $dia, $turno, $conn);
 
-    // header("Location: http://127.0.0.1:8000/admin/afectaciones");
-    // die();
+    insert_afect($profesor_afectado_id, $anno, $semana, $dia, $turno, $conn);
+
+    header("Location: http://127.0.0.1:8000/admin/afectaciones");
+    die();
 
 }
 
@@ -121,9 +123,37 @@ function update($profesor_afectado_id, $anno, $semana, $dia, $turno, $conn)
             }
         }
     }
+}
 
-    $afect = "DELETE FROM asignaciones WHERE asignaciones.id IN (SELECT a.id FROM ($sql) as a)";
-    $conn->query($afect);
+
+function insert_afect($profesor_afectado_id, $anno, $semana, $dia, $turno, $conn)
+{
+
+    $cond_turno = !$turno ? "" : "AND d.turno = '$turno'";
+
+    $sql = "SELECT a.*
+    FROM asignaciones as a
+    WHERE a.planificacion_id IN (SELECT p.id FROM planificacions as p WHERE p.profesores_id = ' $profesor_afectado_id ')
+    AND a.disponibilidad_id IN (SELECT d.id FROM disponibilidad as d WHERE d.dia = '$dia' $cond_turno)
+    AND a.anno = '  $anno '
+    AND a.semana = ' $semana '";
+
+
+    $insert = "INSERT INTO afectaciones(profesores_afectados_id, dia, semana, turno, anno)
+    VALUES ('$profesor_afectado_id','$dia','$semana','$turno','$anno')";
+
+    $conn->query($insert);
+
+    // $sql = "UPDATE asignaciones as a SET a.estado = 0
+    // WHERE a.planificacion_id IN (SELECT p.id FROM planificacions as p WHERE p.profesores_id = ' $profesor_afectado_id ')
+    // AND a.disponibilidad_id IN (SELECT d.id FROM disponibilidad as d WHERE d.dia = ' $dia ' $cond_turno)
+    // AND a.anno = ' $anno '
+    // AND a.semana = ' $semana'";
+
+    $delete_afect = "DELETE FROM asignaciones WHERE asignaciones.id IN (SELECT a.id FROM ($sql) as a)";
+    $conn->query($delete_afect);
+
+    // $conn->query($sql);
 }
 //
 

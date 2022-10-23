@@ -28,4 +28,4 @@ Route::get('/estudiantes/{id}','App\Http\Controllers\Modulo_PerfildeUsuario\Estu
 
 Route::get('/profesores/{id}','App\Http\Controllers\Modulo_PerfildeUsuario\ProfesoresController@byGrupos');
 
-Route::post('/afectaciones', 'App\Http\Controllers\Modulo_Horario\AfectacionesController@insertar');
+// Route::post('/afectaciones', 'App\Http\Controllers\Modulo_Horario\AfectacionesController@insertar');

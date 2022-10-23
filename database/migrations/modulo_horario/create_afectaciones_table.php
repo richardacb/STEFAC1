@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('profesores_afectados_id');
             $table->integer('dia');
             $table->integer('semana');
-            $table->integer('turno');
+            $table->integer('turno')->nullable();
             $table->integer('anno');
             $table->timestamps();
 

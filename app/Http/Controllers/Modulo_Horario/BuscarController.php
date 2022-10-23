@@ -74,10 +74,10 @@ function colocar($dia, $truno, $id_grupo)
 
 
 
-        if ($tipo[0]->id == 2) {
+        if ($tipo[0]->id == 1) {
             $tipo_de_clase = 'C';
         }
-        if ($tipo[0]->id == 1) {
+        if ($tipo[0]->id == 2) {
             $tipo_de_clase = 'CP';
         }
         if ($tipo[0]->id == 3) {
