@@ -38,17 +38,18 @@
                         <td>{{ $grupo->name }}</td>
                         <td>{{ $grupo->anno }}</td>
                         <td>
-                            <form action="{{ route('grupos.destroy', $grupo) }}" method="POST"
-                                class="eliminar_grupo">
+                            <form action="{{ route('grupos.destroy', $grupo) }}" method="POST" class="eliminar_grupo">
                                 @csrf
                                 @method('delete')
                                 @can('Modulo_PerfildeUsuario.grupos.edit')
-                                    <a class="btn btn-primary btn-sm" href="{{ route('grupos.edit', $grupo->id) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Grupo"><i
+                                    <a class="btn btn-primary btn-sm" href="{{ route('grupos.edit', $grupo->id) }}"
+                                        data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Grupo"><i
                                             class="fa fa-edit"></i></a>
                                 @endcan
 
                                 @can('Modulo_PerfildeUsuario.grupos.destroy')
-                                    <button class="btn btn-danger btn-sm " type="submit" data-bs-toggle="tooltip" data-bs-placement="right" title="Eliminar Grupo"><i
+                                    <button class="btn btn-danger btn-sm " type="submit" data-bs-toggle="tooltip"
+                                        data-bs-placement="right" title="Eliminar Grupo"><i
                                             class="fa fa-trash-alt"></i></button>
                                 @endcan
 
@@ -173,5 +174,12 @@
             }
         })
     });
+</script>
+<script src="{{ asset('js/popper.min.js') }}"></script>
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
 </script>
 @endsection

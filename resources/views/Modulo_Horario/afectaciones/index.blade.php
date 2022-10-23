@@ -14,6 +14,15 @@
                 @endcan
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-xl-12">
+                @can('Modulo_Horario.afectaciones.create')
+                    <a class="btn btn-primary btn-sm float-right" href="{{ route('afectaciones.create') }}">Richard</a>
+                @endcan
+            </div>
+        </div>
+
     </div>
 @stop
 
@@ -54,13 +63,15 @@
                                                 @csrf
                                                 @method('delete')
                                                 @can('Modulo_Horario.afectaciones.edit')
-                                                <a class="btn btn-primary btn-sm"
-                                                    href="{{ route('afectaciones.edit', $a->id) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Afectación"><i
-                                                    class="fa fa-edit"></i></a>
+                                                    <a class="btn btn-primary btn-sm"
+                                                        href="{{ route('afectaciones.edit', $a->id) }}" data-bs-toggle="tooltip"
+                                                        data-bs-placement="right" title="Editar Afectación"><i
+                                                            class="fa fa-edit"></i></a>
                                                 @endcan
                                                 @can('Modulo_Horario.afectaciones.destroy')
-                                                <button class="btn btn-danger btn-sm" type="submit" data-bs-toggle="tooltip" data-bs-placement="right" title="Eliminar Afectación"><i
-                                                    class="fa fa-trash-alt"></i></button>
+                                                    <button class="btn btn-danger btn-sm" type="submit"
+                                                        data-bs-toggle="tooltip" data-bs-placement="right"
+                                                        title="Eliminar Afectación"><i class="fa fa-trash-alt"></i></button>
                                                 @endcan
                                             </form>
                                         </td>
@@ -161,5 +172,12 @@
                 }
             })
         });
+    </script>
+    <script src="{{ asset('js/popper.min.js') }}"></script>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
     </script>
 @endsection

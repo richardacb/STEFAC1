@@ -19,29 +19,35 @@
         @endcan
         <nav class="navbar navbar-expand-lg navbar-light bg-light float-right ">
             <i class="fa fa-chart-pie fa-lg "></i>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
-              <ul class="navbar-nav">
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    --Seleccione Resporte Estadistico--
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#" data-toggle="modal"  data-target="#grafica_reportes1">Adicciones de los
-                        estudiantes</a>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#grafica_reportes2">Tipo de medicamentos que
-                        consumen</a>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#grafica_reportes3">Grupo Social al que
-                        pertenecen</a>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#grafica_reportes3">Creencia Religiosa al
-                        que pertenecen</a>
-                  </div>
-                </li>
-              </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            --Seleccione Resporte Estadistico--
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                data-target="#grafica_reportes1">Adicciones de los
+                                estudiantes</a>
+                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                data-target="#grafica_reportes2">Tipo de medicamentos que
+                                consumen</a>
+                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                data-target="#grafica_reportes3">Grupo Social al que
+                                pertenecen</a>
+                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                data-target="#grafica_reportes3">Creencia Religiosa al
+                                que pertenecen</a>
+                        </div>
+                    </li>
+                </ul>
             </div>
-          </nav>
+        </nav>
     </div>
 
     <div class="card-body">
@@ -61,9 +67,14 @@
                         <td>{{ $dp->grupo }}</td>
                         <td>{{ $dp->id }}</td>
                         <td>
-                            <a class="btn btn-primary btn-sm float-right" href="{{ route('diagnosticopreventivo.edit', $dp->dp_id) }}"><i class="fa fa-edit" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Diagnóstico Preventivo"></i></a>
-                            <a class="btn btn-primary btn-sm float-right mr-2" href="{{ route('usuarios.show', $dp->id) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Mostar Datos del Diagnóstico"><i
-                                class="fa fa-user"></i></a>
+                            <a class="btn btn-primary btn-sm float-right"
+                                href="{{ route('diagnosticopreventivo.edit', $dp->dp_id) }}"><i class="fa fa-edit"
+                                    data-bs-toggle="tooltip" data-bs-placement="right"
+                                    title="Editar Diagnóstico Preventivo"></i></a>
+                            <a class="btn btn-primary btn-sm float-right mr-2"
+                                href="{{ route('usuarios.show', $dp->id) }}" data-bs-toggle="tooltip"
+                                data-bs-placement="right" title="Mostar Datos del Diagnóstico"><i
+                                    class="fa fa-user"></i></a>
                         </td>
                     </tr>
                 @endforeach
@@ -123,5 +134,11 @@
         )
     </script>
 @endif
-
+<script src="{{ asset('js/popper.min.js') }}"></script>
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>
 @endsection

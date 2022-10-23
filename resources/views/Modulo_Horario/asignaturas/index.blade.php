@@ -59,12 +59,14 @@
                                                 @method('delete')
                                                 @can('Modulo_Horario.asignaturas.edit')
                                                     <a class="btn btn-primary btn-sm"
-                                                        href="{{ route('asignaturas.edit', $asignatura->id) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Asignatura"><i
-                                                        class="fa fa-edit"></i></a>
+                                                        href="{{ route('asignaturas.edit', $asignatura->id) }}"
+                                                        data-bs-toggle="tooltip" data-bs-placement="right"
+                                                        title="Editar Asignatura"><i class="fa fa-edit"></i></a>
                                                 @endcan
                                                 @can('Modulo_Horario.asignaturas.destroy')
-                                                    <button class="btn btn-danger btn-sm" type="submit" data-bs-toggle="tooltip" data-bs-placement="right" title="Eliminar Asignatura"><i
-                                                        class="fa fa-trash-alt"></i></button>
+                                                    <button class="btn btn-danger btn-sm" type="submit"
+                                                        data-bs-toggle="tooltip" data-bs-placement="right"
+                                                        title="Eliminar Asignatura"><i class="fa fa-trash-alt"></i></button>
                                                 @endcan
                                             </form>
                                         </td>
@@ -166,5 +168,12 @@
                 }
             })
         });
+    </script>
+    <script src="{{ asset('js/popper.min.js') }}"></script>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
     </script>
 @endsection

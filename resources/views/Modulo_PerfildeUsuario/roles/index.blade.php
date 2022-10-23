@@ -14,7 +14,7 @@
 <div class="card">
     <div class="card-header">
 
-            <a href="{{ route('roles.create') }}" class="btn btn-primary ">Insertar role</a>
+        <a href="{{ route('roles.create') }}" class="btn btn-primary ">Insertar role</a>
 
 
     </div>
@@ -34,18 +34,19 @@
                         <td>{{ $role->id }}</td>
                         <td>{{ $role->name }}</td>
                         <td>
-                            <form action="{{ route('roles.destroy', $role) }}" method="POST"
-                                class="eliminar_role">
+                            <form action="{{ route('roles.destroy', $role) }}" method="POST" class="eliminar_role">
                                 @csrf
                                 @method('delete')
 
-                                    <a class="btn btn-primary btn-sm" href="{{ route('roles.edit', $role->id) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Rol"><i
-                                            class="fa fa-edit"></i></a>
+                                <a class="btn btn-primary btn-sm" href="{{ route('roles.edit', $role->id) }}"
+                                    data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Rol"><i
+                                        class="fa fa-edit"></i></a>
 
 
 
-                                    <button class="btn btn-danger btn-sm " type="submit" data-bs-toggle="tooltip" data-bs-placement="right" title="Eliminar Rol"><i
-                                            class="fa fa-trash-alt"></i></button>
+                                <button class="btn btn-danger btn-sm " type="submit" data-bs-toggle="tooltip"
+                                    data-bs-placement="right" title="Eliminar Rol"><i
+                                        class="fa fa-trash-alt"></i></button>
 
 
                             </form>
@@ -67,25 +68,25 @@
     $(document).ready(function() {
         $('#roles_id').DataTable({
             language: {
-        "decimal": "",
-        "emptyTable": "No hay información",
-        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-        "infoPostFix": "",
-        "thousands": ",",
-        "lengthMenu": "Mostrar _MENU_ Entradas",
-        "loadingRecords": "Cargando...",
-        "processing": "Procesando...",
-        "search": "Buscar:",
-        "zeroRecords": "Sin resultados encontrados",
-        "paginate": {
-            "first": "Primero",
-            "last": "Ultimo",
-            "next": "Siguiente",
-            "previous": "Anterior"
-        }
-    }
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Entradas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
         });
     });
 </script>
@@ -100,22 +101,22 @@
     </script>
 @endif
 @if (session('info') == 'adicionar-role')
-<script>
-Swal.fire(
-      '¡Insertado!',
-      'El role se inserto con exito.',
-      'success'
-    )
-</script>
+    <script>
+        Swal.fire(
+            '¡Insertado!',
+            'El role se inserto con exito.',
+            'success'
+        )
+    </script>
 @endif
 @if (session('info') == 'modificar-role')
-<script>
-Swal.fire(
-      '¡Modificado!',
-      'El role se modifico con exito.',
-      'success'
-    )
-</script>
+    <script>
+        Swal.fire(
+            '¡Modificado!',
+            'El role se modifico con exito.',
+            'success'
+        )
+    </script>
 @endif
 <script>
     $('.eliminar_role').submit(function(e) {
@@ -135,5 +136,12 @@ Swal.fire(
             }
         })
     });
+</script>
+<script src="{{ asset('js/popper.min.js') }}"></script>
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
 </script>
 @endsection
