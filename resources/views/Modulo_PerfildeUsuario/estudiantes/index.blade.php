@@ -43,10 +43,15 @@
                         <td>{{ $e->users->anno }}</td>
                         <td>{{ $e->grupos->name }}</td>
                         <td>
-                        <a class="btn btn-primary btn-sm float-right" href="{{ route('estudiantes.edit', $e->id) }}"><i class="fa fa-edit" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Estudiante"></i></a>
-                        <a class="btn btn-success btn-sm float-right mr-2" href="{{ route('usuarios.show', $e->users->id) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Mostrar Datos del Estudiante"><i
-                            class="fa fa-user"></i></a>
-                    </td>
+                            <a class="btn btn-primary btn-sm float-right"
+                                href="{{ route('estudiantes.edit', $e->id) }}"><i class="fa fa-edit"
+                                    data-bs-toggle="tooltip" data-bs-placement="right"
+                                    title="Editar Estudiante"></i></a>
+                            <a class="btn btn-success btn-sm float-right mr-2"
+                                href="{{ route('usuarios.show', $e->users->id) }}" data-bs-toggle="tooltip"
+                                data-bs-placement="right" title="Mostrar Datos del Estudiante"><i
+                                    class="fa fa-user"></i></a>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -62,9 +67,9 @@
 <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('js/dataTables.bootstrap5.min.js') }}"></script>
 <script>
-    $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-  })
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 </script>
 
 
@@ -106,4 +111,11 @@
         )
     </script>
 @endif
+<script src="{{ asset('js/popper.min.js') }}"></script>
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>
 @endsection

@@ -42,7 +42,8 @@
                             <td scope="row">
                                 @foreach ($profesores as $prof)
                                     @if ($p->profesores_id === $prof->id)
-                                        {{ $prof->primer_nombre }} {{ $prof->segundo_nombre }} {{ $prof->primer_apellido }} {{ $prof->segundo_apellido }}
+                                        {{ $prof->primer_nombre }} {{ $prof->segundo_nombre }} {{ $prof->primer_apellido }}
+                                        {{ $prof->segundo_apellido }}
                                     @endif
                                 @endforeach
 
@@ -73,13 +74,14 @@
                                     @csrf
                                     @method('delete')
                                     @can('Modulo_Horario.planificacion.edit')
-                                        <a class="btn btn-primary btn-sm"
-                                            href="{{ route('planificacion.edit', $p) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Carga Docente"><i
-                                            class="fa fa-edit"></i></a>
+                                        <a class="btn btn-primary btn-sm" href="{{ route('planificacion.edit', $p) }}"
+                                            data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Carga Docente"><i
+                                                class="fa fa-edit"></i></a>
                                     @endcan
                                     @can('Modulo_Horario.planificacion.destroy')
-                                        <button class="btn btn-danger btn-sm" type="submit" data-bs-toggle="tooltip" data-bs-placement="right" title="Eliminar Carga Docente"><i
-                                            class="fa fa-trash-alt"></i></button>
+                                        <button class="btn btn-danger btn-sm" type="submit" data-bs-toggle="tooltip"
+                                            data-bs-placement="right" title="Eliminar Carga Docente"><i
+                                                class="fa fa-trash-alt"></i></button>
                                     @endcan
                                 </form>
                             </td>
@@ -188,5 +190,12 @@
                 }
             })
         });
+    </script>
+    <script src="{{ asset('js/popper.min.js') }}"></script>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
     </script>
 @endsection

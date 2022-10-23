@@ -13,11 +13,11 @@
 
 <div class="card">
     <div class="card-header">
-@can('Modulo_PerfildeUsuario.profesores.create')
-     <a href="{{ route('profesores.create') }}" class="btn btn-primary ">Insertar profesor</a>
-@endcan
+        @can('Modulo_PerfildeUsuario.profesores.create')
+            <a href="{{ route('profesores.create') }}" class="btn btn-primary ">Insertar profesor</a>
+        @endcan
 
-{{-- @can('Import.ProfesoresImport')
+        {{-- @can('Import.ProfesoresImport')
     <button type="button" class="btn btn-danger float-right" data-toggle="modal"
                 data-target=".bd-example-modal-lg">Importar datos de profesores</button>
 @endcan --}}
@@ -40,16 +40,20 @@
                         <td>{{ $profesor->users->primer_nombre }}
                             {{ $profesor->users->segundo_nombre }} {{ $profesor->users->primer_apellido }}
                             {{ $profesor->users->segundo_apellido }}
-                            </td>
+                        </td>
                         <td>{{ $profesor->users->anno }}</td>
                         <td>{{ $profesor->grupos->name }}</td>
 
                         <td width="120px">
                             @can('Modulo_PerfildeUsuario.profesores.edit')
-                                 <a class="btn btn-primary btn-sm float-right" href="{{ route('profesores.edit', $profesor->id) }}"><i class="fa fa-edit" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Profesor"></i></a>
+                                <a class="btn btn-primary btn-sm float-right"
+                                    href="{{ route('profesores.edit', $profesor->id) }}"><i class="fa fa-edit"
+                                        data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Profesor"></i></a>
                             @endcan
-                            <a class="btn btn-success btn-sm float-right mr-2" href="{{ route('usuarios.show', $profesor->users->id) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Mostrar Datos del Profesor"><i
-                                class="fa fa-user"></i></a>
+                            <a class="btn btn-success btn-sm float-right mr-2"
+                                href="{{ route('usuarios.show', $profesor->users->id) }}" data-bs-toggle="tooltip"
+                                data-bs-placement="right" title="Mostrar Datos del Profesor"><i
+                                    class="fa fa-user"></i></a>
 
                         </td>
                     </tr>
@@ -95,56 +99,62 @@
     $(document).ready(function() {
         $('#profesores_id').DataTable({
             language: {
-        "decimal": "",
-        "emptyTable": "No hay información",
-        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-        "infoPostFix": "",
-        "thousands": ",",
-        "lengthMenu": "Mostrar _MENU_ Entradas",
-        "loadingRecords": "Cargando...",
-        "processing": "Procesando...",
-        "search": "Buscar:",
-        "zeroRecords": "Sin resultados encontrados",
-        "paginate": {
-            "first": "Primero",
-            "last": "Ultimo",
-            "next": "Siguiente",
-            "previous": "Anterior"
-        }
-    }
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Entradas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
         });
     });
 </script>
 <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
 
 @if (session('info') == 'adicionar-profesor')
-<script>
-Swal.fire(
-      '¡Insertado!',
-      'El profesor se inserto con exito.',
-      'success'
-    )
-</script>
+    <script>
+        Swal.fire(
+            '¡Insertado!',
+            'El profesor se inserto con exito.',
+            'success'
+        )
+    </script>
 @endif
 @if (session('info') == 'modificar-profesor')
-<script>
-Swal.fire(
-      '¡Modificado!',
-      'El profesor se modifico con exito.',
-      'success'
-    )
-</script>
+    <script>
+        Swal.fire(
+            '¡Modificado!',
+            'El profesor se modifico con exito.',
+            'success'
+        )
+    </script>
 @endif
 @if (session('info') == 'importar-profesor')
-<script>
-Swal.fire(
-      '¡Importado!',
-      'Los profesores se importaron con exito.',
-      'success'
-    )
-</script>
+    <script>
+        Swal.fire(
+            '¡Importado!',
+            'Los profesores se importaron con exito.',
+            'success'
+        )
+    </script>
 @endif
-
+<script src="{{ asset('js/popper.min.js') }}"></script>
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>
 @endsection

@@ -35,18 +35,22 @@
                         <th>{{ $user->tipo_de_usuario }}</th>
                         <td width="150px">
                             @can('Modulo_PerfildeUsuario.usuarios.edit')
-                                <a class="btn btn-warning btn-sm " href="{{ route('usuarios.edit', $user->id) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Asignar Rol"><i
+                                <a class="btn btn-warning btn-sm " href="{{ route('usuarios.edit', $user->id) }}"
+                                    data-bs-toggle="tooltip" data-bs-placement="right" title="Asignar Rol"><i
                                         class="fa fa-users-cog"></i></a>
                             @endcan
                             {{--  @can('Modulo_PerfildeUsuario.usuarios.editar')  --}}
-                            <a class="btn btn-primary btn-sm" href="{{ route('usuarios.editar', $user->id) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Usuario"><i
+                            <a class="btn btn-primary btn-sm" href="{{ route('usuarios.editar', $user->id) }}"
+                                data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Usuario"><i
                                     class="fa fa-edit"></i></a>
                             {{--  @endcan  --}}
                             {{--  @can('Modulo_PerfildeUsuario.usuarios.editar')  --}}
-                            <a class="btn btn-success btn-sm" href="{{ route('usuarios.show', $user->id) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Mostrar Datos"><i
+                            <a class="btn btn-success btn-sm" href="{{ route('usuarios.show', $user->id) }}"
+                                data-bs-toggle="tooltip" data-bs-placement="right" title="Mostrar Datos"><i
                                     class="fa fa-user"></i></a>
                             {{--  @endcan  --}}
-                            <a class="btn btn-danger btn-sm" href="{{ route('change-password') }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Cambiar Contraseña"><i
+                            <a class="btn btn-danger btn-sm" href="{{ route('change-password') }}"
+                                data-bs-toggle="tooltip" data-bs-placement="right" title="Cambiar Contraseña"><i
                                     class="fa fa-lock"></i></a>
                         </td>
                     </tr>
@@ -78,5 +82,12 @@
             }
         });
     });
+</script>
+<script src="{{ asset('js/popper.min.js') }}"></script>
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
 </script>
 @endsection

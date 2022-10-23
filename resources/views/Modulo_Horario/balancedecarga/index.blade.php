@@ -92,13 +92,14 @@
                                     @csrf
                                     @method('delete')
                                     @can('Modulo_Horario.balancedecarga.edit')
-                                        <a class="btn btn-primary btn-sm"
-                                            href="{{ route('balancedecarga.edit', $bc) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Balance de Carga"><i
-                                            class="fa fa-edit"></i></a>
+                                        <a class="btn btn-primary btn-sm" href="{{ route('balancedecarga.edit', $bc) }}"
+                                            data-bs-toggle="tooltip" data-bs-placement="right"
+                                            title="Editar Balance de Carga"><i class="fa fa-edit"></i></a>
                                     @endcan
                                     @can('Modulo_Horario.balancedecarga.destroy')
-                                        <button class="btn btn-danger btn-sm" type="submit" data-bs-toggle="tooltip" data-bs-placement="right" title="Eliminar Balance de Carga"><i
-                                            class="fa fa-trash-alt"></i></button>
+                                        <button class="btn btn-danger btn-sm" type="submit" data-bs-toggle="tooltip"
+                                            data-bs-placement="right" title="Eliminar Balance de Carga"><i
+                                                class="fa fa-trash-alt"></i></button>
                                     @endcan
                                 </form>
                             </td>
@@ -202,5 +203,12 @@
                 }
             })
         });
+    </script>
+    <script src="{{ asset('js/popper.min.js') }}"></script>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
     </script>
 @stop
