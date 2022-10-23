@@ -165,17 +165,25 @@ class AfectacionesController extends Controller
         $afectacion = Afectaciones::find($id);
         $profesores = Profesores::all();
 
-        $profesor = DB::select('SELECT profesores.*
-        FROM profesores
-        WHERE profesores.id NOT IN (SELECT afectaciones.profesores_afectados_id
-                                    FROM afectaciones
-                                    WHERE afectaciones.profesores_afectados_id <> ' . $afectacion->profesores_afectados_id . ')
-');
+        $profesor = DB::select('SELECT users.id, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_profesor
+        FROM users INNER JOIN (SELECT profesores.user_id
+                                FROM profesores
+                                WHERE profesores.id NOT IN (SELECT afectaciones.profesores_afectados_id
+                                                FROM afectaciones
+                                                WHERE afectaciones.profesores_afectados_id <> ' . $afectacion->profesores_afectados_id . ')) as profesores ON users.id = profesores.user_id
+        ');
+
+//         $profesor = DB::select('SELECT profesores.*
+//         FROM profesores
+//         WHERE profesores.id NOT IN (SELECT afectaciones.profesores_afectados_id
+//                                     FROM afectaciones
+//                                     WHERE afectaciones.profesores_afectados_id <> ' . $afectacion->profesores_afectados_id . ')
+// ');
         // $dia = DB::select('SELECT afectaciones.*
         // FROM afectaciones
         // WHERE afectaciones.dia');
 
-
+        //var_dump($profesor)
         return view('Modulo_Horario.afectaciones.edit', compact('afectacion', 'profesores', 'profesor', 'anno'));
     }
 
@@ -190,15 +198,15 @@ class AfectacionesController extends Controller
     {
         $rules = [
             'profesor_id' => 'required|not_in:0',
-            'profesor_suplente_id' => 'required|not_in:0',
             'semana' => 'required',
             'dia' => 'required|not_in:0',
+            'anno' => 'required'
         ];
         $messages = [
             'profesor_id.required' => 'Campo Requerido',
-            'profesor_suplente_id.required' => 'Campo Requerido',
             'semana.required' => 'Campo Requerido',
             'dia.required' => 'Campo Requerido',
+            'anno.required' => 'Campo Requerido'
         ];
         $this->validate($request, $rules, $messages);
 
@@ -206,6 +214,9 @@ class AfectacionesController extends Controller
         $afectacion->profesores_afectados_id = $request->get('profesor_id');
         $afectacion->semana = $request->get('semana');
         $afectacion->dia = $request->get('dia');
+        $afectacion->anno = $request->get('anno');
+        $afectacion->turno = $request->get('turno');
+
 
         $afectacion->update($request->all());
 

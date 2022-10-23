@@ -5,6 +5,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $seccion = $_POST["seccion"];
     $anno = $_POST["anno"];
     $semana = $_POST["semana"];
+
+
     generar($seccion, $anno, $semana, $conn);
 
     header("Location: http://127.0.0.1:8000/admin/generarhorario?ok=1");
@@ -28,7 +30,7 @@ function generar($seccion, $anno, $semana, $conn)
             array_push($balance_de_carga, array("id" => intval($row['id']), "id_asig" => intval($row['asignaturas_id']), "tipodeclase" => $row['tipo_clase'], "semana" => intval($row['semana'])));
         }
     }
-    $c = 0;
+    //$c = 0;
     //recorriendo balance de carga correspondiente al año y semana de clase
     foreach ($balance_de_carga as $bc) {
         $tipodeclase = $bc['tipodeclase'];
@@ -54,6 +56,7 @@ function generar($seccion, $anno, $semana, $conn)
                             //comprobar que no se imparta más de 1 turno de la misma asignatura el mismo dia al mismo grupo
                             //comprobar que un mismo grupo no este en varios locales el mismo dia y el mismo turno
                             //comprobar que un profesor no este el mismo dia y el mismo turno en más de 1 local a la vez
+
                             if (!comprobar($p['id_asig'], $p['id_grupo'], $p['id_prof'], $ld['dia'], $ld['turno'], $anno, $semana, $conn)) {
                                 //relacionar disponibilidad con planificacion en relaciones
                                 relacionar($ld['id'], $p['id'], $anno, $semana, $conn);
@@ -107,6 +110,8 @@ function devolver_planif($bc_id_asig, $tc, $conn)
     $planificaciones = array();
 
     $sql = "SELECT planificacions.*
+    FROM planificacions RIGHT JOIN
+    (SELECT planificacions.profesores_id
                 FROM planificacions
                 WHERE planificacions.asignaturas_id = '$bc_id_asig'
                 AND planificacions.profesores_id IN (SELECT user_id
@@ -115,9 +120,9 @@ function devolver_planif($bc_id_asig, $tc, $conn)
                                                      OR profesores.tipo_de_clases LIKE '%,$tc'
                                                      OR profesores.tipo_de_clases LIKE '$tc,%'
                                                      OR profesores.tipo_de_clases LIKE '%,$tc,%')
-                                                     GROUP by planificacions.id
+                                                     GROUP by planificacions.profesores_id
                                                      ORDER BY COUNT( planificacions.profesores_id)
-                                                     DESC";
+                                                     DESC) as p ON p.profesores_id = planificacions.profesores_id";
 
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
@@ -325,20 +330,40 @@ function comprobar($id_asig, $id_grupo, $id_prof, $dia, $turno, $anno, $semana, 
                                                                                 AND asignaciones.anno = '$anno' AND asignaciones.semana = '$semana')
 ";
     //comprobar que un profesor no este afcetado ese turno de ese dia de esa semana de ese anno
+
+    // $cond_turno = !$turno ? "" : "AND a.turno = '$turno'";
+
     $sql3 = "SELECT a.id FROM afectaciones as a
-            WHERE a.profesores_afectados_id = '$id_prof'
-            AND a.dia = '$dia'
-            AND a.semana ='$semana'
-            AND a.turno='$turno'
-            AND a.anno='$anno'
-";
+WHERE a.profesores_afectados_id = '$id_prof'
+AND a.dia = '$dia' AND a.semana ='$semana' AND a.anno='$anno' ";
+
+    $sql4 = "SELECT a.id FROM afectaciones as a
+WHERE a.profesores_afectados_id = '$id_prof'
+AND a.dia = '$dia' AND a.semana ='$semana' AND a.anno='$anno' AND a.turno = '$turno' ";
+
+    $sql5 = "SELECT a.id FROM afectaciones as a
+WHERE a.profesores_afectados_id = '$id_prof'
+AND a.dia = '$dia' AND a.semana ='$semana' AND a.anno='$anno' AND a.turno IS NULL ";
 
 
+
+    $result3 = $conn->query($sql3);
+    $result4 = $conn->query($sql4);
+    $result5 = $conn->query($sql5);
+    //var_dump($result3->fetch_assoc());
+    $afect = 0;
+    if ($result4->num_rows > 0) {
+        $afect = 1;
+    } else {
+        if ($result5->num_rows > 0 && $result3->num_rows > 0) {
+            $afect = 1;
+        }
+    }
 
     $result = $conn->query($sql);
     $result1 = $conn->query($sql1);
     $result2 = $conn->query($sql2);
-    $result3 = $conn->query($sql3);
+
     $dia2 = $result->fetch_assoc();
 
     if ($dia2 == null) {
@@ -347,7 +372,7 @@ function comprobar($id_asig, $id_grupo, $id_prof, $dia, $turno, $anno, $semana, 
         $value = $dia - $dia2['dia'];
     }
 
-    if (($value <= 0) || ($result1->num_rows > 0) || ($result2->num_rows > 0) || ($result3->num_rows > 0)) {
+    if (($value <= 0) || ($result1->num_rows > 0) || ($result2->num_rows > 0) || ($afect > 0)) {
         return true;
     } else {
         return false;

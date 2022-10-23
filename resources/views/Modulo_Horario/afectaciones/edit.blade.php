@@ -19,14 +19,14 @@
         <div class="mb-3">
             <label for="" class="form-label">Profesor Afectado</label>
             <select name="profesor_id" id="profesor_id" class="form-control mr-sm-2 form-select">
-                @foreach ($profesores as $pr)
+                @foreach ($profesor as $pr)
                     @if ($pr->id === $afectacion->profesores_afectados_id)
-                        <option value="{{ $pr->id }}">{{ $pr->nombre }}</option>
+                        <option value="{{ $pr->id }}">{{ $pr->nombre_profesor }}</option>
                     @endif
                 @endforeach
-                @foreach ($profesores as $pr)
+                @foreach ($profesor as $pr)
                     @if ($pr->id !== $afectacion->profesores_afectados_id)
-                        <option value="{{ $pr->id }}">{{ $pr->nombre }}</option>
+                        <option value="{{ $pr->id }}">{{ $pr->nombre_profesor }}</option>
                     @endif
                 @endforeach
             </select>
