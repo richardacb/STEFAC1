@@ -22,16 +22,6 @@
                     <form action="{{ route('update-password') }}" method="POST">
                         @csrf
                         <div class="card-body">
-                            @if (session('status'))
-                                <div class="alert alert-success" role="alert">
-                                    {{ session('status') }}
-                                </div>
-                            @elseif (session('error'))
-                                <div class="alert alert-danger" role="alert">
-                                    {{ session('error') }}
-                                </div>
-                            @endif
-
                             <div class="mb-3">
                                 <label for="oldPasswordInput" class="form-label">Actual</label>
                                 <input name="old_password" type="password" class="form-control @error('old_password') is-invalid @enderror" id="oldPasswordInput"
@@ -66,4 +56,23 @@
             </div>
         </div>
     </div>
+    <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
+    @if (session('error') == 'no')
+<script>
+    Swal.fire(
+        'Atencion!',
+        'Las contraseñas no coinciden.',
+        'success'
+    )
+</script>
+@endif
+@if (session('status') == 'si')
+<script>
+    Swal.fire(
+        'Cambiada!',
+        'La contraseña a sido cambiada con exito.',
+        'success'
+    )
+</script>
+@endif
 @endsection

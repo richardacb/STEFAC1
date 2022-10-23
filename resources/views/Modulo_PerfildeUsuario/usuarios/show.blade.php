@@ -51,9 +51,17 @@
                                 <a class="nav-link" data-bs-toggle="tab"
                                     data-bs-target="#perfil-dianostico-preventivo">Diagnostico preventivo</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab"
+                                    data-bs-target="#cambiar-contrasena">Cambiar contraseña</a>
+                            </li>
                         @else
                             <li class="nav-item">
                                 <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#perfil">Perfil</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab"
+                                    data-bs-target="#cambiar-contrasena">Cambiar contraseña</a>
                             </li>
                         @endif
                     </ul>
@@ -363,9 +371,9 @@
                                     <div class="col-lg-9 col-md-8"> -- -- -- -- -- -- </div>
                                 @endif
                             </div>
-                    </div>
+                        </div>
 
-                    <div class="tab-pane fade perfil-dianostico-preventivo pt-3"
+                      <div class="tab-pane fade perfil-dianostico-preventivo pt-3"
                         id="perfil-dianostico-preventivo">
 
                         <h5 class="card-title ml-5 my-2">Diagnostico preventivo del estudiante</h5>
@@ -496,9 +504,48 @@
                                 @endif
                             </div>
                         </div>
+                      </div>
+                      <div class="tab-pane fade cambiar-contrasena pt-3"
+                        id="cambiar-contrasena">
+
+
+                        <form action="{{ route('update-password') }}" method="POST">
+                            @csrf
+                            <div class="card-body">
+                               
+                                <div class="col-md-12 col-sm-12">
+                                    <label for="oldPasswordInput" class="form-label">Actual</label>
+                                    <input name="old_password" type="password" class="form-control @error('old_password') is-invalid @enderror" id="oldPasswordInput"
+                                        placeholder="Contraseña Actual">
+                                    @error('old_password')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-12 col-sm-12">
+                                    <label for="newPasswordInput" class="form-label">Nueva</label>
+                                    <input name="new_password" type="password" class="form-control @error('new_password') is-invalid @enderror" id="newPasswordInput"
+                                        placeholder="Contraseña Nueva">
+                                    @error('new_password')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-12 col-sm-12">
+                                    <label for="confirmNewPasswordInput" class="form-label">Confirmar</label>
+                                    <input name="new_password_confirmation" type="password" class="form-control" id="confirmNewPasswordInput"
+                                        placeholder="Confirmar Nueva Contraseña">
+                                </div>
+    
+                            </div>
+    
+                            <div class="card-footer">
+                                <button class="btn btn-success">Cambiar</button>
+                                <a href="{{ route('usuarios.index') }}" class="btn btn-danger">Cancelar</a>
+                            </div>
+    
+                        </form>
+                      </div>
+
                     </div>
-
-
                 </div><!-- End Bordered Tabs -->
 
             </div>
@@ -533,6 +580,24 @@
     Swal.fire(
         '¡Modificado!',
         'Los datos del estudiantes se modificaron con exito.',
+        'success'
+    )
+</script>
+@endif
+@if (session('error') == 'no')
+<script>
+    Swal.fire(
+        'Atencion!',
+        'Las contraseñas no coinciden.',
+        'success'
+    )
+</script>
+@endif
+@if (session('status') == 'si')
+<script>
+    Swal.fire(
+        'Cambiada!',
+        'La contraseña a sido cambiada con exito.',
         'success'
     )
 </script>
