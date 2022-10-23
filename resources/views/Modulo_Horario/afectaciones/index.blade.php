@@ -13,6 +13,11 @@
                         Afectación</a>
                 @endcan
             </div>
+            <div class="col-xl-12">
+                @can('Modulo_Horario.afectaciones.create')
+                    <a class="btn btn-primary btn-sm float-right" href="{{ route('afectaciones.create') }}">Daniel</a>
+                @endcan
+            </div>
         </div>
     </div>
 @stop
