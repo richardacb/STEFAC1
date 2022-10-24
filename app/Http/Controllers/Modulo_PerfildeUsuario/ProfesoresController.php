@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Modulo_PerfildeUsuario\Profesores;
 use App\Models\Modulo_PerfildeUsuario\Grupos;
-//use App\Models\Modulo_PerfildeUsuario\GrupoProfesor;
 use App\Models\Modulo_Horario\Asignaturas;
 use App\Models\Modulo_Horario\Tipo_de_Clase;
 use Illuminate\Support\Facades\DB;

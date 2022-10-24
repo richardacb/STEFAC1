@@ -22,7 +22,22 @@ class Diagnosticopreventivo extends Model
         'tipo_medicamentos_consumo',
         'grupo_social',
         'creencia_religiosa',
-        'tipos_de_problemas'
+        'prob_de_personalidad',
+        'desc_prob_de_personalidad',
+        'prob_de_psiquiatricos',
+        'desc_prob_de_psiquiatricos',
+        'prob_de_economicos',
+        'desc_prob_de_economicos',
+        'prob_de_sociales',
+        'desc_prob_de_sociales',
+        'prob_de_familiares',
+        'desc_prob_de_familiares',
+        'prob_de_academicos',
+        'desc_prob_de_academicos',
+        'prob_de_disciplina',
+        'desc_prob_de_disciplina',
+        'prob_de_asistencia',
+        'desc_prob_de_asistencia',
     ];
 
     public function users()

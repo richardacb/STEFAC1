@@ -17,7 +17,7 @@ return new class extends Migration
             $table->engine="InnoDB";
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('grupos_id');
+            $table->unsignedBigInteger('grupos_id')->nullable();
             $table->string('tipo_de_clases');
             $table->unsignedBigInteger('asignaturas_id');
             $table->timestamps();

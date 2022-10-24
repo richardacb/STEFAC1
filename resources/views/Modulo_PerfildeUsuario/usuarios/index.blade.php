@@ -49,9 +49,6 @@
                                 data-bs-toggle="tooltip" data-bs-placement="right" title="Mostrar Datos"><i
                                     class="fa fa-user"></i></a>
                             {{--  @endcan  --}}
-                            <a class="btn btn-danger btn-sm" href="{{ route('change-password') }}"
-                                data-bs-toggle="tooltip" data-bs-placement="right" title="Cambiar Contraseña"><i
-                                    class="fa fa-lock"></i></a>
                         </td>
                     </tr>
                 @endforeach
