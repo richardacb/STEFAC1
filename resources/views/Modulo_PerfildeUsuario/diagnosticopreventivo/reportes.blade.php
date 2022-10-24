@@ -1,7 +1,7 @@
 <!-- Modal Gráfica que representa las adicciones de los estudiantes-->
 <div class="modal fade" id="grafica_reportes1" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Gráfica que reprecenta las adicciones de los estudiantes</h5>
@@ -71,7 +71,7 @@
 <!-- Modal Medicamentos-->
 <div class="modal fade" id="grafica_reportes2" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Gráfica de tipo de medicamentos que consumen</h5>
@@ -122,10 +122,10 @@
 </div>
 <!--Fin Modal -->
 
-<!-- Modal alcohol-->
+<!-- Modal Grupo social-->
 <div class="modal fade" id="grafica_reportes3" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Gráfica de estudiantes por año</h5>
@@ -189,10 +189,10 @@
 </div>
 <!--Fin Modal -->
 
-<!-- Modal alcohol-->
+<!-- Modal Creencia religiosa-->
 <div class="modal fade" id="grafica_reportes4" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Grafica de estudiantes por año</h5>

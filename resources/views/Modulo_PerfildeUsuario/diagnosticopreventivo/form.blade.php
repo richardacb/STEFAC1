@@ -2,7 +2,7 @@
     <div class="col-12">
         <fieldset class="fieldset-personalizado">
             <!--  Diagnostico preventivo  -->
-            <legend class="legend-personalizado-dp">Diagnostico preventivo</legend>
+            <legend class="legend-personalizado-dp">Diagnostico preventivo </legend>
             <div class="row">
 
                 <div class="col-lg-12 col-md-12 col-sm-12">
@@ -48,19 +48,7 @@
                         @enderror
                     </div>
                 </div>
-                {{--  <div class="col-md-4 col-sm-6 col-xs-12">
-                    <div class="form-group">
-                        {!! Form::label('name', 'Tabaco:') !!}
-                        <br>
-                        @foreach ($adicciones_Tabaco as $Tabaco)
-                        {!! Form::radio('adicciones_Tabaco', $Tabaco, null, ['id' => 'adicciones_Tabaco']) !!}
-                            {{ $Tabaco }} <br>
-                        @error('adicciones_Tabaco')
-                            <strong class="error-message text-danger"> {{ $message }} </strong>
-                        @enderror
-                        @endforeach
-                    </div>
-                </div>  --}}
+               
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     <div class="form-group">
                         {!! Form::label('name', 'Tabaco:') !!}
@@ -74,19 +62,7 @@
                         @enderror
                     </div>
                 </div>
-                {{--  <div class="col-md-4 col-sm-6 col-xs-12">
-                    <div class="form-group">
-                        {!! Form::label('name', 'Café:') !!}
-                        <br>
-                        @foreach ($adicciones_Café as $Café)
-                        {!! Form::radio('adicciones_Café', $Café, null, ['id' => 'adicciones_Café']) !!}
-                            {{ $Café }} <br>
-                        @error('adicciones_Café')
-                            <strong class="error-message text-danger"> {{ $message }} </strong>
-                        @enderror
-                        @endforeach
-                    </div>
-                </div>  --}}
+               
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     <div class="form-group">
                         {!! Form::label('name', 'Café:') !!}
@@ -100,19 +76,7 @@
                         @enderror
                     </div>
                 </div>
-                {{--  <div class="col-md-4 col-sm-6 col-xs-12">
-                    <div class="form-group">
-                        {!! Form::label('name', 'Tecnoadicciones:') !!}
-                        <br>
-                        @foreach ($adicciones_Tecnoadicciones as $Tecnoadicciones)
-                        {!! Form::radio('adicciones_Tecnoadicciones', $Tecnoadicciones, null, ['id' => 'adicciones_Tecnoadicciones']) !!}
-                            {{ $Tecnoadicciones }} <br>
-                        @error('adicciones_Tecnoadicciones')
-                            <strong class="error-message text-danger"> {{ $message }} </strong>
-                        @enderror
-                        @endforeach
-                    </div>
-                </div>  --}}
+               
                 <div class="col-md-6 col-xs-12">
                     <div class="form-group">
                         {!! Form::label('name', 'Tecnoadicciones:') !!}
@@ -126,19 +90,7 @@
                         @enderror
                     </div>
                 </div>
-                {{--  <div class="col-md-4 col-sm-6 col-xs-12">
-                    <div class="form-group">
-                        {!! Form::label('name', 'Drogas:') !!}
-                        <br>
-                        @foreach ($adicciones_Drogas as $Drogas)
-                        {!! Form::radio('adicciones_Drogas', $Drogas, null, ['id' => 'adicciones_Drogas']) !!}
-                            {{ $Drogas }} <br>
-                        @error('adicciones_Drogas')
-                            <strong class="error-message text-danger"> {{ $message }} </strong>
-                        @enderror
-                        @endforeach
-                    </div>
-                </div>  --}}
+               
                 <div class="col-md-6 col-xs-12">
                     <div class="form-group">
                         {!! Form::label('name', 'Drogas:') !!}
@@ -156,19 +108,7 @@
                     <h2 class="h3">Grupos Sociales y Creencias Religiosas</h2>
                 </div>
 
-                {{--  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-group">
-                        {!! Form::label('name', 'Grupos Sociales:') !!}
-                        <br>
-                        @foreach ($grupo_social as $gs)
-                        {!! Form::radio('grupo_social', $gs, null, ['id' => 'grupo_social']) !!}
-                            {{ $gs }} <br>
-                        @error('grupo_social')
-                            <strong class="error-message text-danger"> {{ $message }} </strong>
-                        @enderror
-                        @endforeach
-                    </div>
-                </div>  --}}
+             
                 <div class="col-md-6 col-xs-12">
                     <div class="form-group">
                         {!! Form::label('name', 'Grupos Sociales:') !!}
@@ -182,19 +122,7 @@
                         @enderror
                     </div>
                 </div>
-                {{--  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-group">
-                        {!! Form::label('name', 'Creencias Religiosas:') !!}
-                        <br>
-                        @foreach ($creencia_religiosa as $cr)
-                        {!! Form::radio('creencia_religiosa', $cr, null, ['id' => 'creencia_religiosa']) !!}
-                            {{ $cr }} <br>
-                        @error('creencia_religiosa')
-                            <strong class="error-message text-danger"> {{ $message }} </strong>
-                        @enderror
-                        @endforeach
-                    </div>
-                </div>  --}}
+               
                 <div class="col-md-6 col-xs-12">
                     <div class="form-group">
                         {!! Form::label('name', 'Creencias Religiosas:') !!}
@@ -211,19 +139,7 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <h2 class="h3">Medicamentos</h2>
                 </div>
-                {{--  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-group">
-                        {!! Form::label('name', 'Medicamentos:') !!}
-                        <br>
-                        @foreach ($tipo_medicamentos as $Medicamentos)
-                        {!! Form::radio('tipo_medicamentos', $Medicamentos, null, ['id' => 'tipo_medicamentos']) !!}
-                            {{ $Medicamentos }} <br>
-                        @error('tipo_medicamentos')
-                            <strong class="error-message text-danger"> {{ $message }} </strong>
-                        @enderror
-                        @endforeach
-                    </div>
-                </div>  --}}
+               
                 <div class="col-md-12 col-xs-12">
                     <div class="form-group">
                         {!! Form::label(
@@ -239,6 +155,7 @@
                         @enderror
                     </div>
                 </div>
+
                 <div class="col-md-12 col-sm-12">
                     <div class="form-group">
                         {!! Form::label('name', 'Medicamentos:', ['style'=> 'display: none', 'id' => 'tipo_medicamentos_cons' ]) !!}
@@ -254,19 +171,148 @@
                         @enderror
                     </div>
                 </div>
+
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="form-group">
-                        {!! Form::label('name', 'Tipo de problemas:') !!}
-                        {!! Form::text('tipos_de_problemas', null, [
+
+                        {!! Form::label('name', 'Tipo de problemas:') !!}<br>
+                        <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12" ><input type="checkbox" id="prob_de_personalidad" name="prob_de_personalidad" value = "Problemas de personalidad" onClick="p1(event)"> Problemas de personalidad</label>
+                        <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12" ><input type="checkbox" id="prob_de_psiquiatricos" name="prob_de_psiquiatricos" value = "Problemas psiquiátricos"onClick="p2(event)"> Problemas psiquiátricos</label>
+                        <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12" ><input type="checkbox" id="prob_de_economicos" name="prob_de_economicos" value = "Problemas económicos" onClick="p3(event)"> Problemas económicos</label>
+                        <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12" ><input type="checkbox" id="prob_de_sociales" name="prob_de_sociales" value = "Problemas sociales"onClick="p4(event)"> Problemas sociales</label>
+                        <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12" ><input type="checkbox" id="prob_de_familiares" name="prob_de_familiares" value = "Problemas familiares"onClick="p5(event)"> Problemas familiares</label>
+                        <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12" ><input type="checkbox" id="prob_de_academicos" name="prob_de_academicos" value = "Problemas académicos"onClick="p6(event)"> Problemas académicos</label>
+                        <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12" ><input type="checkbox" id="prob_de_disciplina" name="prob_de_disciplina" value = "Problemas de disciplina"onClick="p7(event)"> Problemas  de disciplina</label>
+                        <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12" ><input type="checkbox" id="prob_de_asistencia" name="prob_de_asistencia" value = "Problemas de asistencia"onClick="p8(event)"> Problemas de asistencia</label>
+                    </div>
+               
+                <div class="col-md-12 col-sm-12">
+                    <div class="form-group">
+                        {!! Form::label('name', 'Descripcion del problema de personalidad:', ['style'=> 'display: none', 'id' => 'label_desc_prob_de_personalidad']) !!}
+                        {!! Form::textarea('desc_prob_de_personalidad', null, [
                             'class' => 'form-control',
-                            'id' => 'tipos_de_problemas',
-                            'placeholder' => 'Ingrece Tipo de problemas',
+                            'style'=> 'display: none',
+                            'rows' => 1,
+                            'id' => 'desc_prob_de_personalidad',
+                            'placeholder' => 'Ingrese el problema',
                         ]) !!}
-                        @error('tipos_de_problemas')
+                        @error('desc_prob_de_personalidad')
                             <strong class="error-message text-danger"> {{ $message }} </strong>
                         @enderror
                     </div>
                 </div>
+
+                <div class="col-md-12 col-sm-12">
+                    <div class="form-group">
+                        {!! Form::label('name', 'Descripcion del problema psiquiátrico:', ['style'=> 'display: none', 'id' => 'label_desc_prob_de_psiquiatricos'  ]) !!}
+                        {!! Form::textarea('desc_prob_de_psiquiatricos', null, [
+                            'class' => 'form-control',
+                            'style'=> 'display: none',
+                            'rows' => 1,
+                            'id' => 'desc_prob_de_psiquiatricos',
+                            'placeholder' => 'Ingrese el problema',
+                        ]) !!}
+                        @error('desc_prob_de_psiquiatricos')
+                            <strong class="error-message text-danger"> {{ $message }} </strong>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12">
+                    <div class="form-group">
+                        {!! Form::label('name', 'Descripcion del problema económico:', ['style'=> 'display: none', 'id' => 'label_desc_prob_de_economicos'  ]) !!}
+                        {!! Form::textarea('desc_prob_de_economicos', null, [
+                            'class' => 'form-control',
+                            'style'=> 'display: none',
+                            'rows' => 1,
+                            'id' => 'desc_prob_de_economicos',
+                            'placeholder' => 'Ingrese el problema',
+                        ]) !!}
+                        @error('desc_prob_de_economicos')
+                            <strong class="error-message text-danger"> {{ $message }} </strong>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12">
+                    <div class="form-group">
+                        {!! Form::label('name', 'Descripcion del problema social:', ['style'=> 'display: none', 'id' => 'label_desc_prob_de_sociales' ]) !!}
+                        {!! Form::textarea('desc_prob_de_sociales', null, [
+                            'class' => 'form-control',
+                            'style'=> 'display: none',
+                            'rows' => 1,
+                            'id' => 'desc_prob_de_sociales',
+                            'placeholder' => 'Ingrese el problema',
+                        ]) !!}
+                        @error('desc_prob_de_sociales')
+                            <strong class="error-message text-danger"> {{ $message }} </strong>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12">
+                    <div class="form-group">
+                        {!! Form::label('name', 'Descripcion del problema familiar:', ['style'=> 'display: none', 'id' => 'label_desc_prob_de_familiares' ]) !!}
+                        {!! Form::textarea('desc_prob_de_familiares', null, [
+                            'class' => 'form-control',
+                            'style'=> 'display: none',
+                            'rows' => 1,
+                            'id' => 'desc_prob_de_familiares',
+                            'placeholder' => 'Ingrese el problema',
+                        ]) !!}
+                        @error('desc_prob_de_familiares')
+                            <strong class="error-message text-danger"> {{ $message }} </strong>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12">
+                    <div class="form-group">
+                        {!! Form::label('name', 'Descripcion del problema académico:', ['style'=> 'display: none', 'id' => 'label_desc_prob_de_academicos'  ]) !!}
+                        {!! Form::textarea('desc_prob_de_academicos', null, [
+                            'class' => 'form-control',
+                            'style'=> 'display: none',
+                            'rows' => 1,
+                            'id' => 'desc_prob_de_academicos',
+                            'placeholder' => 'Ingrese el problema',
+                        ]) !!}
+                        @error('desc_prob_de_academicos')
+                            <strong class="error-message text-danger"> {{ $message }} </strong>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12">
+                    <div class="form-group">
+                        {!! Form::label('name', 'Descripcion del problema de disciplina:', ['style'=> 'display: none', 'id' => 'label_desc_prob_de_disciplina'  ]) !!}
+                        {!! Form::textarea('desc_prob_de_disciplina', null, [
+                            'class' => 'form-control',
+                            'style'=> 'display: none',
+                            'rows' => 1,
+                            'id' => 'desc_prob_de_disciplina',
+                            'placeholder' => 'Ingrese el problema',
+                        ]) !!}
+                        @error('desc_prob_de_disciplina')
+                            <strong class="error-message text-danger"> {{ $message }} </strong>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12">
+                    <div class="form-group">
+                        {!! Form::label('name', 'Descripcion del problema de asistencia:', ['style'=> 'display: none', 'id' => 'label_desc_prob_de_asistencia'  ]) !!}
+                        {!! Form::textarea('desc_prob_de_asistencia', null, [
+                            'class' => 'form-control',
+                            'style'=> 'display: none',
+                            'rows' => 1,
+                            'id' => 'desc_prob_de_asistencia',
+                            'placeholder' => 'Ingrese el problema',
+                        ]) !!}
+                        @error('desc_prob_de_asistencia')
+                            <strong class="error-message text-danger"> {{ $message }} </strong>
+                        @enderror
+                    </div>
+                </div>
+
             </div>
         </fieldset>
 

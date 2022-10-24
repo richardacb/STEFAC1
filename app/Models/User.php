@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\Modulo_PerfildeUsuario\Estudiantes;
+use App\Models\Modulo_PerfildeUsuario\Profesores;
 use App\Models\Modulo_PerfildeUsuario\Diagnosticopreventivo;
 use DB;
 
@@ -55,6 +56,10 @@ class User extends Authenticatable
     public function estudiantes()
     {
         return $this->hasOne(Estudiantes::class);
+    }
+    public function profesores()
+    {
+        return $this->hasOne(Profesores::class);
     }
     public function diagnosticopreventivo()
     {

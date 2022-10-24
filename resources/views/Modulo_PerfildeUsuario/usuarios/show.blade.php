@@ -18,15 +18,26 @@
 
             <div class="card">
                 <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-
-                    <img src="{{ asset('img/profile-img.jpg') }}" alt="Profile" class="rounded-circle">
+                    @if ($users->sexo == 'Masculino')
+                    <img src="{{ asset('img/masculino.png') }}" alt="Profile" class="rounded-circle">
+                    @else
+                    <img src="{{ asset('img/femenino.png') }}" alt="Profile" class="rounded-circle">
+                   @endif
+                   
                     <h2>{{ $users->primer_nombre }} {{ $users->segundo_nombre }}</h2>
-                    <h3>Web Designer</h3>
-                    <div class="flex-row mt-2">
-                        <a href="{{ route('usuarios.index') }}" data-bs-toggle="tooltip" data-bs-placement="left"
-                            title="Regresar" class="btn btn-danger"><i class="fa fa-reply"></i></a>
-                    </div>
+                    <h3>{{ $users->tipo_de_usuario }}</h3>
+                    @if ($users->tipo_de_usuario == 'Profesor')
+                        <div class="row">
+                            <div class="label ">Grupo Guía: </div>
+                            @if (isset($users->profesores))
+                                <div>&nbsp;{{  $users->profesores->grupos->name }}
+                                </div>
+                            @else
+                                <div> -- -- -- -- -- -- </div>
+                            @endif
 
+                        </div>
+                    @endif
                 </div>
             </div>
 
@@ -52,24 +63,22 @@
                                     data-bs-target="#perfil-dianostico-preventivo">Diagnostico preventivo</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab"
-                                    data-bs-target="#cambiar-contrasena">Cambiar contraseña</a>
+                                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#cambiar-contrasena">Cambiar
+                                    contraseña</a>
                             </li>
                         @else
                             <li class="nav-item">
                                 <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#perfil">Perfil</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab"
-                                    data-bs-target="#cambiar-contrasena">Cambiar contraseña</a>
+                                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#cambiar-contrasena">Cambiar
+                                    contraseña</a>
                             </li>
                         @endif
                     </ul>
                     <div class="tab-content pt-2">
 
                         <div class="tab-pane fade show active perfil" id="perfil">
-
-
 
                             <h5 class="card-title ml-5 my-2">Detalles del perfil</h5>
                             <br>
@@ -371,9 +380,9 @@
                                     <div class="col-lg-9 col-md-8"> -- -- -- -- -- -- </div>
                                 @endif
                             </div>
-                        </div>
+                    </div>
 
-                      <div class="tab-pane fade perfil-dianostico-preventivo pt-3"
+                    <div class="tab-pane fade perfil-dianostico-preventivo pt-3"
                         id="perfil-dianostico-preventivo">
 
                         <h5 class="card-title ml-5 my-2">Diagnostico preventivo del estudiante</h5>
@@ -504,55 +513,56 @@
                                 @endif
                             </div>
                         </div>
-                      </div>
-                      <div class="tab-pane fade cambiar-contrasena pt-3"
-                        id="cambiar-contrasena">
+                    </div>
+                    <div class="tab-pane fade cambiar-contrasena pt-3" id="cambiar-contrasena">
 
 
                         <form action="{{ route('update-password') }}" method="POST">
                             @csrf
                             <div class="card-body">
-                               
+
                                 <div class="col-md-12 col-sm-12">
-                                    <label for="oldPasswordInput" class="form-label">Actual</label>
-                                    <input name="old_password" type="password" class="form-control @error('old_password') is-invalid @enderror" id="oldPasswordInput"
-                                        placeholder="Contraseña Actual">
+                                    <label for="oldPasswordInput" class="form-label">ACTUAL</label>
+                                    <input name="old_password" type="password"
+                                        class="form-control @error('old_password') is-invalid @enderror"
+                                        id="oldPasswordInput" placeholder="Contraseña Actual">
                                     @error('old_password')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-12 col-sm-12">
-                                    <label for="newPasswordInput" class="form-label">Nueva</label>
-                                    <input name="new_password" type="password" class="form-control @error('new_password') is-invalid @enderror" id="newPasswordInput"
-                                        placeholder="Contraseña Nueva">
+                                    <label for="newPasswordInput" class="form-label">NUEVA</label>
+                                    <input name="new_password" type="password"
+                                        class="form-control @error('new_password') is-invalid @enderror"
+                                        id="newPasswordInput" placeholder="Contraseña Nueva">
                                     @error('new_password')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-12 col-sm-12">
-                                    <label for="confirmNewPasswordInput" class="form-label">Confirmar</label>
-                                    <input name="new_password_confirmation" type="password" class="form-control" id="confirmNewPasswordInput"
-                                        placeholder="Confirmar Nueva Contraseña">
+                                    <label for="confirmNewPasswordInput" class="form-label">COMFIRMAR</label>
+                                    <input name="new_password_confirmation" type="password" class="form-control"
+                                        id="confirmNewPasswordInput" placeholder="Confirmar Nueva Contraseña">
                                 </div>
-    
+
                             </div>
-    
+
                             <div class="card-footer">
                                 <button class="btn btn-success">Cambiar</button>
                                 <a href="{{ route('usuarios.index') }}" class="btn btn-danger">Cancelar</a>
                             </div>
-    
+
                         </form>
-                      </div>
-
                     </div>
-                </div><!-- End Bordered Tabs -->
 
-            </div>
+                </div>
+            </div><!-- End Bordered Tabs -->
 
         </div>
 
     </div>
+
+</div>
 </div>
 </section>
 
@@ -589,7 +599,7 @@
     Swal.fire(
         'Atencion!',
         'Las contraseñas no coinciden.',
-        'success'
+        'error'
     )
 </script>
 @endif

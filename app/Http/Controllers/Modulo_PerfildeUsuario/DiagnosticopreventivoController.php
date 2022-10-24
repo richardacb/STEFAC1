@@ -68,6 +68,16 @@ class DiagnosticopreventivoController extends Controller
         $count_creencia_religiosaHER = count(DB::table('diagnosticopreventivo')->where("creencia_religiosa", "Hermandad")->get());
         $count_creencia_religiosaPM = count(DB::table('diagnosticopreventivo')->where("creencia_religiosa", "Palo Monte")->get());
 
+        //Contar los que tiene tipos de problemas
+        $count_probPE = count(DB::table('diagnosticopreventivo')->where("prob_de_personalidad", "Problemas de personalidad")->get());
+        $count_probPS = count(DB::table('diagnosticopreventivo')->where("prob_de_psiquiatricos", "Problemas psiquiátricos")->get());
+        $count_probEC = count(DB::table('diagnosticopreventivo')->where("prob_de_economicos", "Problemas económicos")->get());
+        $count_probSO = count(DB::table('diagnosticopreventivo')->where("prob_de_sociales", "Problemas sociales")->get());
+        $count_probFA = count(DB::table('diagnosticopreventivo')->where("prob_de_familiares", "Problemas familiares")->get());
+        $count_probAC = count(DB::table('diagnosticopreventivo')->where("prob_de_academicos", "Problemas académicos")->get());
+        $count_probDI = count(DB::table('diagnosticopreventivo')->where("prob_de_disciplina", "Problemas de disciplina")->get());
+        $count_probAS = count(DB::table('diagnosticopreventivo')->where("prob_de_asistencia", "Problemas de asistencia")->get());
+
         session()->put('anno', User::find(auth()->id())->anno);
         $anno  = session()->get('anno') ;
 
@@ -114,6 +124,14 @@ class DiagnosticopreventivoController extends Controller
                 'count_creencia_religiosaYO',
                 'count_creencia_religiosaHER',
                 'count_creencia_religiosaPM',
+                'count_probPE',
+                'count_probPS',
+                'count_probEC',
+                'count_probSO',
+                'count_probFA',
+                'count_probAC',
+                'count_probDI',
+                'count_probAS',
             )
         );
     }
@@ -134,6 +152,7 @@ class DiagnosticopreventivoController extends Controller
         $tipo_medicamentos = ['Consumo de medicamentos por prescripción médica' => 'Consumo de medicamentos por prescripción médica', 'Consumo de medicamentos por automedicación' => 'Consumo de medicamentos por automedicación'];
         $grupo_social = ['Hippies' => 'Hippies', 'Rockeros' => 'Rockeros', 'Raperos' => 'Raperos', 'Góticos' => 'Góticos', 'Emos' => 'Emos', 'Punk' => 'Punk', 'Heavyes' => 'Heavyes', 'Darks' => 'Darks',];
         $creencia_religiosa = ['Ateos' => 'Ateos', 'Católicos' => 'Católicos', 'Cristianos' => 'Cristianos', 'Protestantes' => 'Protestantes', 'Santería' => 'Santería', 'Yoruba' => 'Yoruba', 'Hermandad' => 'Hermandad', 'Palo Monte' => 'Palo Monte'];
+        
 
         $anno  = session()->get('anno') ;
         $users = DB::select('SELECT e.user_id as id, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante
@@ -148,7 +167,16 @@ class DiagnosticopreventivoController extends Controller
 
         // $estudiantes= Estudiantes::all();
         $diagnosticopreventivo = Diagnosticopreventivo::all();
-        return view('Modulo_PerfildeUsuario.diagnosticopreventivo.create', compact('users', 'diagnosticopreventivo', 'adicciones_Alcohol', 'adicciones_Tabaco', 'adicciones_Café', 'adicciones_Tecnoadicciones', 'adicciones_Drogas', 'tipo_medicamentos', 'grupo_social', 'creencia_religiosa'));
+        return view('Modulo_PerfildeUsuario.diagnosticopreventivo.create', compact('users',
+         'diagnosticopreventivo',
+         'adicciones_Alcohol',
+         'adicciones_Tabaco',
+         'adicciones_Café',
+         'adicciones_Tecnoadicciones',
+         'adicciones_Drogas',
+         'tipo_medicamentos',
+         'grupo_social',
+         'creencia_religiosa',));
     }
 
     /**
