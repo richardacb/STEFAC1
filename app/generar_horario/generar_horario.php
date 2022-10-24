@@ -179,7 +179,7 @@ function devolver_locales($id_asig, $seccion, $tc, $conn)
     }
 
     if ($seccion == 2) {
-        if ($asig_nombre['name'] == 'EF') {
+        if ($asig_nombre['nombre'] == 'EF') {
             $sql = "SELECT *
             FROM disponibilidad
             WHERE turno IN ('1','2')

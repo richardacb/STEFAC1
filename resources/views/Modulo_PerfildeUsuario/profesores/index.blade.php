@@ -37,12 +37,10 @@
             <tbody>
                 @foreach ($profesores as $profesor)
                     <tr>
-                        <td>{{ $profesor->users->primer_nombre }}
-                            {{ $profesor->users->segundo_nombre }} {{ $profesor->users->primer_apellido }}
-                            {{ $profesor->users->segundo_apellido }}
+                        <td>{{ $profesor->nombre_profesor }}
                         </td>
-                        <td>{{ $profesor->users->anno }}</td>
-                        <td>{{ $profesor->grupos->name }}</td>
+                        <td>{{ $profesor->anno }}</td>
+                        <td>{{ $profesor->grupo }}</td>
 
                         <td width="120px">
                             @can('Modulo_PerfildeUsuario.profesores.edit')
@@ -51,7 +49,7 @@
                                         data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Profesor"></i></a>
                             @endcan
                             <a class="btn btn-success btn-sm float-right mr-2"
-                                href="{{ route('usuarios.show', $profesor->users->id) }}" data-bs-toggle="tooltip"
+                                href="{{ route('usuarios.show', $profesor->id) }}" data-bs-toggle="tooltip"
                                 data-bs-placement="right" title="Mostrar Datos del Profesor"><i
                                     class="fa fa-user"></i></a>
 

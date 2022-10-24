@@ -3,7 +3,7 @@
 @section('title', 'STE')
 
 @section('content_header')
-    <h1>Registrar usuarios</h1>
+    <h1>Insertar Grupo</h1>
 @stop
 
 @section('content')
