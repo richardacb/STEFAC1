@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Modulo_PerfildeUsuario\Grupos;
 use App\Models\User;
 use App\Imports\GruposImport;
+use App\Models\Modulo_Horario\Grupo;
 use Maatwebsite\Excel\Facades\Excel;
 
 class GruposController extends Controller
@@ -39,7 +40,8 @@ class GruposController extends Controller
     public function create()
     {
         $annosgrupos = session()->get('anno');
-        return view('Modulo_PerfildeUsuario.grupos.create', compact('annosgrupos'));
+        $grupos = Grupos::all()->where('anno', session()->get('anno'));
+        return view('Modulo_PerfildeUsuario.grupos.create', compact('annosgrupos','grupos'));
     }
 
     /**
@@ -59,11 +61,14 @@ class GruposController extends Controller
         //  ];
         //  $this->validate( $request,$rules, $messages);
 
-        $grupos = Grupos::create($request->all());
-
-        $anno = session()->get('anno');
-
-        return redirect()->route('grupos.index', compact('grupos'))->with('info', 'adicionar-grupo', 'anno');
+        $grupo = new Grupo;
+        $grupo->name = "IDF1" . $request->get('anno') . "0" . $request->get('name');
+        $grupo->anno = $request->get('anno');
+        //$grupos = Grupos::create($request->all());
+        //var_dump($grupo->name);
+        //$anno = session()->get('anno');
+        $grupo->save();
+        return redirect()->route('grupos.index')->with('info', 'adicionar-grupo', 'anno');
     }
 
     /**
@@ -85,8 +90,12 @@ class GruposController extends Controller
      */
     public function edit($id)
     {
+        $annosgrupos = session()->get('anno');
         $grupos = Grupos::findOrFail($id);
-        return view('Modulo_PerfildeUsuario.grupos.edit', compact('grupos'));
+        $numero =  substr($grupos->name, - 1);
+        $grupos->name = $numero;
+
+        return view('Modulo_PerfildeUsuario.grupos.edit', compact('grupos', 'annosgrupos'));
     }
 
     /**
@@ -100,18 +109,22 @@ class GruposController extends Controller
     {
         $grupos = Grupos::findOrFail($id);
 
-        $rules = [
-            'name' => "required|unique:grupos,name,$grupos->id",
-        ];
-        $messages = [
-            'name.required' => 'Campo Requerido',
-            'name.unique' => 'Campo Único',
-        ];
-        $this->validate($request, $rules, $messages);
+        // $rules = [
+        //     'name' => "required|unique:grupos,name,$grupos->id",
+        // ];
+        // $messages = [
+        //     'name.required' => 'Campo Requerido',
+        //     'name.unique' => 'Campo Único',
+        // ];
+        // $this->validate($request, $rules, $messages);
 
-        $grupos->update($request->all());
+        $grupos->name = "IDF1" . $request->get('anno') . "0" . $request->get('name');
+        $grupos->anno = $request->get('anno');
 
-        return redirect()->route('grupos.index', compact('grupos'))->with('info', 'modificar-grupo');
+        $grupos->save();
+        var_dump($grupos->name);
+
+       return redirect()->route('grupos.index')->with('info', 'modificar-grupo');
     }
 
     /**

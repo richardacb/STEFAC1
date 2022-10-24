@@ -46,17 +46,23 @@ class ProfesoresController extends Controller
     public function index()
     {
         session()->put('anno', User::find(auth()->id())->anno);
-
+        $anno = session()->get('anno');
         $users = DB::table('users')
             ->join('profesores', 'users.id', '=', 'profesores.user_id')
             ->select('users.*')
             ->get();
 
-        $profesores = Profesores::all();
+        $profesores = DB::select('SELECT users.id, users.anno as anno, p.name as grupo, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_profesor
+        FROM users  INNER JOIN  (SELECT p.user_id,  g.name  FROM profesores as p INNER JOIN
+        grupos as g ON p.grupos_id = g.id) as p ON users.id = p.user_id
+        WHERE users.anno = ' . $anno . '
+        ');
+
+        // $profesores = Profesores::all();
         $asignaturas = Asignaturas::all();
         $grupos = Grupos::all();
 
-        return view('Modulo_PerfildeUsuario.profesores.index', compact('users', 'profesores', 'grupos', 'asignaturas'));
+        return view('Modulo_PerfildeUsuario.profesores.index', compact('profesores','users','asignaturas','grupos'));
     }
 
     /**
@@ -136,15 +142,16 @@ class ProfesoresController extends Controller
      */
     public function edit($id)
     {
+
         $profesores = Profesores::findOrFail($id);
 
-        $anno  = session()->get('anno') ;
+        $anno  = session()->get('anno');
         //$grupos = Grupos::all()->where('anno', $anno);
         $grupos = Grupos::where('anno', $anno)->pluck('name', 'id')->toArray();
-       //$asignaturas = Asignaturas::all()->where('anno', $anno);
+        //$asignaturas = Asignaturas::all()->where('anno', $anno);
         $asignaturas = Asignaturas::where('anno', $anno)->pluck('nombre', 'id')->toArray();
 
-        return view('Modulo_PerfildeUsuario.profesores.edit', compact('profesores', 'grupos','asignaturas'));
+        return view('Modulo_PerfildeUsuario.profesores.edit', compact('profesores', 'grupos', 'asignaturas'));
     }
 
     /**

@@ -31,50 +31,31 @@
                         <th scope="col">Profesores</th>
                         <th scope="col">Asignaturas</th>
                         <th scope="col">Grupos</th>
-                        <th scope="col">Insertado</th>
+
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
 
-                    @foreach ($planificacion as $p)
+                    @foreach ($planificaciones as $p)
                         <tr>
                             <td scope="row">
-                                @foreach ($profesores as $prof)
-                                    @if ($p->profesores_id === $prof->id)
-                                        {{ $prof->primer_nombre }} {{ $prof->segundo_nombre }} {{ $prof->primer_apellido }}
-                                        {{ $prof->segundo_apellido }}
-                                    @endif
-                                @endforeach
-
+                                {{ $p->normbre_prof }}
                             </td>
                             <td>
-                                @foreach ($asignaturas as $a)
-                                    @if ($p->asignaturas_id === $a->id)
-                                        {{ $a->nombre }}
-                                    @endif
-                                @endforeach
-
+                                {{ $p->asignatura }}
                             </td>
                             <td>
-
-                                @foreach ($grupos as $g)
-                                    @if ($p->grupos_id === $g->id)
-                                        {{ $g->name }}
-                                    @endif
-                                @endforeach
-
+                                {{ $p->grupo }}
                             </td>
-                            <td>
-                                {{ $p->created_at }}
-                            </td>
+
                             <td width="150px">
-                                <form action="{{ route('planificacion.destroy', $p) }}" method="POST"
+                                <form action="{{ route('planificacion.destroy', $p->id) }}" method="POST"
                                     class="eliminar-planificacion">
                                     @csrf
                                     @method('delete')
                                     @can('Modulo_Horario.planificacion.edit')
-                                        <a class="btn btn-primary btn-sm" href="{{ route('planificacion.edit', $p) }}"
+                                        <a class="btn btn-primary btn-sm" href="{{ route('planificacion.edit', $p->id) }}"
                                             data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Carga Docente"><i
                                                 class="fa fa-edit"></i></a>
                                     @endcan

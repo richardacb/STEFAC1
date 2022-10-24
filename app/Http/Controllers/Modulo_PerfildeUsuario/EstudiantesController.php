@@ -41,50 +41,13 @@ class EstudiantesController extends Controller
             ->select('users.*')
             ->get();
         $estudiantes = Estudiantes::all();
-
+       // var_dump($users);
         $grupos = Grupos::all();
 
         return view('Modulo_PerfildeUsuario.estudiantes.index', compact('estudiantes', 'users', 'grupos'));
     }
 
-    // public function listar_estudiantes()
-    // {
-    //     $estudiantes=DB::table('estudiantes')
-    //     ->join('grupos','grupos.id','=','estudiantes.grupos_id')
-    //     ->join('users','users.id','=','estudiantes.user_id')
-    //     ->select('estudiantes.*','grupos.name as grupos','users.primer_nombre as nombreuno','user.segundo_nombre as nombredos','user.primer_apellido as apellidouno','user.segundo_apellido as apellidodos')
-    //     ->get();
-
-    //     return datatables()->of($estudiantes)
-    //     ->addColumn('action', function ($estudiantes) {
-    //     $acciones ="";
-    //     if($estudiantes->is_enabled == 1){
-    //        $acciones = '<a class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Tooltip on top" href="estudiantes/estado/'.$estudiantes->id.'/0 "><i class="fa fa-user-times"></i></a>';
-    //     }else if($estudiantes->is_enabled == 0){
-    //        $acciones = '<a class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Tooltip on top" href="estudiantes/estado/'.$estudiantes->id.'/1 "><i class="fa fa-user-check"></i></a>';
-    //     }
-
-    //        return $acciones. ' <a class="btn btn-warning  btn-sm" data-toggle="tooltip" data-placement="top" title="Tooltip on top" href="estudiantes/'.$estudiantes->id.'"><i class="fa fa-eye"></i></a>';
-    //     })
-    //     ->editColumn('is_enabled', function($estudiantes){
-
-    //     return $estudiantes->is_enabled == 1?"Activo":"Inactivo";
-    //     })
-    //     ->rawColumns(['action'])
-    //     ->toJson();
-
-    // }
-
-
-    // public function cambiar_estado($id, $is_enabled){
-
-    //     $estudiantes = Estudiantes::findOrFail($id);
-
-    //     $estudiantes->update(["is_enabled"=>$is_enabled]);
-
-    //     return redirect()->route('estudiantes.index')->with('info', 'cambiar-estado-estudiantes');
-
-    // }
+   
     /**
      * Show the form for creating a new resource.
      *

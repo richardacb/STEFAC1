@@ -8,9 +8,9 @@
 
 @section('content')
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/Perfildeusuarios.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/Perfildeusuarios.css') }}">
 @endsection
-<form action="{{ url('admin/profesores/'.$profesores->id) }}" method="post" enctype="multipart/form-data">
+<form action="{{ url('admin/profesores/' . $profesores->id) }}" method="post" enctype="multipart/form-data">
     <div class="card">
         <div class="card-body">
             <p class="h5">Nombre del Profesor:</p>
@@ -27,7 +27,7 @@
     </div>
 </form>
 @stop
-    @section('js')
-    <script src="{{ asset('js/jquery-3.5.1.js') }}"></script>
-    <script src="{{ asset('js/profesores.js') }}" defer></script>
-    @endsection
+@section('js')
+<script src="{{ asset('js/jquery-3.5.1.js') }}"></script>
+<script src="{{ asset('js/profesores.js') }}" defer></script>
+@endsection
