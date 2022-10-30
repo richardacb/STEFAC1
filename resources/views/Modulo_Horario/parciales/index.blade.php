@@ -1,16 +1,16 @@
 @extends('adminlte::page')
 
-@section('title', 'Asignaturas')
+@section('title', 'Pruebas Parciales')
 
 @section('content_header')
 
     <div class="container-fluid">
-        <h1>Listado de Asignaturas</h1>
+        <h1>Listado de Pruebas Parciales</h1>
         <div class="row">
             <div class="col-xl-12">
                 @can('Modulo_Horario.asignaturas.create')
-                    <a class="btn btn-primary btn-sm float-right" href="{{ route('asignaturas.create') }}">Insertar
-                        Asignatura</a>
+                    <a class="btn btn-primary btn-sm float-right" href="{{ route('parciales.create') }}">Insertar Prueba
+                        Parcial</a>
                 @endcan
             </div>
         </div>
@@ -36,47 +36,42 @@
                         <table class="table table-striped shadow-lg pt-4" id="asig">
                             <thead class="bg-primary text-white">
                                 <tr>
-                                    <th>Nombre</th>
+                                    <th>Asignatura</th>
                                     <th>Año Docente</th>
-                                    <th>Sesión de Clases</th>
                                     <th>Semestre</th>
-                                    <th>Estado</th>
+                                    <th>Semana</th>
+                                    <th>Día</th>
+                                    <th>Turno</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($asignaturas as $asignatura)
-                                    <tr>
-                                        <td>{{ $asignatura->nombre }}</td>
-                                        <td>{{ $asignatura->anno }}</td>
-                                        @foreach ($secciones as $s)
-                                            @if ($asignatura->secciones_id === $s->id)
-                                                <td>{{ $s->nombre }}</td>
-                                            @endif
-                                        @endforeach
-                                        <td>{{ $asignatura->semestre }}</td>
-                                        <td>{{ $asignatura->estado }}</td>
-                                        <td width="150px">
-                                            <form action="{{ route('asignaturas.destroy', $asignatura) }}" method="POST"
-                                                class="eliminar-asignatura">
-                                                @csrf
-                                                @method('delete')
-                                                @can('Modulo_Horario.asignaturas.edit')
-                                                    <a class="btn btn-primary btn-sm"
-                                                        href="{{ route('asignaturas.edit', $asignatura->id) }}"
-                                                        data-bs-toggle="tooltip" data-bs-placement="right"
-                                                        title="Editar Asignatura"><i class="fa fa-edit"></i></a>
-                                                @endcan
-                                                @can('Modulo_Horario.asignaturas.destroy')
-                                                    <button class="btn btn-danger btn-sm" type="submit"
-                                                        data-bs-toggle="tooltip" data-bs-placement="right"
-                                                        title="Eliminar Asignatura"><i class="fa fa-trash-alt"></i></button>
-                                                @endcan
-                                            </form>
-                                        </td>
-                                    </tr>
+                                @foreach ($parciales as $p)
+                                <tr>
+                                    <td scope="row">{{ $p->nombre }}</td>
+                                    <td>{{ $p->anno }}</td>
+                                    <td>{{ $p->semestre }}</td>
+                                    <td>{{ $p->semana }}</td>
+                                    <td>{{ $p->dia }}</td>
+                                    <td>{{ $p->turno }}</td>
+                                    <td width="150px">
+                                        <form action="{{ route('parciales.destroy', $p->id ) }}" method="POST" class="eliminar-parciales">
+                                            @csrf
+                                            @method('delete')
+                                            {{--  @can('Modulo_Horario.asignaturas.edit')  --}}
+                                            <a class="btn btn-primary btn-sm" href="{{ route('parciales.edit', $p->id) }}" data-bs-toggle="tooltip"
+                                                data-bs-placement="right" title="Editar Prueba Parcial"><i
+                                                    class="fa fa-edit"></i></a>
+                                            {{--  @endcan
+                                                @can('Modulo_Horario.asignaturas.destroy')  --}}
+                                            <button class="btn btn-danger btn-sm" type="submit" data-bs-toggle="tooltip"
+                                                data-bs-placement="right" title="Eliminar Prueba Parcial"><i
+                                                    class="fa fa-trash-alt"></i></button>
+                                            {{--  @endcan  --}}
+                                        </form>
+                                    </td>
+                                </tr>
                                 @endforeach
-
                             </tbody>
                         </table>
                     </div>
@@ -118,44 +113,54 @@
     </script>
 
     <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
-    @if (session('info') == 'eliminar-asignatura')
+    @if (session('info') == 'eliminar-parciales')
         <script>
             Swal.fire(
                 '¡Eliminado!',
-                'Asigantura Eliminada.',
+                'Prueba Parcial Eliminada.',
                 'success'
             )
         </script>
     @endif
-    @if (session('info') == 'adicionar-asignatura')
+    @if (session('info') == 'adicionar-parciales')
         <script>
             Swal.fire(
                 '¡Insertado!',
-                'Asignatura Registrada.',
+                'Prueba Parcial Registrada.',
                 'success'
             )
         </script>
     @endif
-    @if (session('info') == 'modificar-asignatura')
+    @if (session('info') == 'mostrar-generado')
+    <script>
+        Swal.fire(
+            'Error!',
+            'No se puede planificar Prueba Parcial, el Horario ya está generado, por favor primero inserte las pruebas parciales y luego genere el Horario de la semana correspondiente',
+            'warning'
+        )
+    </script>
+@endif
+
+    @if (session('info') == 'modificar-parciales')
         <script>
             Swal.fire(
                 '¡Modificado!',
-                'Asignatura Editada.',
+                'Prueba Parcial Editada.',
                 'success'
             )
         </script>
     @endif
-    @if (session('info') == 'importar-asignatura')
+    @if (session('info') == 'importar-parciales')
         <script>
             Swal.fire(
                 'Insertada!',
-                'Asignatura Registrada.',
+                'Prueba Parcial Registrada.',
                 'success'
             )
         </script>
     @endif
     <script>
-        $('.eliminar-asignatura').submit(function(e) {
+        $('.eliminar-parciales').submit(function(e) {
             e.preventDefault();
             Swal.fire({
                 title: '¿Estás seguro?',

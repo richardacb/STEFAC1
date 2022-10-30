@@ -140,7 +140,7 @@
     @if (session('info') == 'no_puede_desmatricular')
         <script>
             Swal.fire(
-                'Detente!',
+                'Usted!',
                 'No Puedes Des-Matricular en esta Optativa',
                 'success'
             )

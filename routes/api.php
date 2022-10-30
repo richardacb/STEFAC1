@@ -28,4 +28,6 @@ Route::get('/estudiantes/{id}','App\Http\Controllers\Modulo_PerfildeUsuario\Estu
 
 Route::get('/profesores/{id}','App\Http\Controllers\Modulo_PerfildeUsuario\ProfesoresController@byGrupos');
 
+//Route::post('/create_pp','App/generar_horario/update_horario');
+
 // Route::post('/afectaciones', 'App\Http\Controllers\Modulo_Horario\AfectacionesController@insertar');

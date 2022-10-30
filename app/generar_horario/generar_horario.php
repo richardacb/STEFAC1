@@ -23,6 +23,8 @@ function generar($seccion, $anno, $semana, $conn)
     FROM balance_de_carga INNER JOIN asignaturas ON balance_de_carga.asignaturas_id = asignaturas.id
     WHERE balance_de_carga.semana = '$semana' AND asignaturas.anno = '$anno' ORDER BY balance_de_carga.frecuencia DESC";
 
+
+
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -30,23 +32,26 @@ function generar($seccion, $anno, $semana, $conn)
             array_push($balance_de_carga, array("id" => intval($row['id']), "id_asig" => intval($row['asignaturas_id']), "tipodeclase" => $row['tipo_clase'], "semana" => intval($row['semana'])));
         }
     }
-    //$c = 0;
-    //recorriendo balance de carga correspondiente al año y semana de clase
+    //var_dump($balance_de_carga);
+
+    //     //recorriendo balance de carga correspondiente al año y semana de clase
     foreach ($balance_de_carga as $bc) {
         $tipodeclase = $bc['tipodeclase'];
         //separando cada tipo de clase
         $tipo_de_clase = explode(",", "$tipodeclase");
+        //var_dump($tipo_de_clase);
         //recorriendo cada tipo de clase
         foreach ($tipo_de_clase as $tc) {
             if (check_bc_isGenenated($bc['id_asig'], $tc, $anno, $semana, $conn)) {
                 //filtrar planificaciones correspondientes a la asignatura y el tipo de clase
+                //var_dump($tc);
                 $planificaciones = devolver_planif($bc['id_asig'], $tc, $conn);
-
-                //recorriendo planificaciones filtradas por el año y asignatura correspondiente
+                //var_dump($planificaciones);
+                // recorriendo planificaciones filtradas por el año y asignatura correspondiente
                 foreach ($planificaciones as $p) {
                     //filtrar locales diponibles de acuerdo al tipo de clase
                     $disponibilidad = devolver_locales($bc['id_asig'], $seccion, $tc, $conn);
-
+                    //var_dump($disponibilidad);
                     //recorriendo locales disponibles para asignar un local disponible a cada planificación
                     foreach ($disponibilidad as $ld) {
 
@@ -230,13 +235,19 @@ function ocupada($id_planif, $id_disp, $id_asig, $tc, $anno, $semana, $conn)
         if ($tc == 'LAB') {
             $tipo_de_local = 'Laboratorio';
         }
+        if ($tc == 'S') {
+            $tipo_de_local = 'Aula';
+        }
+        if ($tc == 'T') {
+            $tipo_de_local = 'Aula';
+        }
     }
 
 
     $sql = "SELECT disponibilidad.id
     FROM disponibilidad
     WHERE disponibilidad.id NOT IN (SELECT asignaciones.disponibilidad_id
-                                        FROM asignaciones WHERE asignaciones.anno = '$anno' AND asignaciones.semana = '$semana')
+                                        FROM asignaciones WHERE asignaciones.semana = '$semana')
                                         AND disponibilidad.locales_id IN (SELECT locales.id
                                                                             FROM locales
                                                                             WHERE locales.tipo_de_locales_id = (SELECT id FROM tipo_de_locales WHERE tipo = '$tipo_de_local'))";
@@ -275,7 +286,7 @@ function ocupada($id_planif, $id_disp, $id_asig, $tc, $anno, $semana, $conn)
                                   FROM planificacions
                                   WHERE planificacions.asignaturas_id = '$id_mat'
                                   AND planificacions.profesores_id = '$id_prof')
-                                  AND asignaciones.anno = '$anno' AND asignaciones.semana = '$semana'
+                                  AND asignaciones.semana = '$semana'
                                   GROUP BY asignaciones.disponibilidad_id
                                   ORDER BY COUNT(asignaciones.disponibilidad_id)
                                   LIMIT 1";
@@ -301,7 +312,7 @@ function comprobar($id_asig, $id_grupo, $id_prof, $dia, $turno, $anno, $semana, 
                                                         FROM planificacions
                                                         WHERE planificacions.asignaturas_id = '$id_asig'
                                                         AND planificacions.grupos_id = '$id_grupo')
-                                                        AND asignaciones.anno = '$anno' AND asignaciones.semana = '$semana')
+                                                         AND asignaciones.semana = '$semana')
                                                         ORDER BY disponibilidad.dia DESC
                                                         LIMIT 1
 ";
@@ -315,7 +326,7 @@ function comprobar($id_asig, $id_grupo, $id_prof, $dia, $turno, $anno, $semana, 
                                                             WHERE planificacion_id IN (SELECT planificacions.id
                                                                                 FROM planificacions
                                                                                 WHERE planificacions.grupos_id = '$id_grupo')
-                                                                                AND asignaciones.anno = '$anno' AND asignaciones.semana = '$semana')
+                                                                                 AND asignaciones.semana = '$semana')
 ";
     //comprobar que un profesor no este el mismo dia y el mismo turno en más de 1 local a la vez
     $sql2 = "SELECT disponibilidad.id
@@ -327,7 +338,7 @@ function comprobar($id_asig, $id_grupo, $id_prof, $dia, $turno, $anno, $semana, 
                                                             WHERE planificacion_id IN (SELECT planificacions.id
                                                                                 FROM planificacions
                                                                                 WHERE planificacions.profesores_id = '$id_prof')
-                                                                                AND asignaciones.anno = '$anno' AND asignaciones.semana = '$semana')
+                                                                                 AND asignaciones.semana = '$semana')
 ";
     //comprobar que un profesor no este afcetado ese turno de ese dia de esa semana de ese anno
 

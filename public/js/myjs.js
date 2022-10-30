@@ -90,7 +90,7 @@ $(function () {
 });
 function filtrarProf() {
     let asignaturas_id = $(this).val();
-    console.log(asignaturas_id);
+    // console.log(asignaturas_id);
     //Ajax
     $.get(`/api/asignaturas/${asignaturas_id}`, function (data) {
         let html_select =
@@ -121,6 +121,9 @@ function onSelectHorario(e) {
     let anno = document.getElementById("anno").value;
     let semana = document.getElementById("semana").value;
     let grupo = document.getElementById("grupo").value;
+    console.log(anno);
+    console.log(semana);
+    console.log(grupo);
     //Ajax
     $.post(
         `/api/horario/`,
@@ -173,10 +176,10 @@ function onSelectHorario(e) {
                     data[2][2] !== null ? data[2][2] : ""
                 }</td>
                 <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[4][2] !== null ? data[4][2] : ""
+                    data[3][2] !== null ? data[3][2] : ""
                 }</td>
                 <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[3][2] !== null ? data[3][2] : ""
+                    data[4][2] !== null ? data[4][2] : ""
                 }</td>
                 <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
                     data[5][2] !== null ? data[5][2] : ""
@@ -297,4 +300,38 @@ function onSelectHorario(e) {
 //         }
 //         //console.log(data);
 //     );
+// }
+
+//dats del crear parciales
+// $(function () {
+//     $("#create_pp").on("submit", onSelectParcial);
+// });
+// function onSelectParcial(e) {
+//     e.preventDefault();
+//     let anno = document.getElementById("anno").value;
+//     let semestre = document.getElementById("semestre").value;
+//     let semana = document.getElementById("semana").value;
+//     let dia = document.getElementById("dia").value;
+//     let turno = document.getElementById("turno").value;
+//     let asignaturas_id = document.getElementById("asignaturas_id").value;
+//     let action = document.getElementById("create_pp").attributes[0].value;
+
+//     console.log(anno);
+//     console.log(semestre);
+//     console.log(semana);
+//     console.log(dia);
+//     console.log(turno);
+//     console.log(asignaturas_id);
+//     console.log(action);
+
+
+//     $.post(`app/generar_horario/update_horario.php`, function (data) {
+//         anno,
+//         semestre,
+//         semana,
+//         dia,
+//         turno,
+//         asignaturas_id,
+//         action
+//     });
 // }

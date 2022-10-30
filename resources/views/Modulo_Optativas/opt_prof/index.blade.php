@@ -1,8 +1,9 @@
 @extends('adminlte::page')
 
 @section('content_header')
-    <div class="container-fluid">
-        <h1 class="text-center">{{ $opt->nombre }}</h1>
+    <div class="text-center py-5">
+        <span>Optativa: {{ $opt->nombre }}</span> <br>
+        <span>Matrícula: {{ $cant_est }}/{{ $opt->capacidad }}</span> <br>
     </div>
 @stop
 
