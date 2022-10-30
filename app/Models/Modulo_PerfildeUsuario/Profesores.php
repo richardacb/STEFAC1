@@ -14,7 +14,7 @@ class Profesores extends Model
     protected $fillable = [
         'user_id',
         'grupos_id',
-        'anno',
+        'periodo_lectivo',
         'tipo_de_clases',
         'asignaturas_id',
     ];

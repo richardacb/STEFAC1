@@ -29,7 +29,31 @@
                             <strong class="error-message text-danger"> {{ $message }} </strong>
                         @enderror
                     </div>
-
+                    
+                        <div class="form-group">
+                            {!! Form::label('name', 'Perído lectivo:') !!}
+                            {!! Form::select(
+                                'periodo_lectivo',
+                                [
+                                    '1' => 'Primer Semestre',
+                                    '2' => 'Segundo Semestre',
+                                    '3' => 'Tercer Semestre',
+                                    '4' => 'Cuarto Semestre',
+                                    '5' => 'Quinto Semestre',
+                                    '6' => 'Sexto Semestre',
+                                    '7' => 'Séptimo Semestre',
+                                    '8' => 'Octavo Semestre',
+                                    '9' => 'Noveno Semestre',
+                                    '10' => 'Decimo Semestre',
+                                ],
+                                null,
+                                ['class' => 'form-control', 'id' => 'periodo_lectivo', 'placeholder' => '--Seleccione--'],
+                            ) !!}
+                            @error('periodo_lectivo')
+                                <strong class="error-message text-danger"> {{ $message }} </strong>
+                            @enderror
+                        </div>
+                  
                     <div class="form-group">
                         {!! Form::label('name', 'Asignaturas:') !!}
                         {!! Form::select('asignaturas_id', $asignaturas, null, [
@@ -41,21 +65,6 @@
                             <strong class="error-message text-danger"> {{ $message }} </strong>
                         @enderror
                     </div>
-                    {{--  <div class="form-group">
-                        <label for="" class="form-label">Asignaturas</label>
-                        <select name="asignaturas_id" id="asignaturas_id" class="form-control mr-sm-2 form-select">
-                            <option value="0" selected="selected">--Seleccione la Asignatura--</option>
-                            @foreach ($asignaturas as $a)
-                                <option value="{{ $a->id }}">
-                                    {{ $a->nombre }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('asignaturas_id')
-                            <strong class="error-message text-danger"> {{ 'Campos Requeridos' }} </strong>
-                        @enderror
-                    </div>  --}}
-
                 </div>
             </div>
         </fieldset>

@@ -12,7 +12,7 @@
             {!! Form::model($grupos, ['route' => ['grupos.update', $grupos], 'method' => 'put']) !!}
             <div class="form-group">
                 <label for="" class="form-label">Numero</label>
-                 <input type="number" id="name" name="name" class="form-control" value="{{ $grupos->name }}"->
+                 <input type="number" id="name" name="name" class="form-control" value="{{ $grupos->name }}">
                 @error('name')
                     <strong class="error-message text-danger"> {{ $message }} </strong>
                 @enderror

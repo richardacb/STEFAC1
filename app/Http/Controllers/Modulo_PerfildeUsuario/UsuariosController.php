@@ -12,6 +12,9 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Imports\UsuariosImport;
+use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 
 class UsuariosController extends Controller
 {
@@ -117,7 +120,7 @@ class UsuariosController extends Controller
 
         $users->ci = $request->get('ci');
         $users->primer_nombre = $request->get('primer_nombre');
-        $users->segundo_nombre = $request->get('segundo_nombre');
+        $users->segundo_nombre = $request->get('segundo_nombre') == NULL ? " ": $request->get('segundo_nombre');
         $users->primer_apellido = $request->get('primer_apellido');
         $users->segundo_apellido = $request->get('segundo_apellido');
         $users->tipo_de_usuario = $request->get('tipo_de_usuario');
@@ -153,4 +156,33 @@ class UsuariosController extends Controller
         $cant_opt = $cant_opt_finalizadas->cant_opt;
         return view('Modulo_PerfildeUsuario.usuarios.show', compact('users','cant_opt'));
     }
+
+       public function importar_usuarios(Request $request)
+    {
+
+        $file = $request->file('import_file');
+
+        Excel::import(new UsuariosImport, $file);
+
+        return redirect()->route('usuarios.index')->with('info', 'importar-usuarios');
+    }
+
+    // public function createPDF(){
+    //     //Recuperar todos los productos de la db
+    //     $users = User::all();
+    //     view()->share('users', $users);
+    //     $pdf = PDF::loadView('Modulo_PerfildeUsuario.usuarios.index', $users);
+    //     return $pdf->download('archivo-pdf.pdf');
+    // }
+//     public function createPDF()
+// {
+//     $data = [
+//         'titulo' => 'Styde.net'
+//     ];
+
+//     $users = User::all();
+//     $pdf = \PDF::loadView('Modulo_PerfildeUsuario.usuarios.index', compact('users'));
+//     return $pdf->download('ejemplo.pdf');
+
+// }
 }

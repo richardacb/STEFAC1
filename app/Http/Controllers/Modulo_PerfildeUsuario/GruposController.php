@@ -141,13 +141,5 @@ class GruposController extends Controller
 
         return redirect()->route('grupos.index')->with('info', 'eliminar-grupo');
     }
-    // public function importar_grupos(Request $request)
-    // {
-
-    //     $file = $request->file('import_file');
-
-    //     Excel::import(new GruposImport, $file);
-
-    //     return redirect()->route('grupos.index')->with('info', 'importar-grupo');
-    // }
+   
 }

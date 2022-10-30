@@ -316,7 +316,7 @@
                                 @endif
                             </div>
                             <div class="row">
-                                <div class="col-lg-3 col-md-4 label">Tpo de curso:</div>
+                                <div class="col-lg-3 col-md-4 label">Tipo de curso:</div>
                                 @if (isset($users->estudiantes->periodo_lectivo))
                                     <div class="col-lg-9 col-md-8">{{ $users->estudiantes->tipo_curso }}</div>
                                 @else

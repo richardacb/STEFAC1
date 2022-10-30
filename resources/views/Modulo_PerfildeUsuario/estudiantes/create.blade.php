@@ -20,7 +20,7 @@
                     <option value="0" selected="selected">--Seleccione--</option>
                     @foreach ($users as $user)
                         <option value="{{ $user->id }}">
-                            {{ $user->nombre_estudiante }}
+                            {{ $user->primer_nombre }} {{ $user->segundo_nombre }} {{ $user->primer_apellido }} {{ $user->segundo_apellido }}
                         </option>
                     @endforeach
                 </select>

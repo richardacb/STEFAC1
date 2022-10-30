@@ -9,15 +9,16 @@ use App\Models\Modulo_PerfildeUsuario\Grupos;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use App\Exports\EstudiantesExport;
 
 class EstudiantesController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('can:Modulo_PerfildeUsuario.estudiantes.index')->only('index');
-        $this->middleware('can:Modulo_PerfildeUsuario.estudiantes.create')->only('create', 'store');
-        $this->middleware('can:Modulo_PerfildeUsuario.estudiantes.edit')->only('edit', 'update');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('can:Modulo_PerfildeUsuario.estudiantes.index')->only('index');
+    //     $this->middleware('can:Modulo_PerfildeUsuario.estudiantes.create')->only('create', 'store');
+    //     $this->middleware('can:Modulo_PerfildeUsuario.estudiantes.edit')->only('edit', 'update');
+    // }
     /**
      * Display a listing of the resource.
      *
@@ -35,14 +36,19 @@ class EstudiantesController extends Controller
     {
 
         session()->put('anno', User::find(auth()->id())->anno);
+        $anno  = session()->get('anno') ;
 
         $users = DB::table('users')
             ->join('estudiantes', 'users.id', '=', 'estudiantes.user_id')
-            ->select('users.*')
+            ->select('users.*','estudiantes.*')
             ->get();
-        $estudiantes = Estudiantes::all();
-       // var_dump($users);
-        $grupos = Grupos::all();
+            $estudiantes = DB::select('SELECT users.id, users.anno as anno, e.e_id, e.name as grupo,CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante
+            FROM users  INNER JOIN  (SELECT e.user_id, e.id as e_id, g.name  FROM estudiantes as e INNER JOIN
+            grupos as g ON e.grupos_id = g.id) as e ON users.id = e.user_id
+            WHERE users.anno = ' . $anno . '
+            ');
+           // $estudiantes = Estudiantes::all();
+           $grupos = Grupos::all();
 
         return view('Modulo_PerfildeUsuario.estudiantes.index', compact('estudiantes', 'users', 'grupos'));
     }
@@ -57,7 +63,6 @@ class EstudiantesController extends Controller
     {
 
         $anno  = session()->get('anno') ;
-        //$grupos = Grupos::all()->where('anno', $anno);
         $grupos = Grupos::where('anno', $anno)->pluck('name', 'id')->toArray();
         $tipo_estudiante = [
             'Becado Nacional' => 'Becado Nacional',
@@ -65,7 +70,7 @@ class EstudiantesController extends Controller
             'Becado Extranjero Autofinanciado' => 'Becado Extranjero Autofinanciado'
         ];
 
-        $users = DB::select('SELECT users.id, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante
+        $users = DB::select('SELECT users.id, users.primer_nombre,users.segundo_nombre,users.primer_apellido,users.segundo_apellido
         FROM users WHERE users.id NOT IN (SELECT users.id FROM users
         INNER JOIN estudiantes ON users.id = estudiantes.user_id) AND users.tipo_de_usuario = "Estudiante" AND users.anno = ' . $anno . '
         ');
@@ -205,35 +210,17 @@ class EstudiantesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $estudiantes = Estudiantes::findOrFail($id);
 
-        //$est = Estudiantes::findOrFail($id);
+        $estudiantes->delete();
 
-        // $est->delete();
+        return redirect()->route('estudiantes.index')->with('info', 'eliminar-datos-estudiantes');
     }
-    // public function importar_estudiantes(Request $request)
-    // {
-
-    //     $file = $request->file('import_file');
-
-    //     Excel::import(new EstudiantesImport, $file);
-
-    //     return redirect()->route('estudiantes.index')->with('info', 'importar-estudiante');
-    // }
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    // public function show($id)
-    // {
-    //     $users = User::all();
-
-    //     $estudiantes = Estudiantes::findOrFail($id);
-
-
-    //     return view('Modulo_PerfildeUsuario.usuarios.show', compact('users','estudiantes'));
-    // }
+    
+    public function exportExcelEstudiantes()
+    {
+        return Excel::download(new EstudiantesExport, 'Datos de estudiantes.xlsx');
+    }
+  
 
 }

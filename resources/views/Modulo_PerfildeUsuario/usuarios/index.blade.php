@@ -15,7 +15,14 @@
         {{--  @can('Modulo_PerfildeUsuario.usuarios.create')  --}}
         <a href="{{ route('usuarios.create') }}" class="btn btn-primary ">Registrar Usuario</a>
         {{--  @endcan  --}}
+         <button type="button" class="btn btn-danger float-right" data-toggle="modal"
+                data-target=".bd-example-modal-lg">Importar datos de profesores</button>
+         {{-- <a href="{{ route('usuarios.pdf') }}" class="btn btn-primary ">Convertir a PDF</a> --}}
+          
     </div>
+     
+    
+    
     <div class="card-body">
         <table id="usuarios_id" class="table table-striped shadow-lg w-100">
             <thead class="bg-primary text-white">
@@ -56,6 +63,32 @@
         </table>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Importar datos de usuarios</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('usuarios.import') }}" method="POST"
+                     enctype="multipart/form-data">
+                    @csrf
+                    <input type="file" name="import_file" />
+                    <div class="float-right">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Importar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Fin Modal -->
 @stop
 
 @section('js')
@@ -67,19 +100,38 @@
     $(document).ready(function() {
         $('#usuarios_id').DataTable({
             "language": {
-                "search": "Buscar",
-                "lengthMenu": "Mostrar _MENU_ Registros por Página",
-                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Entradas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
                 "paginate": {
-                    "previous": "Anterior",
-                    "next": "Siguiente",
                     "first": "Primero",
-                    "last": "Último",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
                 }
             }
         });
     });
 </script>
+<script src="{{ asset('js/sweetalert2@11.js') }}"></script>
+@if (session('info') == 'importar-usuarios')
+    <script>
+        Swal.fire(
+            '¡Importado!',
+            'Los Usuarios se importaron con exito.',
+            'success'
+        )
+    </script>
+@endif
 <script src="{{ asset('js/popper.min.js') }}"></script>
 <script>
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))

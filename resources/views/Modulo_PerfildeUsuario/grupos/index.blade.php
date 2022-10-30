@@ -17,11 +17,6 @@
             <a href="{{ route('grupos.create') }}" class="btn btn-primary ">Insertar grupo</a>
         @endcan
 
-        {{-- @can('Import.GruposImport')
-            <button type="button" class="btn btn-danger float-right" data-toggle="modal"
-                data-target=".bd-example-modal-lg">Importar grupos</button>
-        @endcan --}}
-
     </div>
     <div class="card-body">
         <table id="grupos_id" class="table table-striped shadow-lg w-100">
@@ -61,31 +56,6 @@
         </table>
     </div>
 </div>
-{{-- <!-- Modal -->
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Importar Grupos</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('grupos.import') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <input type="file" name="import_file" />
-                    <div class="float-right">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Importar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!--Fin Modal --> --}}
 @stop
 
 @section('js')

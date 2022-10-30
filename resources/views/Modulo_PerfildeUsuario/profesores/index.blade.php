@@ -17,10 +17,6 @@
             <a href="{{ route('profesores.create') }}" class="btn btn-primary ">Insertar profesor</a>
         @endcan
 
-        {{-- @can('Import.ProfesoresImport')
-    <button type="button" class="btn btn-danger float-right" data-toggle="modal"
-                data-target=".bd-example-modal-lg">Importar datos de profesores</button>
-@endcan --}}
 
     </div>
     <div class="card-body">
@@ -37,22 +33,30 @@
             <tbody>
                 @foreach ($profesores as $profesor)
                     <tr>
-                        <td>{{ $profesor->nombre_profesor }}
-                        </td>
+                        <td> {{ $profesor->nombre_profesor }} </td>
                         <td>{{ $profesor->anno }}</td>
                         <td>{{ $profesor->grupo }}</td>
 
-                        <td width="120px">
-                            @can('Modulo_PerfildeUsuario.profesores.edit')
-                                <a class="btn btn-primary btn-sm float-right"
-                                    href="{{ route('profesores.edit', $profesor->id) }}"><i class="fa fa-edit"
-                                        data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Profesor"></i></a>
-                            @endcan
-                            <a class="btn btn-success btn-sm float-right mr-2"
-                                href="{{ route('usuarios.show', $profesor->id) }}" data-bs-toggle="tooltip"
-                                data-bs-placement="right" title="Mostrar Datos del Profesor"><i
-                                    class="fa fa-user"></i></a>
+                        <td width="140px">
+                            <form action="{{ route('profesores.destroy', $profesor->p_id) }}" method="POST"
+                                class="eliminar_datos_profesores">
+                                @csrf
+                                @method('delete')
+                                <button class="btn btn-danger float-right btn-sm mr-2" type="submit"
+                                    ><i class="fa fa-trash-alt" data-bs-toggle="tooltip" data-bs-placement="right"
+                                    title="Eliminar datos de profesor"></i></button>
 
+                                 {{-- @can('Modulo_PerfildeUsuario.profesores.edit') --}}
+                                    <a class="btn btn-primary btn-sm float-right mr-2"
+                                        href="{{ route('profesores.edit', $profesor->p_id) }}"><i class="fa fa-edit"
+                                            data-bs-toggle="tooltip" data-bs-placement="right"
+                                            title="Editar Profesor"></i></a>
+                                 {{-- @endcan --}}
+                                <a class="btn btn-success btn-sm float-right mx-2"
+                                    href="{{ route('usuarios.show', $profesor->id) }}" ><i
+                                        class="fa fa-user" data-bs-toggle="tooltip"
+                                        data-bs-placement="right" title="Mostrar Datos del Profesor"></i></a>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
@@ -60,32 +64,7 @@
         </table>
     </div>
 </div>
-{{-- <!-- Modal -->
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Importar datos de profesores</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('profesores.import') }}" method="POST"
-                     enctype="multipart/form-data">
-                    @csrf
-                    <input type="file" name="import_file" />
-                    <div class="float-right">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Importar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!--Fin Modal --> --}}
+
 @stop
 
 @section('js')
@@ -139,15 +118,34 @@
         )
     </script>
 @endif
-@if (session('info') == 'importar-profesor')
+@if (session('info') == 'eliminar-datos-profesores')
     <script>
         Swal.fire(
-            '¡Importado!',
-            'Los profesores se importaron con exito.',
+            '¡Eliminado!',
+            'Los datos del profesor se eliminaron con exito.',
             'success'
         )
     </script>
 @endif
+<script>
+    $('.eliminar_datos_profesores').submit(function(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Los datos del profesor se eliminaran definitivamente",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, eliminar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.submit();
+            }
+        })
+    });
+</script>
 <script src="{{ asset('js/popper.min.js') }}"></script>
 <script>
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))

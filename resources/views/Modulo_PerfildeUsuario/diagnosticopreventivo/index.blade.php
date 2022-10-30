@@ -65,16 +65,24 @@
                     <tr>
                         <td>{{ $dp->nombre_estudiante }}</td>
                         <td>{{ $dp->grupo }}</td>
-                        <td>{{ $dp->id }}</td>
+                        <td>{{ $dp->anno }}</td>
                         <td>
-                            <a class="btn btn-primary btn-sm float-right"
+                             <form action="{{ route('diagnosticopreventivo.destroy', $dp->dp_id) }}" method="POST"
+                                class="eliminar_datos_diagnosticopreventivo">
+                                @csrf
+                                @method('delete')
+                                <button class="btn btn-danger float-right btn-sm mr-2" type="submit"
+                                data-bs-toggle="tooltip" data-bs-placement="right"
+                                title="Eliminar datos del diagnostico preventivo"><i class="fa fa-trash-alt"></i></button>
+                            <a class="btn btn-primary btn-sm float-right mr-2"
                                 href="{{ route('diagnosticopreventivo.edit', $dp->dp_id) }}"><i class="fa fa-edit"
                                     data-bs-toggle="tooltip" data-bs-placement="right"
                                     title="Editar Diagnóstico Preventivo"></i></a>
-                            <a class="btn btn-primary btn-sm float-right mr-2"
-                                href="{{ route('usuarios.show', $dp->id) }}" data-bs-toggle="tooltip"
+                            <a class="btn btn-success btn-sm float-right mr-2"
+                                href="{{ route('usuarios.show', $dp->user_id) }}" data-bs-toggle="tooltip"
                                 data-bs-placement="right" title="Mostar Datos del Diagnóstico"><i
                                     class="fa fa-user"></i></a>
+                                </form>
                         </td>
                     </tr>
                 @endforeach
@@ -134,6 +142,34 @@
         )
     </script>
 @endif
+@if (session('info') == 'eliminar-datos-diagnosticopreventivo')
+    <script>
+        Swal.fire(
+            '¡Eliminado!',
+            'Los datos del diagnostico preventivo se eliminaron con exito.',
+            'success'
+        )
+    </script>
+@endif
+<script>
+    $('.eliminar_datos_diagnosticopreventivo').submit(function(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Los datos del diagnostico preventivo se eliminaran definitivamente",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, eliminar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.submit();
+            }
+        })
+    });
+</script>
 <script src="{{ asset('js/popper.min.js') }}"></script>
 <script>
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))

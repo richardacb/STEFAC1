@@ -82,7 +82,7 @@ class DiagnosticopreventivoController extends Controller
         $anno  = session()->get('anno') ;
 
 
-        $diagnosticopreventivo = DB::select('SELECT e.user_id, users.anno as id, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante,e.grupo, e.dp_id
+        $diagnosticopreventivo = DB::select('SELECT e.user_id, users.anno as anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante,e.grupo, e.dp_id
         FROM users INNER JOIN (SELECT e.user_id, g.name as grupo, e.dp_id
                                FROM (SELECT e.user_id, e.grupos_id,dp.id as dp_id
                                      FROM estudiantes as e INNER JOIN diagnosticopreventivo as dp ON e.user_id = dp.user_id) as e
@@ -189,16 +189,46 @@ class DiagnosticopreventivoController extends Controller
     {
 
         $rules = [
-            'user_id' => 'required|unique:diagnosticopreventivo',
+            'user_id' => 'required',
             'nacionalidad' => 'required',
         ];
         $messages = [
             'user_id.required' => 'Campo Requerido',
-            'user_id.unique' => 'Campo Único',
             'nacionalidad.required' => 'Campo Requerido',
         ];
 
         $this->validate($request, $rules, $messages);
+        // $diagnosticopreventivo = new Diagnosticopreventivo();
+        // $diagnosticopreventivo->user_id = $request->get('user_id');
+        // $diagnosticopreventivo->nacionalidad = $request->get('nacionalidad');
+        // $diagnosticopreventivo->adicciones_Alcohol = $request->get('adicciones_Alcohol') == NULL ? " ": $request->get('adicciones_Alcohol');
+        // $diagnosticopreventivo->adicciones_Tabaco = $request->get('adicciones_Tabaco') == NULL ? " ": $request->get('adicciones_Tabaco');
+        // $diagnosticopreventivo->adicciones_Café = $request->get('adicciones_Café') == NULL ? " ": $request->get('adicciones_Café');
+        // $diagnosticopreventivo->adicciones_Tecnoadicciones = $request->get('adicciones_Tecnoadicciones') == NULL ? " ": $request->get('adicciones_Tecnoadicciones');
+        // $diagnosticopreventivo->adicciones_Drogas = $request->get('adicciones_Drogas') == NULL ? " ": $request->get('adicciones_Drogas');
+        // $diagnosticopreventivo->tipo_medicamentos =$request->get('tipo_medicamentos') == NULL ? " ": $request->get('tipo_medicamentos');
+        // $diagnosticopreventivo->tipo_medicamentos_consumo = $request->get('tipo_medicamentos_consumo') == NULL ? " ": $request->get('tipo_medicamentos_consumo');
+        // $diagnosticopreventivo->grupo_social = $request->get('grupo_social') == NULL ? " ": $request->get('grupo_social');
+        // $diagnosticopreventivo->creencia_religiosa = $request->get('creencia_religiosa') == NULL ? " ": $request->get('creencia_religiosa');
+        // $diagnosticopreventivo->prob_de_personalidad = $request->get('prob_de_personalidad') == NULL ? " ": $request->get('prob_de_personalidad');
+        // $diagnosticopreventivo->desc_prob_de_personalidad = $request->get('desc_prob_de_personalidad') == NULL ? " ": $request->get('desc_prob_de_personalidad');
+        // $diagnosticopreventivo->prob_de_psiquiatricos = $request->get('prob_de_psiquiatricos') == NULL ? " ": $request->get('prob_de_psiquiatricos');
+        // $diagnosticopreventivo->desc_prob_de_psiquiatricos = $request->get('desc_prob_de_psiquiatricos') == NULL ? " ": $request->get('desc_prob_de_psiquiatricos');
+        // $diagnosticopreventivo->prob_de_economicos = $request->get('prob_de_economicos') == NULL ? " ": $request->get('prob_de_economicos');
+        // $diagnosticopreventivo->desc_prob_de_economicos = $request->get('desc_prob_de_economicos') == NULL ? " ": $request->get('desc_prob_de_economicos');
+        // $diagnosticopreventivo->prob_de_sociales = $request->get('prob_de_sociales') == NULL ? " ": $request->get('prob_de_sociales');
+        // $diagnosticopreventivo->desc_prob_de_sociales = $request->get('desc_prob_de_sociales') == NULL ? " ": $request->get('desc_prob_de_sociales');
+        // $diagnosticopreventivo->prob_de_familiares = $request->get('prob_de_familiares') == NULL ? " ": $request->get('prob_de_familiares');
+        // $diagnosticopreventivo->desc_prob_de_familiares = $request->get('desc_prob_de_familiares') == NULL ? " ": $request->get('desc_prob_de_familiares');
+        // $diagnosticopreventivo->prob_de_academicos = $request->get('prob_de_academicos') == NULL ? " ": $request->get('prob_de_academicos');
+        // $diagnosticopreventivo->desc_prob_de_academicos = $request->get('desc_prob_de_academicos') == NULL ? " ": $request->get('desc_prob_de_academicos');
+        // $diagnosticopreventivo->prob_de_disciplina = $request->get('prob_de_disciplina') == NULL ? " ": $request->get('prob_de_disciplina');
+        // $diagnosticopreventivo->desc_prob_de_disciplina = $request->get('desc_prob_de_disciplina') == NULL ? " ": $request->get('desc_prob_de_disciplina');
+        // $diagnosticopreventivo->prob_de_asistencia = $request->get('prob_de_asistencia') == NULL ? " ": $request->get('prob_de_asistencia');
+        // $diagnosticopreventivo->desc_prob_de_asistencia = $request->get('desc_prob_de_asistencia') == NULL ? " ": $request->get('desc_prob_de_asistencia');
+
+        // $diagnosticopreventivo->save();
+
 
         $diagnosticopreventivo = Diagnosticopreventivo::create($request->all());
 
@@ -211,15 +241,7 @@ class DiagnosticopreventivoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        $users = User::all();
-
-        $diagnosticopreventivo = Diagnosticopreventivo::findOrFail($id);
-
-
-        return view('Modulo_PerfildeUsuario.usuarios.show', compact('users', 'diagnosticopreventivo'));
-    }
+   
 
     /**
      * Show the form for editing the specified resource.
@@ -262,6 +284,33 @@ class DiagnosticopreventivoController extends Controller
         ];
 
         $this->validate($request, $rules, $messages);
+        // $diagnosticopreventivo->nacionalidad = $request->get('nacionalidad');
+        // $diagnosticopreventivo->adicciones_Alcohol = $request->get('adicciones_Alcohol') == NULL ? " ": $request->get('adicciones_Alcohol');
+        // $diagnosticopreventivo->adicciones_Tabaco = $request->get('adicciones_Tabaco') == NULL ? " ": $request->get('adicciones_Tabaco');
+        // $diagnosticopreventivo->adicciones_Café = $request->get('adicciones_Café') == NULL ? " ": $request->get('adicciones_Café');
+        // $diagnosticopreventivo->adicciones_Tecnoadicciones = $request->get('adicciones_Tecnoadicciones') == NULL ? " ": $request->get('adicciones_Tecnoadicciones');
+        // $diagnosticopreventivo->adicciones_Drogas = $request->get('adicciones_Drogas') == NULL ? " ": $request->get('adicciones_Drogas');
+        // $diagnosticopreventivo->tipo_medicamentos =$request->get('tipo_medicamentos') == NULL ? " ": $request->get('tipo_medicamentos');
+        // $diagnosticopreventivo->tipo_medicamentos_consumo = $request->get('tipo_medicamentos_consumo') == NULL ? " ": $request->get('tipo_medicamentos_consumo');
+        // $diagnosticopreventivo->grupo_social = $request->get('grupo_social') == NULL ? " ": $request->get('grupo_social');
+        // $diagnosticopreventivo->creencia_religiosa = $request->get('creencia_religiosa') == NULL ? " ": $request->get('creencia_religiosa');
+        // $diagnosticopreventivo->prob_de_personalidad = $request->get('prob_de_personalidad') == NULL ? " ": $request->get('prob_de_personalidad');
+        // $diagnosticopreventivo->desc_prob_de_personalidad = $request->get('desc_prob_de_personalidad') == NULL ? " ": $request->get('desc_prob_de_personalidad');
+        // $diagnosticopreventivo->prob_de_psiquiatricos = $request->get('prob_de_psiquiatricos') == NULL ? " ": $request->get('prob_de_psiquiatricos');
+        // $diagnosticopreventivo->desc_prob_de_psiquiatricos = $request->get('desc_prob_de_psiquiatricos') == NULL ? " ": $request->get('desc_prob_de_psiquiatricos');
+        // $diagnosticopreventivo->prob_de_economicos = $request->get('prob_de_economicos') == NULL ? " ": $request->get('prob_de_economicos');
+        // $diagnosticopreventivo->desc_prob_de_economicos = $request->get('desc_prob_de_economicos') == NULL ? " ": $request->get('desc_prob_de_economicos');
+        // $diagnosticopreventivo->prob_de_sociales = $request->get('prob_de_sociales') == NULL ? " ": $request->get('prob_de_sociales');
+        // $diagnosticopreventivo->desc_prob_de_sociales = $request->get('desc_prob_de_sociales') == NULL ? " ": $request->get('desc_prob_de_sociales');
+        // $diagnosticopreventivo->prob_de_familiares = $request->get('prob_de_familiares') == NULL ? " ": $request->get('prob_de_familiares');
+        // $diagnosticopreventivo->desc_prob_de_familiares = $request->get('desc_prob_de_familiares') == NULL ? " ": $request->get('desc_prob_de_familiares');
+        // $diagnosticopreventivo->prob_de_academicos = $request->get('prob_de_academicos') == NULL ? " ": $request->get('prob_de_academicos');
+        // $diagnosticopreventivo->desc_prob_de_academicos = $request->get('desc_prob_de_academicos') == NULL ? " ": $request->get('desc_prob_de_academicos');
+        // $diagnosticopreventivo->prob_de_disciplina = $request->get('prob_de_disciplina') == NULL ? " ": $request->get('prob_de_disciplina');
+        // $diagnosticopreventivo->desc_prob_de_disciplina = $request->get('desc_prob_de_disciplina') == NULL ? " ": $request->get('desc_prob_de_disciplina');
+        // $diagnosticopreventivo->prob_de_asistencia = $request->get('prob_de_asistencia') == NULL ? " ": $request->get('prob_de_asistencia');
+        // $diagnosticopreventivo->desc_prob_de_asistencia = $request->get('desc_prob_de_asistencia') == NULL ? " ": $request->get('desc_prob_de_asistencia');
+
         $diagnosticopreventivo->update($request->all());
 
         return redirect()->route('usuarios.show', $diagnosticopreventivo->users->id)->with('info', 'modificar-diagnostico');
@@ -275,6 +324,14 @@ class DiagnosticopreventivoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $diagnosticopreventivo = Diagnosticopreventivo::findOrFail($id);
+
+        $diagnosticopreventivo->delete();
+
+        return redirect()->route('diagnosticopreventivo.index')->with('info', 'eliminar-datos-diagnosticopreventivo');
     }
+    // public function exportExcel()
+    // {
+    //     return Excel::download(new BalancedecargaExport, 'Balance de Carga.xlsx');
+    // }
 }

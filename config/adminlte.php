@@ -248,7 +248,7 @@ return [
             'can'  => 'manage-blog',
         ],
         [
-            'header' => 'PANEL DE ADMINISTRACI',
+            'header' => 'PANEL DE ADMINISTRACIÓN',
             'key' => 'header',
         ],
         [

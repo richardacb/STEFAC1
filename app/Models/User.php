@@ -34,6 +34,7 @@ class User extends Authenticatable
         'password',
         'email',
         'sexo',
+        'anno',
         'municipio',
         'provincia',
         'color_piel',
