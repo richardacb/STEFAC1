@@ -19,18 +19,22 @@
             <div class="card">
                 <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
                     @if ($users->sexo == 'Masculino')
-                    <img src="{{ asset('img/masculino.png') }}" alt="Profile" class="rounded-circle">
+                        <img src="{{ asset('img/masculino.png') }}" alt="Profile" class="rounded-circle">
                     @else
-                    <img src="{{ asset('img/femenino.png') }}" alt="Profile" class="rounded-circle">
-                   @endif
-                   
+                        <img src="{{ asset('img/femenino.png') }}" alt="Profile" class="rounded-circle">
+                    @endif
+
                     <h2>{{ $users->primer_nombre }} {{ $users->segundo_nombre }}</h2>
                     <h3>{{ $users->tipo_de_usuario }}</h3>
+                    {{-- @if (@Auth::user()->hasRole('Administrador'))
+                        <h3>Administrador</h3>
+                    @endif --}}
+                    <p>{{$users->getRoleNames()}}</p>
                     @if ($users->tipo_de_usuario == 'Profesor')
                         <div class="row">
                             <div class="label ">Grupo Guía: </div>
                             @if (isset($users->profesores))
-                                <div>&nbsp;{{  $users->profesores->grupos->name }}
+                                <div>&nbsp;{{ $users->profesores->grupos->name }}
                                 </div>
                             @else
                                 <div> -- -- -- -- -- -- </div>

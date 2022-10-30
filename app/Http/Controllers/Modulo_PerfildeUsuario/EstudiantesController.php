@@ -37,7 +37,8 @@ class EstudiantesController extends Controller
 
         session()->put('anno', User::find(auth()->id())->anno);
         $anno  = session()->get('anno') ;
-
+// $usuario =User::find(auth()->id())->roles;
+// dd($usuario);
         $users = DB::table('users')
             ->join('estudiantes', 'users.id', '=', 'estudiantes.user_id')
             ->select('users.*','estudiantes.*')

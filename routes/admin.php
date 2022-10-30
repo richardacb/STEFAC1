@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\HomeController;
 
-//use App\Http\Controllers\Modulo_PerfildeUsuario\UsuariosController;
+use App\Http\Controllers\Modulo_PerfildeUsuario\UsuariosController;
 use App\Http\Controllers\Modulo_PerfildeUsuario\GruposController;
 use App\Http\Controllers\Modulo_PerfildeUsuario\EstudiantesController;
 use App\Http\Controllers\Modulo_PerfildeUsuario\ProfesoresController;
@@ -20,7 +20,7 @@ use App\Http\Controllers\Modulo_Optativas\OptativaController;
 use App\Http\Controllers\Modulo_Horario\ParcialesController;
 use App\Http\Controllers\Modulo_Actividades\ActividadesController;
 use App\Http\Controllers\Modulo_Actividades\EvidenciasController;
-//use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\RegisterController;
 
 
 Route::get('', [HomeController::class, 'index']);
@@ -45,7 +45,7 @@ Route::resource('optativa', OptativaController::class)->name('*', 'Modulo_Optati
 
 /*---------------Rutas del Mododulo Perfil de usuario--------------------------------*/
 
-//Route::resource('usuarios', UsuariosController::class)->name('*','Modulo_PerfildeUsuario.usuarios');
+Route::resource('usuarios', UsuariosController::class)->name('*','Modulo_PerfildeUsuario.usuarios');
 
 Route::resource('diagnosticopreventivo', DiagnosticopreventivoController::class)->name('*', 'Modulo_PerfildeUsuario.diagnosticopreventivo');
 
