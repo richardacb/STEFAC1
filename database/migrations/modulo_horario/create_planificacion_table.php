@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('planificacions', function (Blueprint $table) {
             $table->engine="InnoDB";
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('profesores_id');
+            $table->unsignedBigInteger('profesores_id')->nullable();
             $table->unsignedBigInteger('asignaturas_id');
             $table->unsignedBigInteger('grupos_id');
 

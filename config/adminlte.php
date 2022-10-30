@@ -295,6 +295,13 @@ return [
                     'active' => ['admin/locales*']
                 ],
                 [
+                    'text'    => 'Pruebas Parciales',
+                    'icon'    => 'fas fa-fw fa-users',
+                    'route'   => 'parciales.index',
+                    // 'can'  => 'Modulo_Horario.parciales.index',
+                    'active' => ['admin/parciales*']
+                ],
+                [
                     'text'    => 'Carga Docente',
                     'icon'    => 'fas fa-fw fa-users',
                     'route'   => 'planificacion.index',
@@ -386,18 +393,26 @@ return [
             'submenu' => [],
         ],
         [
-            'text'    => 'Evidencias',
+            'text'    => 'Actividades',
             'icon'    => 'fas fa-fw fa-share',
             'url'  => '',
             'active' => [''],
 
             'submenu' => [
                 [
-                    'text'    => 'Prueba',
-                    'icon'    => 'fa fa-fw fa-users-cog',
-                    // 'route'  => 'diagnosticopreventivo.index',
-                    /*'can'  => 'Modulo_PerfildeUsuario.diagnosticopreventivo.index',*/
-                    // 'active' => ['admin/diagnosticopreventivo*']
+                    'text'    => 'Actividades',
+                    'icon'    => 'far fa-fw fa fa-bookmark',
+                    'route'  => 'actividades.index',
+                    /*'can'  => 'Modulo_Evidencias.actividades.index',*/
+                    'active'=>['admin/actividades*']
+
+                ],
+                [
+                    'text'    => 'Evidencias',
+                    'icon'    => 'far fa-fw fa fa-bookmark',
+                    'route'  => 'evidencias.index',
+                    /*'can'  => 'Modulo_Evidencias.actividades.index',*/
+                    'active'=>['admin/evidencias*']
 
                 ],
 

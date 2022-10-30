@@ -30,6 +30,7 @@ class OptativaController extends Controller
     public function index()
     {
         session()->put('anno', User::find(auth()->id())->anno);
+        $anno = session()->get('anno');
 
         $optativas = DB::select('SELECT o.id, o.nombre, o.descripcion, o.capacidad, o.anno_academico, o.semestre, o.estado,
         CONCAT(pp.primer_nombre," ",pp.segundo_nombre," ",pp.primer_apellido," ",pp.segundo_apellido) as prof_principal,
@@ -42,7 +43,8 @@ class OptativaController extends Controller
 
         LEFT JOIN
         (SELECT users.id, users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido
-        FROM users INNER JOIN profesores ON users.id = profesores.user_id) as pa ON o.prof_auxiliar = pa.id');
+        FROM users INNER JOIN profesores ON users.id = profesores.user_id) as pa ON o.prof_auxiliar = pa.id
+        WHERE o.anno_academico = ' . $anno . '');
 
         return view('Modulo_Optativas.optativa.index')->with('optativas',  $optativas);
     }
@@ -152,10 +154,12 @@ class OptativaController extends Controller
                                                                                              WHERE estudiantes.user_id NOT IN (SELECT estudiantes.user_id
                                                                                                                                 FROM estudiantes INNER JOIN opt_ests ON estudiantes.user_id = opt_ests.id_est)) as e ON g.id = e.grupos_id) as e ON u.id = e.user_id
                                                                                             ');
+        $cant_est = sizeof($usuarios_matriculados);
 
         return view("Modulo_Optativas.optativa.show")
             ->with('optativa', $optativa)
             ->with('usuarios_matriculados', $usuarios_matriculados)
+            ->with('cant_est', $cant_est)
             ->with('usuarios_no_matriculados', $usuarios_no_matriculados);
     }
 
@@ -168,6 +172,7 @@ class OptativaController extends Controller
     public function edit($id)
     {
 
+        $anno = session()->get('anno');
 
         $opt = Optativa::find($id);
 
@@ -185,6 +190,7 @@ class OptativaController extends Controller
                                                                 UNION SELECT optativas.prof_principal
                                                                 FROM optativas
                                                                 WHERE optativas.prof_principal <> ' . $prof_principal . ')) as p ON u.id = p.user_id
+                                                                WHERE u.anno = ' . $anno . '
 ');
 
         return view('Modulo_Optativas.optativa.edit')

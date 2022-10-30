@@ -57,13 +57,15 @@ class AsignaturasController extends Controller
             'seccion' => 'required|not_in:0',
             'nombre' => 'required|unique:asignaturas,nombre',
             'anno' => 'required',
-
+            'semestre' => 'required',
+            'estado' => 'required'
              ];
              $messages = [
                 'seccion.required' =>'Campo Requerido',
                 'nombre.required' =>'Campo Requerido',
                 'anno.required' =>'Campo Requerido',
-
+                'semestre.required' => 'Campo Requerido',
+                'estado.required' => 'Campo Requerido',
              ];
              $this->validate( $request, $rules, $messages);
 
@@ -71,7 +73,8 @@ class AsignaturasController extends Controller
         $asignaturas->secciones_id = $request->get('seccion');
         $asignaturas->nombre = $request->get('nombre');
         $asignaturas->anno = $request->get('anno');
-
+        $asignaturas->semestre = $request->get('semestre');
+        $asignaturas->estado = $request->get('estado');
         $asignaturas->save();
 
         return redirect()->route('asignaturas.index')->with('info', 'adicionar-asignatura');
@@ -134,21 +137,23 @@ class AsignaturasController extends Controller
             'seccion' => 'required|not_in:0',
             'nombre' => 'required',
             'anno' => 'required',
-
+            'semestre' => 'required',
+            'estado' => 'required'
              ];
              $messages = [
                 'seccion.required' =>'Campo Requerido',
                 'nombre.required' =>'Campo Requerido',
                 'anno.required' =>'Campo Requerido',
-
+                'semestre.required' => 'Campo Requerido',
+                'estado.required' => 'Campo Requerido',
              ];
              $this->validate( $request, $rules, $messages);
 
         $asignatura->secciones_id = $request->get('seccion');
         $asignatura->nombre = $request->get('nombre');
         $asignatura->anno = $request->get('anno');
-
-
+        $asignatura->semestre = $request->get('semestre');
+        $asignatura->estado = $request->get('estado');
         $asignatura->update($request->all());
 
         return redirect()->route('asignaturas.index', compact('asignatura'))->with('info', 'modificar-asignatura');

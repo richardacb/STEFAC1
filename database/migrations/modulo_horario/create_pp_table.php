@@ -13,17 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('asignaturas', function (Blueprint $table) {
+        Schema::create('pruebasparciales', function (Blueprint $table) {
             $table->engine="InnoDB";
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('secciones_id');
-            $table->string('nombre');
+            $table->unsignedBigInteger('asignaturas_id');
             $table->integer('anno');
             $table->integer('semestre');
-            $table->integer('estado');
+            $table->integer('dia');
+            $table->integer('turno');
+            $table->integer('semana');
             $table->timestamps();
 
-            $table->foreign('secciones_id')->references('id')->on('secciones')->onDelete('cascade')->cascadeOnUpdate();
+            $table->foreign('asignaturas_id')->references('id')->on('asignaturas')->onDelete('cascade')->cascadeOnUpdate();
+
         });
     }
 
@@ -34,7 +36,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('asignaturas');
+        Schema::dropIfExists('pruebasparciales');
 
     }
 };

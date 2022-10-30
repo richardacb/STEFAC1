@@ -13,11 +13,16 @@
                     <div class="col-md-3 py-2 ">
                         @can('Exports.BalancedecargaExport')
                             <a href="{{ route('balancedecarga.export') }}" class="btn btn-primary btn-sm" role="button">Exportar
-                                Balance de Carga</a>
+                                Balance de Carga en Formato Excel</a>
                         @endcan
                         @can('Modulo_Horario.balancedecarga.create')
                             <a class="btn btn-primary btn-sm" href="{{ route('balancedecarga.create') }}" role="button">Insertar
                                 Datos</a>
+                        @endcan
+                        @can('Exports.BalancedecargaExport')
+                            <a href="{{ route('balancedecarga.exportpdf') }}" class="btn btn-primary btn-sm"
+                                role="button">Exportar
+                                Balance de Carga en Formato PDF</a>
                         @endcan
                     </div>
                 </div>
@@ -46,7 +51,7 @@
                 </thead>
                 <tbody>
 
-                    @foreach ($balancedecarga  as $bc)
+                    @foreach ($balancedecarga as $bc)
                         <tr>
                             <td scope="row">
                                 {{ $bc->nombre }}
@@ -61,7 +66,7 @@
                                 {{ $bc->semana }}
                             </td>
                             <td width="150px">
-                                <form action="{{ route('balancedecarga.destroy', $bc->id ) }}" method="POST"
+                                <form action="{{ route('balancedecarga.destroy', $bc->id) }}" method="POST"
                                     class="eliminar-balancedecarga">
                                     @csrf
                                     @method('delete')

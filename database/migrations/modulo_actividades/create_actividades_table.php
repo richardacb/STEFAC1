@@ -13,17 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('asignaturas', function (Blueprint $table) {
+        Schema::create('actividades', function (Blueprint $table) {
             $table->engine="InnoDB";
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('secciones_id');
             $table->string('nombre');
-            $table->integer('anno');
-            $table->integer('semestre');
-            $table->integer('estado');
+            $table->integer('año');
+            $table->string('tipo_actividad');
             $table->timestamps();
-
-            $table->foreign('secciones_id')->references('id')->on('secciones')->onDelete('cascade')->cascadeOnUpdate();
         });
     }
 
@@ -34,7 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('asignaturas');
-
+        Schema::dropIfExists('actividades');
     }
 };
