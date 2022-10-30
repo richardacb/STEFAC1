@@ -7,6 +7,7 @@
     <a href="{{ route('optativa.index') }}" class="btn btn-secondary my-2">ir atras</a>
     <div class="text-center py-5">
         <span>Optativa: {{ $optativa->nombre }}</span> <br>
+        <span>Matrícula: {{ $cant_est }}/{{ $optativa->capacidad }}</span> <br>
     </div>
     <div class="d-flex flex-row justify-content-between vh-100">
         <div class="d-flex flex-column justify-content-start text-center mx-2 w-50 overflow-auto">

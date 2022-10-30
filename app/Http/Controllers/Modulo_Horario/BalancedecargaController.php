@@ -10,6 +10,7 @@ use App\Models\Modulo_Horario\Balancedecarga;
 use App\Models\Modulo_Horario\Asignaturas;
 use App\Models\User;
 use App\Exports\BalancedecargaExport;
+use Barryvdh\DomPDF\Facade\PDF;
 
 class BalancedecargaController extends Controller
 {
@@ -25,6 +26,24 @@ class BalancedecargaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function exportExcel()
+    {
+        return Excel::download(new BalancedecargaExport, 'Balance de Carga.xlsx');
+    }
+    public function createPDF(){
+        //Recuperar todos los productos de la db
+        session()->put('anno', User::find(auth()->id())->anno);
+        $anno = session()->get('anno');
+
+        $balancedecarga = Balancedecarga::join('asignaturas', 'asignaturas.id', '=', 'balance_de_carga.asignaturas_id')
+            ->select('asignaturas.nombre', 'balance_de_carga.semana', 'balance_de_carga.frecuencia', 'balance_de_carga.tipo_clase')
+            ->where('asignaturas.anno', '=', $anno)->get();
+
+        view()->share('Modulo_Horario.balancedecarga.indexpdf',
+        compact('balancedecarga'));
+        $pdf = PDF::loadView('Modulo_Horario.balancedecarga.indexpdf',  compact('balancedecarga'));
+        return $pdf->download('archivo-pdf.pdf');
+    }
     public function index()
     {
 
@@ -42,7 +61,7 @@ class BalancedecargaController extends Controller
         //Asignaturas::all()->where('anno', session()->get('anno'));
         //var_dump($nombreasignaturas);
         return view('Modulo_Horario.balancedecarga.index',)
-        ->with('balancedecarga', $balancedecarga);
+            ->with('balancedecarga', $balancedecarga);
     }
 
     /**
@@ -53,7 +72,7 @@ class BalancedecargaController extends Controller
     public function create()
     {
 
-        $nombreasignaturas['nombreasignaturas'] = Asignaturas::all()->where('anno', session()->get('anno'));
+        $nombreasignaturas['nombreasignaturas'] = Asignaturas::all()->where('anno', session()->get('anno'))->where('estado', 1);
         return view('Modulo_Horario.balancedecarga.create', $nombreasignaturas);
     }
 
@@ -162,9 +181,5 @@ class BalancedecargaController extends Controller
     {
         $balancedecarga->delete();
         return redirect()->route('balancedecarga.index')->with('info', 'eliminar-balancedecarga');
-    }
-    public function exportExcel()
-    {
-        return Excel::download(new BalancedecargaExport, 'Balance de Carga.xlsx');
     }
 }

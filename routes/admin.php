@@ -17,6 +17,7 @@ use App\Http\Controllers\Modulo_Horario\AfectacionesController;
 use App\Http\Controllers\Modulo_Horario\LocalesController;
 use App\Http\Controllers\Modulo_Horario\PlanificacionController;
 use App\Http\Controllers\Modulo_Optativas\OptativaController;
+use App\Http\Controllers\Modulo_Horario\ParcialesController;
 use App\Http\Controllers\Modulo_Actividades\ActividadesController;
 use App\Http\Controllers\Modulo_Actividades\EvidenciasController;
 //use App\Http\Controllers\Auth\RegisterController;
@@ -24,43 +25,39 @@ use App\Http\Controllers\Modulo_Actividades\EvidenciasController;
 
 Route::get('', [HomeController::class, 'index']);
 
-Route::resource('asignaturas', AsignaturasController::class)->name('*','Modulo_Horario.asignaturas');
+Route::resource('asignaturas', AsignaturasController::class)->name('*', 'Modulo_Horario.asignaturas');
 
-Route::resource('horario', HorarioController::class)->name('*','Modulo_Horario.horario');
+Route::resource('horario', HorarioController::class)->name('*', 'Modulo_Horario.horario');
 
-Route::resource('balancedecarga', BalancedecargaController::class)->name('*','Modulo_Horario.balancedecarga');
+Route::resource('balancedecarga', BalancedecargaController::class)->name('*', 'Modulo_Horario.balancedecarga');
 
-Route::resource('locales', LocalesController::class)->name('*','Modulo_Horario.locales');
+Route::resource('locales', LocalesController::class)->name('*', 'Modulo_Horario.locales');
 
-Route::resource('planificacion', PlanificacionController::class)->name('*','Modulo_Horario.planificacion');
+Route::resource('planificacion', PlanificacionController::class)->name('*', 'Modulo_Horario.planificacion');
 
-Route::resource('generarhorario', GenerarHorarioController::class)->name('*','Modulo_Horario.generarhorario');
+Route::resource('generarhorario', GenerarHorarioController::class)->name('*', 'Modulo_Horario.generarhorario');
 
-Route::resource('afectaciones', AfectacionesController::class)->name('*','Modulo_Horario.afectaciones');
+Route::resource('parciales', ParcialesController::class)->name('*', 'Modulo_Horario.parciales');
 
-Route::resource('optativa', OptativaController::class)->name('*','Modulo_Optativas.optativa');
+Route::resource('afectaciones', AfectacionesController::class)->name('*', 'Modulo_Horario.afectaciones');
+
+Route::resource('optativa', OptativaController::class)->name('*', 'Modulo_Optativas.optativa');
 
 /*---------------Rutas del Mododulo Perfil de usuario--------------------------------*/
 
 //Route::resource('usuarios', UsuariosController::class)->name('*','Modulo_PerfildeUsuario.usuarios');
 
-Route::resource('diagnosticopreventivo', DiagnosticopreventivoController::class)->name('*','Modulo_PerfildeUsuario.diagnosticopreventivo');
+Route::resource('diagnosticopreventivo', DiagnosticopreventivoController::class)->name('*', 'Modulo_PerfildeUsuario.diagnosticopreventivo');
 
-Route::resource('grupos', GruposController::class)->name('*','Modulo_PerfildeUsuario.grupos');
+Route::resource('grupos', GruposController::class)->name('*', 'Modulo_PerfildeUsuario.grupos');
 
-Route::resource('estudiantes', EstudiantesController::class)->name('*','Modulo_PerfildeUsuario.estudiantes');
+Route::resource('estudiantes', EstudiantesController::class)->name('*', 'Modulo_PerfildeUsuario.estudiantes');
 
-Route::resource('profesores', ProfesoresController::class)->name('*','Modulo_PerfildeUsuario.profesores');
+Route::resource('profesores', ProfesoresController::class)->name('*', 'Modulo_PerfildeUsuario.profesores');
 
-Route::resource('roles', RolesController::class)->name('*','Modulo_PerfildeUsuario.roles');
-
-
-
-/*---------------Fin Rutas del Mododulo Perfil de usuario--------------------------------*/
+Route::resource('roles', RolesController::class)->name('*', 'Modulo_PerfildeUsuario.roles');
 
 
-
-/*-------------------Rutas del Modulo Actividades-----------------------------------------*/
 
 Route::resource('actividades',ActividadesController::class)->name('*','Modulo_Actividades.actividades');
 Route::post('actividades.form', 'Modulo_Actividades\ActividadesController@edit')->name('Modulo_Actividades.actividades');
@@ -71,6 +68,3 @@ Route::get('actividades.form', 'Modulo_Actividades\ActividadesController@edit')-
 Route::resource('evidencias',EvidenciasController::class)->name('*','Modulo_Actividades.evidencias');
 Route::post('evidencias.form', 'Modulo_Actividades\EvidenciasController@edit')->name('Modulo_Actividades.evidencias');
 Route::get('evidencias.form', 'Modulo_Actividades\EvidenciasController@edit')->name('Modulo_Actividades.evidencias');
-
-
-/*-------------Fin Rutas del Modulo Actividades-------------------------------------------*/

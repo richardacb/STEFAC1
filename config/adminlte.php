@@ -295,6 +295,13 @@ return [
                     'active' => ['admin/locales*']
                 ],
                 [
+                    'text'    => 'Pruebas Parciales',
+                    'icon'    => 'fas fa-fw fa-users',
+                    'route'   => 'parciales.index',
+                    // 'can'  => 'Modulo_Horario.parciales.index',
+                    'active' => ['admin/parciales*']
+                ],
+                [
                     'text'    => 'Carga Docente',
                     'icon'    => 'fas fa-fw fa-users',
                     'route'   => 'planificacion.index',

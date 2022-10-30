@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+use App\Exports\BalancedecargaExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\App;
 
@@ -68,6 +71,8 @@ Route::resource('Modulo_Horario.generarhorario', App\Http\Controllers\Modulo_Hor
 
 Route::resource('Modulo_Horario.afectaciones', App\Http\Controllers\Modulo_Horario\AfectacionesController::class)->middleware('auth');
 
+Route::resource('Modulo_Horario.parciales', App\Http\Controllers\Modulo_Horario\ParcialesController::class)->middleware('auth');
+
 // Route::resource('Modulo_Horario.horario', App\Http\Controllers\Modulo_Horario\BuscarController::class)->middleware('auth');
 
 // Route::post('horario.index', [App\Http\Controllers\Modulo_Horario\BuscarController::class, 'index'])->name('horario.index');
@@ -76,7 +81,13 @@ Route::post('horario/buscar', action:[App\Http\Controllers\Modulo_Horario\Buscar
 
 Route::post('afectaciones/insertar', action:[App\Http\Controllers\Modulo_Horario\AfectacionesController::class, 'insertar'])->name('afectaciones/insertar');
 
-Route::get('balancedecarga.export', [App\Http\Controllers\Modulo_Horario\BalancedecargaController::class, 'exportExcel'])->name('balancedecarga.export');
+Route::get('balancedecarga/export', 'App\Http\Controllers\Modulo_Horario\BalancedecargaController@exportExcel')->name('balancedecarga.export');
+
+Route::get('balancedecarga/exportpdf', 'App\Http\Controllers\Modulo_Horario\BalancedecargaController@createPDF')->name('balancedecarga.exportpdf');
+// Route::get('balancedecarga/export', function () {
+//     return Excel::download(new BalancedecargaExport, 'products.xlsx');
+// });
+
 
 Route::post('generarhorario.generar', [App\Http\Controllers\Modulo_Horario\GenerarHorarioController::class, 'generar'])->name('generarhorario.generar');
 
