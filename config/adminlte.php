@@ -393,18 +393,26 @@ return [
             'submenu' => [],
         ],
         [
-            'text'    => 'Evidencias',
+            'text'    => 'Actividades',
             'icon'    => 'fas fa-fw fa-share',
             'url'  => '',
             'active' => [''],
 
             'submenu' => [
                 [
-                    'text'    => 'Prueba',
-                    'icon'    => 'fa fa-fw fa-users-cog',
-                    // 'route'  => 'diagnosticopreventivo.index',
-                    /*'can'  => 'Modulo_PerfildeUsuario.diagnosticopreventivo.index',*/
-                    // 'active' => ['admin/diagnosticopreventivo*']
+                    'text'    => 'Actividades',
+                    'icon'    => 'far fa-fw fa fa-bookmark',
+                    'route'  => 'actividades.index',
+                    /*'can'  => 'Modulo_Evidencias.actividades.index',*/
+                    'active'=>['admin/actividades*']
+
+                ],
+                [
+                    'text'    => 'Evidencias',
+                    'icon'    => 'far fa-fw fa fa-bookmark',
+                    'route'  => 'evidencias.index',
+                    /*'can'  => 'Modulo_Evidencias.actividades.index',*/
+                    'active'=>['admin/evidencias*']
 
                 ],
 

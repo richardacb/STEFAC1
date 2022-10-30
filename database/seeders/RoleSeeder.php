@@ -178,9 +178,34 @@ class RoleSeeder extends Seeder
 
         /*====================================End Modulo Evaluacion Integrada=====================================================*/
 
-        /*====================================Start Modulo Evidencias=============================================================*/
+       /*====================================Start Modulo Actividades=============================================================*/
+        Permission::create(['name'=> 'Modulo_Actividades.actividades.index',
+                            'description'=> 'Ver listado de actividades'])->syncRoles([$role1,$role2,$role3,$role4,$role5]);
 
-        /*====================================End Modulo Evidencias===============================================================*/
+        Permission::create(['name'=> 'Modulo_Actividades.actividades.create',
+                            'description'=> 'Insertar una actividades'])->syncRoles([$role1,$role3]);
+
+        Permission::create(['name'=> 'Modulo_Actividades.actividades.edit',
+                            'description'=> 'Editar una actividades'])->syncRoles([$role1,$role3]);
+
+        Permission::create(['name'=> 'Modulo_Actividades.actividades.destroy',
+                            'description'=> 'Eliminar una actividades'])->syncRoles([$role1,$role3]);
+
+
+
+        Permission::create(['name'=> 'Modulo_Actividades.evidencias.index',
+                            'description'=> 'Ver listado de evidencias'])->syncRoles([$role1,$role3,$role4,$role5]);
+
+        Permission::create(['name'=> 'Modulo_Actividades.evidencias.create',
+                            'description'=> 'Insertar una evidencia'])->syncRoles([$role1,$role3,$role4,$role5]);
+
+        Permission::create(['name'=> 'Modulo_Actividades.evidencias.edit',
+                            'description'=> 'Editar una evidencias'])->syncRoles([$role1,$role3,$role4,$role5]);
+
+        Permission::create(['name'=> 'Modulo_Actividades.evidencias.destroy',
+                            'description'=> 'Eliminar una evidencia'])->syncRoles([$role1,$role3,$role4,$role5]);
+
+        /*====================================End Modulo Actividades===============================================================*/
 
         /*====================================Start Modulo GECE===================================================================*/
 

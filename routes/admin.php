@@ -18,6 +18,8 @@ use App\Http\Controllers\Modulo_Horario\LocalesController;
 use App\Http\Controllers\Modulo_Horario\PlanificacionController;
 use App\Http\Controllers\Modulo_Optativas\OptativaController;
 use App\Http\Controllers\Modulo_Horario\ParcialesController;
+use App\Http\Controllers\Modulo_Actividades\ActividadesController;
+use App\Http\Controllers\Modulo_Actividades\EvidenciasController;
 //use App\Http\Controllers\Auth\RegisterController;
 
 
@@ -57,4 +59,12 @@ Route::resource('roles', RolesController::class)->name('*', 'Modulo_PerfildeUsua
 
 
 
-/*---------------Fin Rutas del Mododulo Perfil de usuario--------------------------------*/
+Route::resource('actividades',ActividadesController::class)->name('*','Modulo_Actividades.actividades');
+Route::post('actividades.form', 'Modulo_Actividades\ActividadesController@edit')->name('Modulo_Actividades.actividades');
+Route::get('actividades.form', 'Modulo_Actividades\ActividadesController@edit')->name('Modulo_Actividades.actividades');
+
+
+
+Route::resource('evidencias',EvidenciasController::class)->name('*','Modulo_Actividades.evidencias');
+Route::post('evidencias.form', 'Modulo_Actividades\EvidenciasController@edit')->name('Modulo_Actividades.evidencias');
+Route::get('evidencias.form', 'Modulo_Actividades\EvidenciasController@edit')->name('Modulo_Actividades.evidencias');
