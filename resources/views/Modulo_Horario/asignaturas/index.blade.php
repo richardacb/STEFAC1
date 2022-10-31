@@ -22,12 +22,6 @@
 @endsection
 
 @section('content')
-
-    @if (session('info'))
-        <div class="alert alert-succes">
-            <strong>{{ session('info') }}</strong>
-        </div>
-    @endif
     <div class="container-fluid">
         <div class="row">
             <div class="col-xl-12">
