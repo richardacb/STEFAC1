@@ -29,7 +29,7 @@
                     {{-- @if (@Auth::user()->hasRole('Administrador'))
                         <h3>Administrador</h3>
                     @endif --}}
-                    <p>{{$users->getRoleNames()}}</p>
+                    {{-- <p>{{$users->getRoleNames()}}</p> --}}
                     @if ($users->tipo_de_usuario == 'Profesor')
                         <div class="row">
                             <div class="label ">Grupo Guía: </div>

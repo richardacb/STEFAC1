@@ -16,7 +16,7 @@
         <a href="{{ route('usuarios.create') }}" class="btn btn-primary ">Registrar Usuario</a>
         {{--  @endcan  --}}
          <button type="button" class="btn btn-danger float-right" data-toggle="modal"
-                data-target=".bd-example-modal-lg">Importar datos de profesores</button>
+                data-target=".bd-example-modal-lg">Importar datos de usuarios</button>
          {{-- <a href="{{ route('usuarios.pdf') }}" class="btn btn-primary ">Convertir a PDF</a> --}}
           
     </div>
