@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('sexo')->nullable();
-            $table->integer('anno');
+            $table->integer('anno')->nullable();
             $table->string('municipio')->nullable();
             $table->string('provincia')->nullable();
             $table->string('color_piel')->nullable();

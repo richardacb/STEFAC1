@@ -330,7 +330,6 @@ return [
                     'icon'    => 'fa fa-fw fa-users',
                     'route'  => 'usuarios.index',
                     'can'  => 'Modulo_PerfildeUsuario.usuarios.index',
-                    // 'active' => ['admin/usuarios*']
 
                 ],
                 [

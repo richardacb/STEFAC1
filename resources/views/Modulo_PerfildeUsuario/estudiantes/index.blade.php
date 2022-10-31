@@ -18,6 +18,7 @@
             @can('Modulo_PerfildeUsuario.estudiantes.create')
                 <a href="{{ route('estudiantes.create') }}" class="btn btn-primary ">Insertar datos al estudiante</a>
             @endcan
+            
             <a href="{{ route('estudiantes.export') }}" class="btn btn-danger float-right" role="button">Exportar
                 datos de estudiantes</a>
         </div>

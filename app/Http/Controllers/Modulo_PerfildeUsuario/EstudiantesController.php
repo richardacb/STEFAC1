@@ -13,12 +13,13 @@ use App\Exports\EstudiantesExport;
 
 class EstudiantesController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('can:Modulo_PerfildeUsuario.estudiantes.index')->only('index');
-    //     $this->middleware('can:Modulo_PerfildeUsuario.estudiantes.create')->only('create', 'store');
-    //     $this->middleware('can:Modulo_PerfildeUsuario.estudiantes.edit')->only('edit', 'update');
-    // }
+    public function __construct()
+    {
+        $this->middleware('can:Modulo_PerfildeUsuario.estudiantes.index')->only('index');
+        $this->middleware('can:Modulo_PerfildeUsuario.estudiantes.create')->only('create', 'store');
+        $this->middleware('can:Modulo_PerfildeUsuario.estudiantes.edit')->only('edit', 'update');
+        $this->middleware('can:Modulo_PerfildeUsuario.estudiantes.destroy')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      *
