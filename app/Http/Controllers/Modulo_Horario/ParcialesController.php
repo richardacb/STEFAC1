@@ -203,8 +203,8 @@ class ParcialesController extends Controller
     {
         $parcial = Parciales::findOrFail($id);
 
-        DB::delete('DELETE FROM asignaciones WHERE asignaciones.planificacion_id IN (SELECT planificacions.id FROM planificacions WHERE planificacions.asignaturas_id = ' . $parcial->asignaturas_id . '
-        AND planificacions.profesores_id IS NULL)');
+        // DB::delete('DELETE FROM asignaciones WHERE asignaciones.planificacion_id IN (SELECT planificacions.id FROM planificacions WHERE planificacions.asignaturas_id = ' . $parcial->asignaturas_id . '
+        // AND planificacions.profesores_id IS NULL)');
         DB::delete('DELETE FROM planificacions WHERE planificacions.asignaturas_id = ' . $parcial->asignaturas_id . ' AND planificacions.profesores_id IS NULL');
 
         $parcial->delete();
