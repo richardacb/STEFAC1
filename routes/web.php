@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Exports\BalancedecargaExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\App;
+//use Illuminate\Support\Facades\App;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,12 +47,15 @@ Route::get('admin/change-password', [App\Http\Controllers\HomeController::class,
 
 Route::post('admin/change-password', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('update-password');
 
-// Route::post('estudiantes.import',[App\Http\Controllers\Modulo_PerfildeUsuario\EstudiantesController::class, 'importar_estudiantes'])->name('estudiantes.import');
+Route::post('usuarios.import',[App\Http\Controllers\Modulo_PerfildeUsuario\UsuariosController::class, 'importar_usuarios'])->name('usuarios.import');
 
-// Route::post('grupos.import',[App\Http\Controllers\Modulo_PerfildeUsuario\GruposController::class, 'importar_grupos'])->name('grupos.import');
+Route::get('/usuarios/pdf', [App\Http\Controllers\Modulo_PerfildeUsuario\GruposController::class, 'createPDF'])->name('usuarios.pdf');
 
-// Route::post('profesores.import',[App\Http\Controllers\Modulo_PerfildeUsuario\ProfesoresController::class, 'importar_profesores'])->name('profesores.import');
+Route::get('estudiantes.export', [App\Http\Controllers\Modulo_PerfildeUsuario\EstudiantesController::class, 'exportExcelEstudiantes'])->name('estudiantes.export');
 
+// Route::get('profesores.export', [App\Http\Controllers\Modulo_PerfildeUsuario\ProfesoresController::class, 'exportExcelProfesores'])->name('profesores.export');
+
+// Route::get('diagnosticopreventivo.export', [App\Http\Controllers\Modulo_PerfildeUsuario\DiagnosticopreventivoController::class, 'exportExcelDiagnosticopreventivo'])->name('diagnosticopreventivo.export');
 /*---------------Fin Rutas del Mododulo Perfil de usuario--------------------------------*/
 
 /*---------------Rutas del Mododulo Horario--------------------------------*/
@@ -112,3 +115,5 @@ Route::resource('opt_est','App\Http\Controllers\Modulo_Optativas\Opt_EstControll
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
