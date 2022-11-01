@@ -115,5 +115,3 @@ Route::resource('opt_est','App\Http\Controllers\Modulo_Optativas\Opt_EstControll
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
