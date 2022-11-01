@@ -13,6 +13,7 @@ use App\Models\Modulo_Horario\Balancedecarga;
 use App\Models\Modulo_Horario\Prof_Grup_Asig;
 use App\Models\Modulo_Horario\Horario;
 use App\Models\Modulo_Horario\Asignaciones;
+use App\Models\User;
 
 class GenerarHorarioController extends Controller
 {
@@ -29,7 +30,7 @@ class GenerarHorarioController extends Controller
      */
     public function index()
     {
-
+        session()->put('anno', User::find(auth()->id())->anno);
         return view('Modulo_Horario.generarhorario.index');
     }
 
@@ -41,8 +42,8 @@ class GenerarHorarioController extends Controller
      */
     public function create()
     {
-
-        return view('Modulo_Horario.generarhorario.create');
+        $anno = session()->get('anno');
+        return view('Modulo_Horario.generarhorario.create', compact('anno'));
     }
 
     /**

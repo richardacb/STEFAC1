@@ -190,7 +190,7 @@ class ParcialesController extends Controller
 
         $parciales->update($request->all());
 
-        return redirect()->route('parciales.index', compact('parciales'))->with('info', 'modificar-parciales');
+        return redirect()->route('parciales.index')->with('info', 'modificar-parciales');
     }
 
     /**
@@ -205,7 +205,18 @@ class ParcialesController extends Controller
 
         // DB::delete('DELETE FROM asignaciones WHERE asignaciones.planificacion_id IN (SELECT planificacions.id FROM planificacions WHERE planificacions.asignaturas_id = ' . $parcial->asignaturas_id . '
         // AND planificacions.profesores_id IS NULL)');
-        DB::delete('DELETE FROM planificacions WHERE planificacions.asignaturas_id = ' . $parcial->asignaturas_id . ' AND planificacions.profesores_id IS NULL');
+        DB::delete('DELETE
+        FROM planificacions
+        WHERE planificacions.asignaturas_id = ' . $parcial->asignaturas_id . '
+        AND planificacions.profesores_id IS NULL
+        AND planificacions.id IN (SELECT asignaciones.planificacion_id
+                                  FROM asignaciones
+                                  WHERE asignaciones.semana = ' . $parcial->semana . '
+                                  AND asignaciones.anno =' . $parcial->anno . '
+                                  AND asignaciones.planificacion_id IN (SELECT planificacions.id
+                                                                        FROM planificacions
+                                                                        WHERE planificacions.asignaturas_id = ' . $parcial->asignaturas_id . '
+                                                                        AND planificacions.profesores_id IS NULL))');
 
         $parcial->delete();
         return redirect()->route('parciales.index')->with('info', 'eliminar-parciales');

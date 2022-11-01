@@ -42,7 +42,8 @@
         </div>
         <div class="mb-3">
             <label for="" class="form-label">Semestre</label>
-            <input type="number" class="form-control" id="semestre" name="semestre" placeholder="Ingrese el número del Semestre">
+            <input type="number" class="form-control" id="semestre" name="semestre"
+                placeholder="Ingrese el número del Semestre">
             @error('semestre')
                 <strong class="error-message text-danger"> {{ $message }} </strong>
             @enderror
@@ -59,7 +60,8 @@
             @enderror
         </div>
         <div class="mb-3">
-            <a href="{{ route('asignaturas.index') }}" class="btn btn-danger">Cancelar</a>
+            <a href="{{ route('asignaturas.index') }}" class="btn btn-danger mr-2">Cancelar</a>
+
             <input type="submit" class="btn btn-primary" value="Guardar">
         </div>
     </form>

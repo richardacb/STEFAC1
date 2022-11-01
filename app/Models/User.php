@@ -71,20 +71,6 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
 
-    public function adminlte_image(){
-        return 'vendor\adminlte\dist\img\zorros.png';
-    }
 
-    public function adminlte_desc(){
-
-         return 'Esta en veremos';
-    }
-
-    public function adminlte_profile_url(){
-        return 'profile/username';
-    }
 }

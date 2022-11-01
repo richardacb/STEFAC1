@@ -59,9 +59,9 @@
                                             @csrf
                                             @method('delete')
                                             {{--  @can('Modulo_Horario.asignaturas.edit')  --}}
-                                            <a class="btn btn-primary btn-sm" href="{{ route('parciales.edit', $p->id) }}" data-bs-toggle="tooltip"
+                                            {{--  <a class="btn btn-primary btn-sm" href="{{ route('parciales.edit', $p->id) }}" data-bs-toggle="tooltip"
                                                 data-bs-placement="right" title="Editar Prueba Parcial"><i
-                                                    class="fa fa-edit"></i></a>
+                                                    class="fa fa-edit"></i></a>  --}}
                                             {{--  @endcan
                                                 @can('Modulo_Horario.asignaturas.destroy')  --}}
                                             <button class="btn btn-danger btn-sm" type="submit" data-bs-toggle="tooltip"

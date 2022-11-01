@@ -122,7 +122,7 @@ class LocalesController extends Controller
 
         $l->update($request->all());
 
-        return redirect()->route('locales.index', compact('l'))->with('info', 'modificar-local');
+        return redirect()->route('locales.index')->with('info', 'modificar-local');
     }
 
     /**
