@@ -82,7 +82,7 @@ class BalancedecargaController extends Controller
         if(User::find(auth()->id())->hasRole('Vicedecana')){
         $nombreasignaturas['nombreasignaturas'] = Asignaturas::all()->where('estado', 1);
         }else{
-        $nombreasignaturas['nombreasignaturas'] = Asignaturas::all()->where('anno', session()->get('anno'))->where('estado', 1); 
+        $nombreasignaturas['nombreasignaturas'] = Asignaturas::all()->where('anno', session()->get('anno'))->where('estado', 1);
         }
         return view('Modulo_Horario.balancedecarga.create', $nombreasignaturas);
     }
@@ -147,8 +147,8 @@ class BalancedecargaController extends Controller
         $select_anno = DB::select('SELECT a.anno
         FROM balance_de_carga as bc INNER JOIN asignaturas as a ON bc.asignaturas_id = a.id
         WHERE bc.id = ' . $id . '');
-        
-        if ($anno === $select_anno[0]->anno) {
+
+        if ($anno === $select_anno[0]->anno || (User::find(auth()->id())->hasRole('Vicedecana'))) {
             $balancedecarga = Balancedecarga::find($id);
             $nombreasignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
             return view('Modulo_Horario.balancedecarga.edit', compact('balancedecarga', 'nombreasignaturas'));

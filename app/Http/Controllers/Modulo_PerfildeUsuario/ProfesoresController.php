@@ -47,19 +47,19 @@ class ProfesoresController extends Controller
     {
         session()->put('anno', User::find(auth()->id())->anno);
         $anno = session()->get('anno');
-        if(User::find(auth()->id())->hasRole('Vicedecana')){
-        $profesores = DB::select('SELECT users.id, users.anno as anno, p.p_id, p.name as grupo, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_profesor
+        if (User::find(auth()->id())->hasRole('Vicedecana')) {
+            $profesores = DB::select('SELECT users.id, users.anno as anno, p.p_id, p.name as grupo, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_profesor
         FROM users  INNER JOIN  (SELECT p.user_id ,  g.name ,p.id as p_id FROM profesores as p LEFT JOIN
         grupos as g ON p.grupos_id = g.id) as p ON users.id = p.user_id
         ');
-    }else{
-        $profesores = DB::select('SELECT users.id, users.anno as anno, p.p_id, p.name as grupo, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_profesor
+        } else {
+            $profesores = DB::select('SELECT users.id, users.anno as anno, p.p_id, p.name as grupo, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_profesor
         FROM users  INNER JOIN  (SELECT p.user_id ,  g.name ,p.id as p_id FROM profesores as p LEFT JOIN
         grupos as g ON p.grupos_id = g.id) as p ON users.id = p.user_id
         WHERE users.anno = ' . $anno . '
         ');
-    }
-       
+        }
+
         return view('Modulo_PerfildeUsuario.profesores.index', compact('profesores'));
     }
 
@@ -72,26 +72,26 @@ class ProfesoresController extends Controller
     {
 
         $anno = session()->get('anno');
-        if(User::find(auth()->id())->hasRole('Vicedecana')){
-        $users = DB::select('SELECT users.id,users.anno, users.primer_nombre,users.segundo_nombre,users.primer_apellido,users.segundo_apellido
+        if (User::find(auth()->id())->hasRole('Vicedecana')) {
+            $users = DB::select('SELECT users.id,users.anno, users.primer_nombre,users.segundo_nombre,users.primer_apellido,users.segundo_apellido
         FROM users WHERE users.id NOT IN (SELECT users.id FROM users
-        INNER JOIN profesores ON users.id = profesores.user_id) AND users.tipo_de_usuario = "Profesor" 
+        INNER JOIN profesores ON users.id = profesores.user_id) AND users.tipo_de_usuario = "Profesor"
         ');
-        $grupos = DB::select('SELECT grupos.name as grupo, grupos.id 
-        FROM grupos WHERE grupos.id NOT IN (SELECT grupos.id FROM grupos   
-        INNER JOIN profesores ON grupos.id = profesores.grupos_id) 
+            $grupos = DB::select('SELECT grupos.name as grupo, grupos.id
+        FROM grupos WHERE grupos.id NOT IN (SELECT grupos.id FROM grupos
+        INNER JOIN profesores ON grupos.id = profesores.grupos_id)
         ');
-        $asignaturas = Asignaturas::pluck('nombre', 'id')->toArray();
-    }else{
-        $users = DB::select('SELECT users.id, users.primer_nombre,users.segundo_nombre,users.primer_apellido,users.segundo_apellido
+            $asignaturas = Asignaturas::pluck('nombre', 'id')->toArray();
+        } else {
+            $users = DB::select('SELECT users.id, users.primer_nombre,users.segundo_nombre,users.primer_apellido,users.segundo_apellido
         FROM users WHERE users.id NOT IN (SELECT users.id FROM users
         INNER JOIN profesores ON users.id = profesores.user_id) AND users.tipo_de_usuario = "Profesor" AND users.anno = ' . session()->get('anno') . '
         ');
-        $grupos = DB::select('SELECT grupos.name as grupo, grupos.id 
-        FROM grupos WHERE grupos.id NOT IN (SELECT grupos.id FROM grupos   
+            $grupos = DB::select('SELECT grupos.name as grupo, grupos.id
+        FROM grupos WHERE grupos.id NOT IN (SELECT grupos.id FROM grupos
         INNER JOIN profesores ON grupos.id = profesores.grupos_id) AND grupos.anno = ' . session()->get('anno') . '
         ');
-        $asignaturas = Asignaturas::where('anno', $anno)->pluck('nombre', 'id')->toArray();
+            $asignaturas = Asignaturas::where('anno', $anno)->pluck('nombre', 'id')->toArray();
         }
         return view('Modulo_PerfildeUsuario.profesores.create', compact('users', 'grupos', 'asignaturas'));
     }
@@ -132,7 +132,7 @@ class ProfesoresController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    
+
 
     /**
      * Show the form for editing the specified resource.
@@ -143,24 +143,34 @@ class ProfesoresController extends Controller
     public function edit($id)
     {
 
-        $profesores = Profesores::findOrFail($id);
+        session()->put('anno', User::find(auth()->id())->anno);
+        $anno = session()->get('anno');
 
-        $anno  = session()->get('anno');
-        if(User::find(auth()->id())->hasRole('Vicedecana')){
-        $grupos = DB::select('SELECT grupos.name as grupo, grupos.id 
-        FROM grupos WHERE grupos.id NOT IN (SELECT grupos.id FROM grupos   
+        $select_anno = DB::select('SELECT users.anno FROM users WHERE users.id = (SELECT profesores.user_id FROM profesores WHERE profesores.id = ' . $id . ')');
+
+        if ($anno === $select_anno[0]->anno || (User::find(auth()->id())->hasRole('Vicedecana'))) {
+
+            $profesores = Profesores::findOrFail($id);
+
+            $anno  = session()->get('anno');
+            if (User::find(auth()->id())->hasRole('Vicedecana')) {
+                $grupos = DB::select('SELECT grupos.name as grupo, grupos.id
+        FROM grupos WHERE grupos.id NOT IN (SELECT grupos.id FROM grupos
         INNER JOIN profesores ON grupos.id = profesores.grupos_id)
         ');
-        $asignaturas = Asignaturas::pluck('nombre', 'id')->toArray();
-        }else{
-            $grupos = DB::select('SELECT grupos.name as grupo, grupos.id 
-            FROM grupos WHERE grupos.id NOT IN (SELECT grupos.id FROM grupos   
+                $asignaturas = Asignaturas::pluck('nombre', 'id')->toArray();
+            } else {
+                $grupos = DB::select('SELECT grupos.name as grupo, grupos.id
+            FROM grupos WHERE grupos.id NOT IN (SELECT grupos.id FROM grupos
             INNER JOIN profesores ON grupos.id = profesores.grupos_id) AND grupos.anno = ' . session()->get('anno') . '
             ');
-            $asignaturas = Asignaturas::where('anno', $anno)->pluck('nombre', 'id')->toArray();  
-        }
+                $asignaturas = Asignaturas::where('anno', $anno)->pluck('nombre', 'id')->toArray();
+            }
 
-        return view('Modulo_PerfildeUsuario.profesores.edit', compact('profesores', 'grupos', 'asignaturas'));
+            return view('Modulo_PerfildeUsuario.profesores.edit', compact('profesores', 'grupos', 'asignaturas'));
+        } else {
+            abort(401);
+        }
     }
 
     /**
@@ -210,5 +220,5 @@ class ProfesoresController extends Controller
     // {
     //     return Excel::download(new BalancedecargaExport, 'Balance de Carga.xlsx');
     // }
-   
+
 }
