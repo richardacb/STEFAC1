@@ -20,13 +20,35 @@
                     <option value="0" selected="selected">--Seleccione--</option>
                     @foreach ($users as $user)
                         <option value="{{ $user->id }}">
-                            {{ $user->primer_nombre }} {{ $user->segundo_nombre }} {{ $user->primer_apellido }} {{ $user->segundo_apellido }}
+                            @role('Vicedecana')
+                            {{ $user->primer_nombre }} {{ $user->segundo_nombre }} {{ $user->primer_apellido }}
+                            {{ $user->segundo_apellido }}
+                             ( @if ($user->anno == '1')
+                                Primer Año
+                            @endif
+                            @if ($user->anno == '2')
+                                Segundo Año
+                            @endif
+                            @if ($user->anno == '3')
+                                Tercer Año
+                            @endif
+                            @if ($user->anno == '4')
+                                Cuarto Año
+                            @endif
+                            @if ($user->anno == '5')
+                                Quinto Año
+                            @endif)
+                            @else
+                            {{ $user->primer_nombre }} {{ $user->segundo_nombre }} {{ $user->primer_apellido }}
+                            {{ $user->segundo_apellido }}
+                            @endrole
+                           
                         </option>
                     @endforeach
                 </select>
                 @error('user_id')
-                    <strong class="error-message text-danger"> {{ $message }} </strong>
-                @enderror
+                <strong class="error-message text-danger"> {{ 'Campo Requerido' }} </strong>
+            @enderror
             </div>
         </div>
         @include('Modulo_PerfildeUsuario.estudiantes.form')
@@ -36,7 +58,7 @@
     </div>
 </div>
 @stop
-    @section('js')
-    <script src="{{ asset('js/jquery-3.5.1.js') }}"></script>
-    {{--  <script src="{{ asset('js/estudiantesperfil.js') }}" defer></script>  --}}
-    @endsection
+@section('js')
+<script src="{{ asset('js/jquery-3.5.1.js') }}"></script>
+{{--  <script src="{{ asset('js/estudiantesperfil.js') }}" defer></script>  --}}
+@endsection

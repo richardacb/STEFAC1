@@ -37,12 +37,12 @@ class PlanificacionController extends Controller
         // $grupos = Grupos::all()->where('anno', session()->get('anno'));
         // $asignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
         // $planificacion = Planificacion::all();
-
+        if(User::find(auth()->id())->hasRole('Vicedecana')){
         $planificaciones = DB::select('SELECT p.id, prof.normbre_prof, g.name as grupo, a.nombre as asignatura
         FROM planificacions as p
         INNER JOIN (SELECT users.id, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as normbre_prof
         FROM users INNER JOIN profesores ON users.id = profesores.user_id
-        WHERE users.anno = ' . $anno . ') as prof ON p.profesores_id = prof.id
+        ) as prof ON p.profesores_id = prof.id
 
         INNER JOIN
         grupos as g ON p.grupos_id = g.id
@@ -50,8 +50,23 @@ class PlanificacionController extends Controller
         INNER JOIN
         asignaturas as a ON p.asignaturas_id = a.id
 
-        WHERE g.anno = ' . $anno . '
-        AND a.anno = ' . $anno . '');
+        ');
+        }else{
+            $planificaciones = DB::select('SELECT p.id, prof.normbre_prof, g.name as grupo, a.nombre as asignatura
+            FROM planificacions as p
+            INNER JOIN (SELECT users.id, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as normbre_prof
+            FROM users INNER JOIN profesores ON users.id = profesores.user_id
+            WHERE users.anno = ' . $anno . ') as prof ON p.profesores_id = prof.id
+    
+            INNER JOIN
+            grupos as g ON p.grupos_id = g.id
+    
+            INNER JOIN
+            asignaturas as a ON p.asignaturas_id = a.id
+    
+            WHERE g.anno = ' . $anno . '
+            AND a.anno = ' . $anno . '');
+        }
 
         //var_dump($planificacion);
 

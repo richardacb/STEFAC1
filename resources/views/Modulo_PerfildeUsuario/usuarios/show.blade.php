@@ -25,16 +25,20 @@
                     @endif
 
                     <h2>{{ $users->primer_nombre }} {{ $users->segundo_nombre }}</h2>
-                    <h3>{{ $users->tipo_de_usuario }}</h3>
                     {{-- @if (@Auth::user()->hasRole('Administrador'))
                         <h3>Administrador</h3>
                     @endif --}}
-                    {{-- <p>{{$users->getRoleNames()}}</p> --}}
+                    <p>{{$users->getRoleNames()}}</p>
                     @if ($users->tipo_de_usuario == 'Profesor')
                         <div class="row">
                             <div class="label ">Grupo Guía: </div>
                             @if (isset($users->profesores))
-                                <div>&nbsp;{{ $users->profesores->grupos->name }}
+                                <div>
+                                    @if (isset($users->profesores->grupos->name))
+                                    {{ $users->profesores->grupos->name }}
+                                    @else
+                                    <div> -- -- -- -- -- -- </div>
+                                @endif
                                 </div>
                             @else
                                 <div> -- -- -- -- -- -- </div>

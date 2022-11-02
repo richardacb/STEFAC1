@@ -4,7 +4,7 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="form-group">
                     {!! Form::label('name', 'Nombre:') !!}
-                    {!! Form::text('name', null, ['class' => 'form-control', 'id' => 'name', 'placeholder' => 'Ingrece el nombre del rol']) !!}
+                    {!! Form::text('name', null, ['class' => 'form-control', 'id' => 'name', 'placeholder' => 'Ingrese el nombre del rol']) !!}
                     @error('name')
                         <strong class="error-message text-danger"> {{ $message }} </strong>
                     @enderror

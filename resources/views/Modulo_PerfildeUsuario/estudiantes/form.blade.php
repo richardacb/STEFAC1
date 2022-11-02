@@ -9,7 +9,7 @@
                         {!! Form::text('nombre_madre', null, [
                             'class' => 'form-control',
                             'id' => 'nombre_madre',
-                            'placeholder' => 'Ingrece Nombre de la madre o tutora',
+                            'placeholder' => 'Ingrese Nombre de la madre o tutora',
                         ]) !!}
                         @error('nombre_madre')
                             <strong class="error-message text-danger"> {{ $message }} </strong>
@@ -24,7 +24,7 @@
                             'class' => 'form-control',
                             'rows' => 1,
                             'id' => 'direccion_completa',
-                            'placeholder' => 'Ingrece la direccion completa',
+                            'placeholder' => 'Ingrese la direccion completa',
                         ]) !!}
                         @error('direccion_completa')
                             <strong class="error-message text-danger"> {{ $message }} </strong>
@@ -77,7 +77,7 @@
                         {!! Form::text('organizacion_politica', null, [
                             'class' => 'form-control',
                             'id' => 'organizacion_politica',
-                            'placeholder' => 'Ingrece Organización política',
+                            'placeholder' => 'Ingrese Organización política',
                         ]) !!}
                         @error('organizacion_politica')
                             <strong class="error-message text-danger"> {{ $message }} </strong>
@@ -113,7 +113,7 @@
                         {!! Form::text('centro_trabajo', null, [
                             'class' => 'form-control',
                             'id' => 'centro_trabajo',
-                            'placeholder' => 'Ingrece Centro de trabajo',
+                            'placeholder' => 'Ingrese Centro de trabajo',
                         ]) !!}
                         @error('centro_trabajo')
                             <strong class="error-message text-danger"> {{ $message }} </strong>
@@ -126,7 +126,7 @@
                         {!! Form::text('discapacidad', null, [
                             'class' => 'form-control',
                             'id' => 'discapacidad',
-                            'placeholder' => 'Ingrece Discapacidad',
+                            'placeholder' => 'Ingrese Discapacidad',
                         ]) !!}
                         @error('discapacidad')
                             <strong class="error-message text-danger"> {{ $message }} </strong>
@@ -203,7 +203,7 @@
                         {!! Form::text('tipo_curso', null, [
                             'class' => 'form-control',
                             'id' => 'tipo_curso',
-                            'placeholder' => 'Ingrece Tipo de curso',
+                            'placeholder' => 'Ingrese Tipo de curso',
                         ]) !!}
                         @error('tipo_curso')
                             <strong class="error-message text-danger"> {{ $message }} </strong>
@@ -217,7 +217,7 @@
                         {!! Form::text('plan_estudio', null, [
                             'class' => 'form-control',
                             'id' => 'plan_estudio',
-                            'placeholder' => 'Ingrece Versión plan de estudio',
+                            'placeholder' => 'Ingrese Versión plan de estudio',
                         ]) !!}
                         @error('plan_estudio')
                             <strong class="error-message text-danger"> {{ $message }} </strong>
@@ -231,7 +231,7 @@
                         {!! Form::text('organizacion_pe', null, [
                             'class' => 'form-control',
                             'id' => 'organizacion_pe',
-                            'placeholder' => 'Ingrece Organizacion de P.E',
+                            'placeholder' => 'Ingrese Organizacion de P.E',
                         ]) !!}
                         @error('organizacion_pe')
                             <strong class="error-message text-danger"> {{ $message }} </strong>
@@ -245,7 +245,7 @@
                         {!! Form::text('cohorte_estudiantil', null, [
                             'class' => 'form-control',
                             'id' => 'cohorte_estudiantil',
-                            'placeholder' => 'Ingrece Cohorte estudiantil',
+                            'placeholder' => 'Ingrese Cohorte estudiantil',
                         ]) !!}
                         @error('cohorte_estudiantil')
                             <strong class="error-message text-danger"> {{ $message }} </strong>
@@ -259,7 +259,7 @@
                         {!! Form::number('opcion_uci', null, [
                             'class' => 'form-control',
                             'id' => 'opcion_uci',
-                            'placeholder' => 'Ingrece el Valor opción UCI',
+                            'placeholder' => 'Ingrese el Valor opción UCI',
                         ]) !!}
                         @error('opcion_uci')
                             <strong class="error-message text-danger"> {{ $message }} </strong>

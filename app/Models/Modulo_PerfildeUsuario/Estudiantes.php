@@ -14,7 +14,6 @@ class Estudiantes extends Model
     protected $fillable = [
         'user_id',
         'grupos_id',
-        'anno',
         'periodo_lectivo',
         'tipo_curso',
         'plan_estudio',
@@ -30,7 +29,6 @@ class Estudiantes extends Model
         'nombre_madre',
         'organizacion_politica',
         'opcion_uci',
-        'is_enabled'
     ];
     /**
      * Get the grupos that owns the Estudiantes

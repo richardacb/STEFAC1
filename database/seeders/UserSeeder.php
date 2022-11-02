@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
            'segundo_nombre' => 'Adminn',
            'primer_apellido' => 'Adminnn',
            'segundo_apellido' => 'Adminnnn',
-           'ci' => '98110206988',
+           'ci' => '98110206980',
            'tipo_de_usuario' => 'Profesor',
            'password' => bcrypt('password'),
            'email' => 'adminjpq@admin.com',

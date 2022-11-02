@@ -14,10 +14,11 @@ use Illuminate\Support\Facades\DB;
 
 class Opt_EstController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('can:Modulo_Optativas.opt_est.index')->only('index');
-    // }
+    public function __construct()
+    {
+        $this->middleware('can:Modulo_Optativas.opt_est.index')->only('index');
+    }
+    
     /**
      * Display a listing of the resource.
      *

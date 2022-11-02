@@ -31,7 +31,23 @@
                 @foreach ($grupos as $grupo)
                     <tr>
                         <td>{{ $grupo->name }}</td>
-                        <td>{{ $grupo->anno }}</td>
+                        <td>
+                            @if ($grupo->anno == '1')
+                            Primer Año
+                        @endif
+                        @if ($grupo->anno == '2')
+                            Segundo Año
+                        @endif
+                        @if ($grupo->anno == '3')
+                            Tercer Año
+                        @endif
+                        @if ($grupo->anno == '4')
+                            Cuarto Año
+                        @endif
+                        @if ($grupo->anno == '5')
+                            Quinto Año
+                        @endif
+                    </td>
                         <td>
                             <form action="{{ route('grupos.destroy', $grupo) }}" method="POST" class="eliminar_grupo">
                                 @csrf

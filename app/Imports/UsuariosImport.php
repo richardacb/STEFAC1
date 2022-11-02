@@ -8,18 +8,22 @@ use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
 
-class UsuariosImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading
+class UsuariosImport implements ToCollection, WithHeadingRow, WithBatchInserts, WithChunkReading
 {
     public function __construct()
     {
         HeadingRowFormatter::default('none');
     }
    
-    public function model(array $row)
+    public function collection(Collection $rows)
     {
+        foreach ($rows as $row) 
+        {
        
-        return new User([
+       User::create([
             'anno' => $row['Año académico'],
             'primer_nombre' => $row['Primer nombre'],
             'segundo_nombre' => $row['Segundo nombre'] == NULL ? " ": $row['Segundo nombre'],
@@ -38,7 +42,11 @@ class UsuariosImport implements ToModel, WithHeadingRow, WithBatchInserts, WithC
             'telefono_uci'=> $row['Teléfono - UCI'],
             'celular'=> $row['Celular'],
             'solapin'=> $row['Solapín'],
-        ]);
+        ])->assignRole('Usuario');
+        
+        }
+
+        
     }
     public function batchSize(): int
     {
