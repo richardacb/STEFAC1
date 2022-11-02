@@ -113,7 +113,7 @@ class UsuariosController extends Controller
         $users = User::findOrFail($id);
         $users->roles()->sync($request->roles);
 
-        return redirect()->route('usuarios.edit', $users)->with('info', 'asignar-rol-usuario');
+        return redirect()->route('usuarios.index')->with('info', 'asignar-rol-usuario');
     }
 
     public function actualizar(Request $request, $id)
@@ -155,9 +155,14 @@ class UsuariosController extends Controller
         session()->put('anno', User::find(auth()->id())->anno);
         $anno = session()->get('anno');
 
-        $select_anno = DB::select('SELECT users.anno FROM users WHERE users.id = ' . $id . ')');
+        // $select_anno = DB::select('SELECT users.anno FROM users WHERE users.id = ' . $id . '');
+        $select_anno_dp = DB::select('SELECT users.anno FROM users INNER JOIN diagnosticopreventivo ON users.id = diagnosticopreventivo.user_id  WHERE users.id =  ' . $id . '');
+        $select_anno_e = DB::select('SELECT users.anno FROM users INNER JOIN estudiantes ON users.id = estudiantes.user_id  WHERE users.id = ' . $id . '');
+        
+        if (($id == auth()->id()) || 
 
-        if (($anno === $select_anno[0]->anno && $id === auth()->id()) || ($anno === $select_anno[0]->anno && (User::find(auth()->id())->hasRole('ProfesorJefeAño'))) ||
+         ($anno == $select_anno_e[0]->anno  && (User::find(auth()->id())->hasRole('ProfesorJefeAño') )) ||
+            (User::find(auth()->id())->hasRole('ProfesorGuia') && $anno == $select_anno_dp[0]->anno ) ||
             (User::find(auth()->id())->hasRole('Administrador')) ||
             (User::find(auth()->id())->hasRole('Vicedecana'))
         ) {

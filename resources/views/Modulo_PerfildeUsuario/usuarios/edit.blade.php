@@ -37,16 +37,3 @@
 </form>
 @stop
 
-@section('js')
-<script src="{{ asset('js/sweetalert2@11.js') }}"></script>
-
-@if (session('info') == 'asignar-rol-usuario')
-<script>
-Swal.fire(
-      '¡Asigando!',
-      'Se asigno el Rol con exito.',
-      'success'
-    )
-</script>
-@endif
-@stop

@@ -152,6 +152,15 @@
         )
     </script>
 @endif
+@if (session('info') == 'asignar-rol-usuario')
+<script>
+Swal.fire(
+      '¡Asigando!',
+      'Se asigno el Rol con exito.',
+      'success'
+    )
+</script>
+@endif
 <script src="{{ asset('js/popper.min.js') }}"></script>
 <script>
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
