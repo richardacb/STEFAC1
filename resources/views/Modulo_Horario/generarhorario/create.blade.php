@@ -17,15 +17,9 @@
       </div>
       <div class="mb-3">
         <label for="" class="form-label">Año a Impartir</label>
-        <br>
-        <select name="anno" id="anno" class="form-control mr-sm-2 form-select">
-            <option value="0" selected="selected">--Seleccione--</option>
-            <option value="1"> 1er Año </option>
-            <option value="2"> 2er Año </option>
-            <option value="3"> 3er Año </option>
-            <option value="4"> 4er Año </option>
-            <option value="5"> 5er Año </option>
-        </select>
+        <input type="number" class="form-control" id="anno" name="anno" value="{{ $anno }}"
+        min="{{ $anno }}" max="{{ $anno }}" >
+
       </div>
       <div class="mb-3">
         <label for="" class="form-label">Semana</label>

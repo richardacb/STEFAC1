@@ -116,7 +116,7 @@ class BalancedecargaController extends Controller
 
         $balancedecarga->save();
 
-        return redirect()->route('balancedecarga.index', $balancedecarga)->with('info', 'adicionar-balancedecarga');
+        return redirect()->route('balancedecarga.index')->with('info', 'adicionar-balancedecarga');
     }
 
     /**
@@ -180,7 +180,7 @@ class BalancedecargaController extends Controller
 
         $balancedecarga->update($request->all());
 
-        return redirect()->route('balancedecarga.index', compact('balancedecarga'))->with('info', 'modificar-balancedecarga');
+        return redirect()->route('balancedecarga.index')->with('info', 'modificar-balancedecarga');
     }
 
     /**

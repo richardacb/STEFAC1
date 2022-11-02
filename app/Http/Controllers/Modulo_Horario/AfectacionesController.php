@@ -233,7 +233,7 @@ class AfectacionesController extends Controller
 
         $afectacion->update($request->all());
 
-        return redirect()->route('afectaciones.index', compact('afectacion'))->with('info', 'modificar-afectacion');
+        return redirect()->route('afectaciones.index')->with('info', 'modificar-afectacion');
     }
 
     /**

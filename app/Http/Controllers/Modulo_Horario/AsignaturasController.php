@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Modulo_Horario;
+
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class AsignaturasController extends Controller
         $this->middleware('can:Modulo_Horario.asignaturas.edit')->only('edit', 'update');
         $this->middleware('can:Modulo_Horario.asignaturas.destroy')->only('destroy');
     }
-     /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -26,13 +27,18 @@ class AsignaturasController extends Controller
     {
 
         session()->put('anno', User::find(auth()->id())->anno);
+
         if(User::find(auth()->id())->hasRole('Vicedecana')){
         $asignaturas=Asignaturas::all();
         }else{
         $asignaturas=Asignaturas::all()->where('anno',session()->get('anno'));
         }
+
+
+        $asignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
+
         $secciones = Secciones::all();
-        return view('Modulo_Horario.asignaturas.index', compact('asignaturas','secciones'));
+        return view('Modulo_Horario.asignaturas.index', compact('asignaturas', 'secciones'));
     }
 
     /**
@@ -45,7 +51,7 @@ class AsignaturasController extends Controller
         $secciones = Secciones::all();
         $anno = session()->get('anno');
 
-        return view('Modulo_Horario.asignaturas.create', compact('secciones','anno'));
+        return view('Modulo_Horario.asignaturas.create', compact('secciones', 'anno'));
     }
 
     /**
@@ -62,17 +68,17 @@ class AsignaturasController extends Controller
             'anno' => 'required',
             'semestre' => 'required',
             'estado' => 'required'
-             ];
-             $messages = [
-                'seccion.required' =>'Campo Requerido',
-                'nombre.required' =>'Campo Requerido',
-                'anno.required' =>'Campo Requerido',
-                'semestre.required' => 'Campo Requerido',
-                'estado.required' => 'Campo Requerido',
-             ];
-             $this->validate( $request, $rules, $messages);
+        ];
+        $messages = [
+            'seccion.required' => 'Campo Requerido',
+            'nombre.required' => 'Campo Requerido',
+            'anno.required' => 'Campo Requerido',
+            'semestre.required' => 'Campo Requerido',
+            'estado.required' => 'Campo Requerido',
+        ];
+        $this->validate($request, $rules, $messages);
 
-        $asignaturas=new Asignaturas();
+        $asignaturas = new Asignaturas();
         $asignaturas->secciones_id = $request->get('seccion');
         $asignaturas->nombre = $request->get('nombre');
         $asignaturas->anno = $request->get('anno');
@@ -110,11 +116,11 @@ class AsignaturasController extends Controller
         FROM asignaturas
         WHERE asignaturas.secciones_id NOT IN (SELECT secciones.id
                                     FROM secciones
-                                    WHERE secciones.id <> '.$asignatura->secciones_id.'
+                                    WHERE secciones.id <> ' . $asignatura->secciones_id . '
                                   )
 ');
 
-        return view('Modulo_Horario.asignaturas.edit', compact('asignatura','secciones','seccion'));
+        return view('Modulo_Horario.asignaturas.edit', compact('asignatura', 'secciones', 'seccion'));
     }
 
     /**
@@ -126,9 +132,21 @@ class AsignaturasController extends Controller
      */
     public function update(Request $request, $id)
     {
+        session()->put('anno', User::find(auth()->id())->anno);
+        $anno = session()->get('anno');
+        $asignatura_anno = DB::select('SELECT asignaturas.anno
+        FROM asignaturas
+        WHERE asignaturas.anno = ' . $anno . '');
+
+        if ($request->user()
+            ->can('update', $id)
+
+        ) {
+            abort(403);
+        }
 
         $asignatura = Asignaturas::find($id);
-      /*  $request->validate([
+        /*  $request->validate([
             'name_5' => 'required',
             'frecuencias' => 'required',
         ]);
@@ -142,15 +160,15 @@ class AsignaturasController extends Controller
             'anno' => 'required',
             'semestre' => 'required',
             'estado' => 'required'
-             ];
-             $messages = [
-                'seccion.required' =>'Campo Requerido',
-                'nombre.required' =>'Campo Requerido',
-                'anno.required' =>'Campo Requerido',
-                'semestre.required' => 'Campo Requerido',
-                'estado.required' => 'Campo Requerido',
-             ];
-             $this->validate( $request, $rules, $messages);
+        ];
+        $messages = [
+            'seccion.required' => 'Campo Requerido',
+            'nombre.required' => 'Campo Requerido',
+            'anno.required' => 'Campo Requerido',
+            'semestre.required' => 'Campo Requerido',
+            'estado.required' => 'Campo Requerido',
+        ];
+        $this->validate($request, $rules, $messages);
 
         $asignatura->secciones_id = $request->get('seccion');
         $asignatura->nombre = $request->get('nombre');
@@ -159,7 +177,7 @@ class AsignaturasController extends Controller
         $asignatura->estado = $request->get('estado');
         $asignatura->update($request->all());
 
-        return redirect()->route('asignaturas.index', compact('asignatura'))->with('info', 'modificar-asignatura');
+        return redirect()->route('asignaturas.index')->with('info', 'modificar-asignatura');
     }
 
     /**
@@ -168,13 +186,11 @@ class AsignaturasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Asignaturas $asignatura )
+    public function destroy(Asignaturas $asignatura)
     {
 
         $asignatura->delete();
 
         return redirect()->route('asignaturas.index')->with('info', 'eliminar-asignatura');
     }
-
-
 }

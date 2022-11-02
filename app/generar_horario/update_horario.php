@@ -26,10 +26,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $action = $_GET['form'];
 
         update2($action, $asignaturas_id, $semestre, $anno, $semana, $dia, $turno, $conn);
-        insert_pp($asignaturas_id, $semestre, $anno, $semana, $dia, $turno, $conn);
-
-        header("Location: http://127.0.0.1:8000/admin/parciales");
-        die();
     }
 }
 
@@ -183,99 +179,171 @@ function update2($action, $asignaturas_id, $semestre, $anno, $semana, $dia, $tur
         $seccion  = 2;
     }
 
-    // $select_disp = "SELECT disponibilidad.id FROM disponibilidad WHERE disponibilidad.dia = $dia AND disponibilidad.turno = $turno
-    // AND disponibilidad.locales_id IN (SELECT locales.id FROM locales WHERE locales.tipo_de_locales_id = 1)";
+    // $sql = "SELECT asignaciones.*
+    // FROM asignaciones
+    // WHERE asignaciones.semana = $semana
+    // AND asignaciones.planificacion_id IN (SELECT planificacions.id FROM planificacions WHERE planificacions.asignaturas_id <> $asignaturas_id
+    //                                       AND planificacions.profesores_id IS NULL)
+    // AND asignaciones.disponibilidad_id IN (SELECT disponibilidad.id FROM disponibilidad WHERE disponibilidad.dia = $dia AND disponibilidad.turno = $turno
+    //                                        AND disponibilidad.locales_id IN (SELECT locales.id FROM locales WHERE locales.tipo_de_locales_id = 1))";
 
-    // $result_disp = $conn->query($select_disp);
-    // $disp = array();
-    // if ($result_disp->num_rows > 0) {
-    //     while ($row = $result_disp->fetch_assoc()) {
-    //         array_push($disp, array(
-    //             "id" => intval($row['id'])
-    //         ));
-    //     }
-    // }
-    //var_dump($disp);
+    // $result = $conn->query($sql);
 
-    $sql = "SELECT asignaciones.*
+
+    $select_pl = "SELECT asignaciones.*
     FROM asignaciones
     WHERE asignaciones.semana = $semana
-    AND asignaciones.planificacion_id IN (SELECT planificacions.id FROM planificacions WHERE planificacions.asignaturas_id <> $asignaturas_id
-                                          AND planificacions.profesores_id IS NULL)
-    AND asignaciones.disponibilidad_id IN (SELECT disponibilidad.id FROM disponibilidad WHERE disponibilidad.dia = $dia AND disponibilidad.turno = $turno
-                                           AND disponibilidad.locales_id IN (SELECT locales.id FROM locales WHERE locales.tipo_de_locales_id = 1))";
+    AND asignaciones.anno = $anno
+    AND asignaciones.planificacion_id IN (SELECT planificacions.id FROM planificacions WHERE planificacions.asignaturas_id = $asignaturas_id
+                                      AND planificacions.profesores_id IS NULL)";
 
-    $result = $conn->query($sql);
+    $result_pl = $conn->query($select_pl);
 
-    if ($result->num_rows > 0) {
-        echo "escoja otro turno";
-    } else {
-        // slicitar datos de la semana
-        $sql = "SELECT planificacions.id FROM planificacions WHERE planificacions.asignaturas_id = $asignaturas_id
-                                              AND planificacions.profesores_id IS NULL";
-
-        $result = $conn->query($sql);
-
-        if ($action == 'edit_pp' && $result->num_rows > 0) {
-            $delete_asig = "DELETE FROM asignaciones WHERE asignaciones.planificacion_id IN ($sql)";
-            $conn->query($delete_asig);
-
-            asignar_pp($asignaturas_id, $semestre, $anno, $semana, $dia, $turno, $seccion, $conn);
-        }
-        if ($action == 'create_pp' && $result->num_rows > 0) {
+    if ($action == 'create_pp') {
+        if ($result_pl->num_rows > 0) {
+            //echo "escoja otro turno";
             echo "la PP ya esta planificada";
-        }
+        } else {
+            // $select_planif = "SELECT asignaciones.*
+            // FROM asignaciones
+            // WHERE asignaciones.semana = $semana
+            // AND asignaciones.planificacion_id IN (SELECT planificacions.id FROM planificacions WHERE planificacions.asignaturas_id = $asignaturas_id
+            //                                   AND planificacions.profesores_id IS NULL)";
 
-        if ($action == 'create_pp' && $result->num_rows == 0) {
-            // slicitar grupos de acuerdo al anno
-            $select_grup = "SELECT grupos.id FROM grupos WHERE grupos.anno = $anno";
-            $result_grup = $conn->query($select_grup);
-            $grup = array();
-            if ($result_grup->num_rows > 0) {
-                while ($row = $result_grup->fetch_assoc()) {
-                    array_push($grup, array(
-                        "id" => intval($row['id'])
-                    ));
-                }
+            // $result_planif = $conn->query($select_planif);
+
+            $sql = "SELECT asignaciones.*
+            FROM asignaciones
+            WHERE asignaciones.semana = $semana
+            AND asignaciones.planificacion_id IN (SELECT planificacions.id FROM planificacions WHERE planificacions.asignaturas_id <> $asignaturas_id
+                                                  AND planificacions.profesores_id IS NULL)
+            AND asignaciones.disponibilidad_id IN (SELECT disponibilidad.id FROM disponibilidad WHERE disponibilidad.dia = $dia AND disponibilidad.turno = $turno
+                                                   AND disponibilidad.locales_id IN (SELECT locales.id FROM locales WHERE locales.tipo_de_locales_id = 1))";
+
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                //echo "la PP ya esta planificada";
+                echo "escoja otro turno";
+            } else {
+                crear_planif($asignaturas_id, $semestre, $anno, $semana, $dia, $turno, $seccion, $conn);
             }
-
-            // crear e insertar planificaciones de las pruebas parciales
-            foreach ($grup as $g) {
-
-                $insert_planif = "INSERT INTO planificacions(profesores_id, asignaturas_id, grupos_id) VALUES (NULL,'$asignaturas_id'," . $g['id'] . ")";
-                $conn->query($insert_planif);
-            }
-
-            asignar_pp($asignaturas_id, $semestre, $anno, $semana, $dia, $turno, $seccion, $conn);
         }
-
     }
+
+
+    // if ($action == 'edit_pp') {
+
+
+    // }
+
+    // if ($action == 'create_pp' && $result->num_rows > 0) {
+    //     echo "la PP ya esta planificada";
+    // }
+
+    // if ($action == 'create_pp' && $result->num_rows == 0) {
+    //     crear_planif($asignaturas_id, $semestre, $anno, $semana, $dia, $turno, $seccion, $conn);
+    // }
+
+
+    // else {
+    //     // slicitar datos de la semana
+    //     $sql = "SELECT planificacions.id FROM planificacions WHERE planificacions.asignaturas_id = $asignaturas_id
+    //                                           AND planificacions.profesores_id IS NULL";
+
+    //     $result1 = $conn->query($sql);
+
+    //     if ($action == 'edit_pp' && $result1->num_rows > 0 || $action == 'edit_pp' && $result1->num_rows == 0) {
+
+    //         $select_a = "SELECT planificacions.asignaturas_id FROM planificacions WHERE planificacions.asignaturas_id = $asignaturas_id
+    //         AND planificacions.profesores_id IS NULL";
+
+    //         $result_a = $conn->query($select_a);
+
+    //         if ($result_a->num_rows > 0) {
+    //             //echo 'hola';
+    //             $delete_asig = "DELETE FROM asignaciones
+    //             WHERE asignaciones.semana = $semana
+    //             AND asignaciones.planificacion_id IN (SELECT planificacions.id FROM planificacions WHERE planificacions.asignaturas_id = $asignaturas_id
+    //                                                   AND planificacions.profesores_id IS NULL)";
+    //             $conn->query($delete_asig);
+
+    //             asignar_pp($asignaturas_id, $semestre, $anno, $semana, $dia, $turno, $seccion, $conn);
+    //         } else {
+    //             //echo 'hola';
+    //             $update_planif = "UPDATE planificacions
+    //             SET planificacions.asignaturas_id = $asignaturas_id
+    //             WHERE planificacions.id IN (SELECT asignaciones.planificacion_id
+    //                                        FROM asignaciones
+    //                                        WHERE asignaciones.planificacion_id IN (SELECT planificacions.id
+    //                                                                               FROM planificacions
+    //                                                                               WHERE planificacions.profesores_id IS NULL)
+    //                                         AND asignaciones.disponibilidad_id IN (SELECT disponibilidad.id
+    //                                                                              FROM disponibilidad
+    //                                                                              WHERE disponibilidad.locales_id IN (SELECT locales.id
+    //                                                                              FROM locales
+    //                                                                              WHERE locales.tipo_de_locales_id = 1)
+    //                                                                              AND disponibilidad.dia = $dia
+    //                                                                              AND disponibilidad.turno = $turno)
+    //                                         AND asignaciones.semana = $semana
+    //                                         AND asignaciones.anno = $anno)
+    //                                                                               ";
+    //             $conn->query($update_planif);
+    //             //update_pp($asignaturas_id, $semestre, $anno, $semana, $dia, $turno, $conn);
+    //         }
+    //     }
+    // }
 }
 
-function asignar_pp($asignaturas_id, $semestre, $anno, $semana, $dia, $turno, $seccion, $conn) {
-
-        $select_asig = "SELECT * FROM asignaciones WHERE asignaciones.semana = $semana";
-        $result_asig = $conn->query($select_asig);
-
-        // slicitar planificaciones de pruebas parciales
-        $select_planif = "SELECT planificacions.id FROM planificacions WHERE planificacions.asignaturas_id = $asignaturas_id AND planificacions.profesores_id IS NULL";
-        $result_planif = $conn->query($select_planif);
-
-        $planif = array();
-
-        if ($result_planif->num_rows > 0) {
-            while ($row = $result_planif->fetch_assoc()) {
-                array_push($planif, array(
-                    "id" => intval($row['id'])
-                ));
-            }
+function crear_planif($asignaturas_id, $semestre, $anno, $semana, $dia, $turno, $seccion, $conn)
+{
+    // slicitar grupos de acuerdo al anno
+    $select_grup = "SELECT grupos.id FROM grupos WHERE grupos.anno = $anno";
+    $result_grup = $conn->query($select_grup);
+    $grup = array();
+    if ($result_grup->num_rows > 0) {
+        while ($row = $result_grup->fetch_assoc()) {
+            array_push($grup, array(
+                "id" => intval($row['id'])
+            ));
         }
+    }
 
-        if ($result_asig->num_rows > 0) {
+    // crear e insertar planificaciones de las pruebas parciales
+    foreach ($grup as $g) {
 
-            foreach ($planif as $p) {
-                //slicitar disponibilidad que aun tenga capacidad
-                $sql = "SELECT asignaciones.disponibilidad_id
+        $insert_planif = "INSERT INTO planificacions(profesores_id, asignaturas_id, grupos_id) VALUES (NULL,'$asignaturas_id'," . $g['id'] . ")";
+        $conn->query($insert_planif);
+    }
+
+    asignar_pp($asignaturas_id, $semestre, $anno, $semana, $dia, $turno, $seccion, $conn);
+}
+
+function asignar_pp($asignaturas_id, $semestre, $anno, $semana, $dia, $turno, $seccion, $conn)
+{
+
+    $select_asig = "SELECT * FROM asignaciones WHERE asignaciones.semana = $semana";
+    $result_asig = $conn->query($select_asig);
+
+    // slicitar planificaciones de pruebas parciales
+    $select_planif = "SELECT planificacions.id FROM planificacions WHERE planificacions.asignaturas_id = $asignaturas_id AND planificacions.profesores_id IS NULL";
+    $result_planif = $conn->query($select_planif);
+
+    $planif = array();
+
+    if ($result_planif->num_rows > 0) {
+        while ($row = $result_planif->fetch_assoc()) {
+            array_push($planif, array(
+                "id" => intval($row['id'])
+            ));
+        }
+    }
+
+    if ($result_asig->num_rows > 0) {
+
+        foreach ($planif as $p) {
+            //slicitar disponibilidad que aun tenga capacidad
+            $sql = "SELECT asignaciones.disponibilidad_id
                 FROM asignaciones
                 WHERE asignaciones.semana = $semana
                 AND asignaciones.planificacion_id IN (SELECT planificacions.id FROM planificacions WHERE planificacions.asignaturas_id = $asignaturas_id
@@ -286,25 +354,25 @@ function asignar_pp($asignaturas_id, $semestre, $anno, $semana, $dia, $turno, $s
                 HAVING COUNT(asignaciones.disponibilidad_id) < 2
                 LIMIT 1";
 
-                $result = $conn->query($sql);
+            $result = $conn->query($sql);
 
-                if ($result->num_rows > 0) {
-                    $disp = $result->fetch_assoc()['disponibilidad_id'];
-                    relacionar($disp, $p['id'], $anno, $semana, $conn);
-                } else {
-                    // slicitar disponibilidad libre
-                    $select_disp = "SELECT disponibilidad.id FROM disponibilidad WHERE disponibilidad.dia = $dia AND disponibilidad.turno = $turno
+            if ($result->num_rows > 0) {
+                $disp = $result->fetch_assoc()['disponibilidad_id'];
+                relacionar($disp, $p['id'], $anno, $semana, $conn);
+            } else {
+                // slicitar disponibilidad libre
+                $select_disp = "SELECT disponibilidad.id FROM disponibilidad WHERE disponibilidad.dia = $dia AND disponibilidad.turno = $turno
                     AND disponibilidad.locales_id IN (SELECT locales.id FROM locales WHERE locales.tipo_de_locales_id = 1)
                     AND disponibilidad.id NOT IN (SELECT asignaciones.disponibilidad_id FROM asignaciones WHERE asignaciones.semana = $semana) LIMIT 1";
 
-                    $result = $conn->query($select_disp);
+                $result = $conn->query($select_disp);
 
-                    if ($result->num_rows > 0) {
-                        $disp = $result->fetch_assoc()['id'];
-                        relacionar($disp, $p['id'], $anno, $semana, $conn);
-                    } else {
+                if ($result->num_rows > 0) {
+                    $disp = $result->fetch_assoc()['id'];
+                    relacionar($disp, $p['id'], $anno, $semana, $conn);
+                } else {
 
-                        $select_asig = "SELECT asignaciones.*
+                    $select_asig = "SELECT asignaciones.*
                         FROM asignaciones
                         WHERE asignaciones.semana = $semana
                         AND asignaciones.disponibilidad_id IN (SELECT disponibilidad.id
@@ -318,63 +386,62 @@ function asignar_pp($asignaturas_id, $semestre, $anno, $semana, $dia, $turno, $s
                                                                                                                                            FROM planificacions
                                                                                                                                            WHERE planificacions.profesores_id IS NULL)
                                                                                                                                            LIMIT 1";
-                        $result_asig = $conn->query($select_asig);
-                        $a = $result_asig->fetch_assoc();
+                    $result_asig = $conn->query($select_asig);
+                    $a = $result_asig->fetch_assoc();
 
-                        relacionar($a['disponibilidad_id'], $p['id'], $anno, $semana, $conn);
+                    relacionar($a['disponibilidad_id'], $p['id'], $anno, $semana, $conn);
 
-                        $select_planif = "SELECT planificacions.* FROM planificacions WHERE planificacions.id = " . $a['planificacion_id'] . "";
-                        $result_planif = $conn->query($select_planif);
-                        $planif = $result_planif->fetch_assoc();
+                    $select_planif = "SELECT planificacions.* FROM planificacions WHERE planificacions.id = " . $a['planificacion_id'] . "";
+                    $result_planif = $conn->query($select_planif);
+                    $planif = $result_planif->fetch_assoc();
 
-                        $tc = 'C';
-                        $disponibilidad = devolver_locales($planif['asignaturas_id'], $seccion, $tc, $a['disponibilidad_id'], $conn);
+                    $tc = 'C';
+                    $disponibilidad = devolver_locales($planif['asignaturas_id'], $seccion, $tc, $a['disponibilidad_id'], $conn);
 
 
-                        //recorriendo locales disponibles para asignar un local disponible a cada planificación
-                        foreach ($disponibilidad as $ld) {
+                    //recorriendo locales disponibles para asignar un local disponible a cada planificación
+                    foreach ($disponibilidad as $ld) {
 
-                            //comprobar si disponibilidad actual no esta ocupada
-                            if (!ocupada($planif['id'], $ld['id'], $planif['asignaturas_id'], $tc, $semana, $anno, $conn)) {
+                        //comprobar si disponibilidad actual no esta ocupada
+                        if (!ocupada($planif['id'], $ld['id'], $planif['asignaturas_id'], $tc, $semana, $anno, $conn)) {
 
-                                //echo ocupada($a['planif_id'], $ld['id'], $id_asig, $tc, $disp_afect, $conn)."<br>";
-                                //comprobar que no se imparta más de 1 turno de la misma asignatura el mismo dia al mismo grupo
-                                //comprobar que un mismo grupo no este en varios locales el mismo dia y el mismo turno
-                                //comprobar que un profesor no este el mismo dia y el mismo turno en más de 1 local a la vez
-                                // $sql3 = "SELECT p.grupos_id FROM profesores as p WHERE p.user_id = '$profesor_afectado_id'";
+                            //echo ocupada($a['planif_id'], $ld['id'], $id_asig, $tc, $disp_afect, $conn)."<br>";
+                            //comprobar que no se imparta más de 1 turno de la misma asignatura el mismo dia al mismo grupo
+                            //comprobar que un mismo grupo no este en varios locales el mismo dia y el mismo turno
+                            //comprobar que un profesor no este el mismo dia y el mismo turno en más de 1 local a la vez
+                            // $sql3 = "SELECT p.grupos_id FROM profesores as p WHERE p.user_id = '$profesor_afectado_id'";
 
-                                // $result3 = $conn->query($sql3);
-                                // $value = $result3->fetch_assoc();
-                                // $id_grupo = $value['grupos_id'];
+                            if (!comprobar(
+                                $planif['asignaturas_id'],
+                                $planif['grupos_id'],
+                                $planif['profesores_id'],
+                                $ld,
+                                $a['disponibilidad_id'],
+                                $turno,
+                                $semana,
+                                $anno,
+                                $conn
+                            )) {
+                                //relacionar disponibilidad con planificacion en relaciones
+                                relacionar($ld['id'], $planif['id'], $anno, $semana, $conn);
 
-                                if (!comprobar(
-                                    $planif['asignaturas_id'],
-                                    $planif['grupos_id'],
-                                    $planif['profesores_id'],
-                                    $ld,
-                                    $a['disponibilidad_id'],
-                                    $turno,
-                                    $semana,
-                                    $anno,
-                                    $conn
-                                )) {
-                                    //relacionar disponibilidad con planificacion en relaciones
-                                    relacionar($ld['id'], $planif['id'], $anno, $semana, $conn);
-
-                                    break;
-                                }
+                                break;
                             }
                         }
-                        $delete_asig = "DELETE FROM asignaciones WHERE asignaciones.id = " . $a['id'] . "";
-                        $conn->query($delete_asig);
                     }
+                    $delete_asig = "DELETE FROM asignaciones WHERE asignaciones.id = " . $a['id'] . "";
+                    $conn->query($delete_asig);
                 }
             }
-        } else {
+        }
 
-            foreach ($planif as $p) {
-                // comprobar que exista algun salon con disponibilidad para que otro grupo haga su parcial ahi
-                $sql = "SELECT asignaciones.disponibilidad_id
+        insert_pp($asignaturas_id, $semestre, $anno, $semana, $dia, $turno, $conn);
+
+    } else {
+
+        foreach ($planif as $p) {
+            // comprobar que exista algun salon con disponibilidad para que otro grupo haga su parcial ahi
+            $sql = "SELECT asignaciones.disponibilidad_id
             FROM asignaciones
             WHERE asignaciones.semana = $semana
             AND asignaciones.disponibilidad_id IN (SELECT disponibilidad.id FROM disponibilidad WHERE disponibilidad.dia = $dia AND disponibilidad.turno = $turno
@@ -383,44 +450,61 @@ function asignar_pp($asignaturas_id, $semestre, $anno, $semana, $dia, $turno, $s
             HAVING COUNT(asignaciones.disponibilidad_id) < 2
             LIMIT 1";
 
-                $result = $conn->query($sql);
+            $result = $conn->query($sql);
 
-                if ($result->num_rows > 0) {
-                    $disp  = $result->fetch_assoc()['disponibilidad_id'];
-                } else {
-                    $sql2 = "SELECT disponibilidad.id FROM disponibilidad WHERE disponibilidad.dia = $dia AND disponibilidad.turno = $turno
+            if ($result->num_rows > 0) {
+                $disp  = $result->fetch_assoc()['disponibilidad_id'];
+            } else {
+                $sql2 = "SELECT disponibilidad.id FROM disponibilidad WHERE disponibilidad.dia = $dia AND disponibilidad.turno = $turno
                 AND disponibilidad.locales_id IN (SELECT locales.id FROM locales WHERE locales.tipo_de_locales_id = 1)
                 AND disponibilidad.id NOT IN (SELECT asignaciones.disponibilidad_id FROM asignaciones WHERE asignaciones.semana = $semana) LIMIT 1";
-                    $result2 = $conn->query($sql2);
+                $result2 = $conn->query($sql2);
 
-                    if ($result2->num_rows > 0) {
-                        $disp  = $result2->fetch_assoc()['id'];
-                    }
+                if ($result2->num_rows > 0) {
+                    $disp  = $result2->fetch_assoc()['id'];
                 }
-
-                $p_id = $p['id'];
-
-                $insert_asig = "INSERT INTO asignaciones(disponibilidad_id, planificacion_id, anno, semana, estado) VALUES ('$disp','$p_id','$anno','$semana','1')";
-                $conn->query($insert_asig);
             }
+
+            relacionar($disp, $p['id'], $anno, $semana, $conn);
+            // $p_id = $p['id'];
+
+            // $insert_asig = "INSERT INTO asignaciones(disponibilidad_id, planificacion_id, anno, semana, estado) VALUES ('$disp','$p_id','$anno','$semana','1')";
+            // $conn->query($insert_asig);
         }
 
+        insert_pp($asignaturas_id, $semestre, $anno, $semana, $dia, $turno, $conn);
+
+    }
 }
 
 
 function insert_pp($asignaturas_id, $semestre, $anno, $semana, $dia, $turno, $conn)
 {
 
-    $select_pp = "SELECT * FROM pruebasparciales WHERE asignaturas_id = '$asignaturas_id'";
-    $result = $conn->query($select_pp);
-
-    if ($result->num_rows == 0) {
-        $insert_pp = "INSERT INTO pruebasparciales (asignaturas_id, anno, semestre, dia, turno, semana)
+    $insert_pp = "INSERT INTO pruebasparciales (asignaturas_id, anno, semestre, dia, turno, semana)
         VALUES ('$asignaturas_id','$anno','$semestre','$dia','$turno', '$semana')";
 
-        $conn->query($insert_pp);
-    }
+    $conn->query($insert_pp);
+
+    header("Location: http://127.0.0.1:8000/admin/parciales");
+    die();
 }
+
+// function update_pp($asignaturas_id, $semestre, $anno, $semana, $dia, $turno, $conn)
+// {
+
+//     $update_pp = "UPDATE pruebasparciales SET asignaturas_id = $asignaturas_id
+//     WHERE pruebasparciales.anno = $anno
+//     AND pruebasparciales.semestre = $semestre
+//     AND pruebasparciales.dia = $dia
+//     AND pruebasparciales.turno = $turno
+//     AND pruebasparciales.semana = $semana";
+
+//     $conn->query($update_pp);
+
+//     header("Location: http://127.0.0.1:8000/admin/parciales");
+//     die();
+// }
 // function check_bc_isGenenated($id_asig, $tc, $anno, $semana, $conn)
 // {
 

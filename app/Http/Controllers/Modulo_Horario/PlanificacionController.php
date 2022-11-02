@@ -116,7 +116,7 @@ class PlanificacionController extends Controller
 
         $planificacion->save();
 
-        return redirect()->route('planificacion.index', $planificacion)->with('info', 'adicionar-planificacion');
+        return redirect()->route('planificacion.index')->with('info', 'adicionar-planificacion');
     }
 
     /**
@@ -182,7 +182,7 @@ class PlanificacionController extends Controller
 
         $planificacion->update($request->all());
 
-        return redirect()->route('planificacion.index', compact('planificacion'))->with('info', 'modificar-planificacion');
+        return redirect()->route('planificacion.index')->with('info', 'modificar-planificacion');
     }
 
     /**
