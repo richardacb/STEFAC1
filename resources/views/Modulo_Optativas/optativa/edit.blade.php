@@ -81,17 +81,13 @@
             <div class="mt-3 w-25 mx-1">
                 <label class="form-label">Año Académico</label>
 
-                <input type="number" name="anno_academico" id="anno_academico" class="form-control"
-                    value="{{ $optativa->anno_academico }}" min="{{ $optativa->anno_academico }}"
-                    max="{{ $optativa->anno_academico }}" readonly>
-
                 @role('Vicedecana')
-                <input type="number" class="form-control" id="anno" name="anno" value=""
-            min="1" max="5">
-            @else
-                <input type="number" name="anno_academico" id="anno_academico" class="form-control" 
-                    value="{{ $optativa->anno_academico }}" min="{{ $optativa->anno_academico }}"
-                    max="{{ $optativa->anno_academico }}">
+                    <input type="number" class="form-control" id="anno" name="anno" value="" min="1"
+                        max="5">
+                @else
+                    <input type="number" name="anno_academico" id="anno_academico" class="form-control"
+                        value="{{ $optativa->anno_academico }}" min="{{ $optativa->anno_academico }}"
+                        max="{{ $optativa->anno_academico }}" readonly>
                 @endrole
 
             </div>

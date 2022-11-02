@@ -53,7 +53,7 @@ class UsuariosController extends Controller
         $users = new User();
         $users->ci = $request->get('ci');
         $users->primer_nombre = $request->get('primer_nombre');
-        $users->segundo_nombre = $request->get('segundo_nombre') == NULL ? " ": $request->get('segundo_nombre');
+        $users->segundo_nombre = $request->get('segundo_nombre') == NULL ? " " : $request->get('segundo_nombre');
         $users->primer_apellido = $request->get('primer_apellido');
         $users->segundo_apellido = $request->get('segundo_apellido');
         $users->tipo_de_usuario = $request->get('tipo_de_usuario');
@@ -97,7 +97,7 @@ class UsuariosController extends Controller
     {
         $users = User::findOrFail($id);
         //echo $users->password;
-         return view('Modulo_PerfildeUsuario.usuarios.editar', compact('users'));
+        return view('Modulo_PerfildeUsuario.usuarios.editar', compact('users'));
     }
 
     /**
@@ -124,7 +124,7 @@ class UsuariosController extends Controller
 
         $users->ci = $request->get('ci');
         $users->primer_nombre = $request->get('primer_nombre');
-        $users->segundo_nombre = $request->get('segundo_nombre') == NULL ? " ": $request->get('segundo_nombre');
+        $users->segundo_nombre = $request->get('segundo_nombre') == NULL ? " " : $request->get('segundo_nombre');
         $users->primer_apellido = $request->get('primer_apellido');
         $users->segundo_apellido = $request->get('segundo_apellido');
         $users->tipo_de_usuario = $request->get('tipo_de_usuario');
@@ -152,16 +152,29 @@ class UsuariosController extends Controller
      */
     public function show($id)
     {
-        $users = User::findOrFail($id);
-        $cant_opt_finalizadas = DB::select('SELECT COUNT(opt_ests.id_est) as cant_opt
+        session()->put('anno', User::find(auth()->id())->anno);
+        $anno = session()->get('anno');
+
+        $select_anno = DB::select('SELECT users.anno FROM users WHERE users.id = ' . $id . ')');
+
+        if (($anno === $select_anno[0]->anno && $id === auth()->id()) || ($anno === $select_anno[0]->anno && (User::find(auth()->id())->hasRole('ProfesorJefeAño'))) ||
+            (User::find(auth()->id())->hasRole('Administrador')) ||
+            (User::find(auth()->id())->hasRole('Vicedecana'))
+        ) {
+
+            $users = User::findOrFail($id);
+            $cant_opt_finalizadas = DB::select('SELECT COUNT(opt_ests.id_est) as cant_opt
                                             FROM opt_ests
                                             WHERE opt_ests.id_est = ' . $id . ' AND opt_ests.estado = 1')[0];
 
-        $cant_opt = $cant_opt_finalizadas->cant_opt;
-        return view('Modulo_PerfildeUsuario.usuarios.show', compact('users','cant_opt'));
+            $cant_opt = $cant_opt_finalizadas->cant_opt;
+            return view('Modulo_PerfildeUsuario.usuarios.show', compact('users', 'cant_opt'));
+        } else {
+            abort(401);
+        }
     }
 
-       public function importar_usuarios(Request $request)
+    public function importar_usuarios(Request $request)
     {
 
         $file = $request->file('import_file');
@@ -178,15 +191,15 @@ class UsuariosController extends Controller
     //     $pdf = PDF::loadView('Modulo_PerfildeUsuario.usuarios.index', $users);
     //     return $pdf->download('archivo-pdf.pdf');
     // }
-//     public function createPDF()
-// {
-//     $data = [
-//         'titulo' => 'Styde.net'
-//     ];
+    //     public function createPDF()
+    // {
+    //     $data = [
+    //         'titulo' => 'Styde.net'
+    //     ];
 
-//     $users = User::all();
-//     $pdf = \PDF::loadView('Modulo_PerfildeUsuario.usuarios.index', compact('users'));
-//     return $pdf->download('ejemplo.pdf');
+    //     $users = User::all();
+    //     $pdf = \PDF::loadView('Modulo_PerfildeUsuario.usuarios.index', compact('users'));
+    //     return $pdf->download('ejemplo.pdf');
 
-// }
+    // }
 }

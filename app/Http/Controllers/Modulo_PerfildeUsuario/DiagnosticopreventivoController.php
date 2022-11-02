@@ -82,17 +82,17 @@ class DiagnosticopreventivoController extends Controller
         session()->put('anno', User::find(auth()->id())->anno);
         $anno  = session()->get('anno');
 
-        
-        if(User::find(auth()->id())->hasRole('Vicedecana')){
-        $diagnosticopreventivo = DB::select('SELECT e.user_id, users.anno as anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante,e.grupo, e.dp_id
+
+        if (User::find(auth()->id())->hasRole('Vicedecana')) {
+            $diagnosticopreventivo = DB::select('SELECT e.user_id, users.anno as anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante,e.grupo, e.dp_id
                                FROM users INNER JOIN (SELECT e.user_id, g.name as grupo, e.dp_id
                                                       FROM (SELECT e.user_id, e.grupos_id,dp.id as dp_id
                                                             FROM estudiantes as e INNER JOIN diagnosticopreventivo as dp ON e.user_id = dp.user_id) as e
                                                       INNER JOIN profesores as p ON e.grupos_id = p.grupos_id
                                                       INNER JOIN grupos as g ON e.grupos_id = g.id
                                                       ) as e ON users.id = e.user_id AND users.tipo_de_usuario = "Estudiante"
-        ');      
-        }else if(User::find(auth()->id())->hasRole('ProfesorJefeAño')){
+        ');
+        } else if (User::find(auth()->id())->hasRole('ProfesorJefeAño')) {
             $diagnosticopreventivo = DB::select('SELECT e.user_id, users.anno as anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante,e.grupo, e.dp_id
             FROM users INNER JOIN (SELECT e.user_id, g.name as grupo, e.dp_id
                                    FROM (SELECT e.user_id, e.grupos_id,dp.id as dp_id
@@ -101,7 +101,7 @@ class DiagnosticopreventivoController extends Controller
                                    INNER JOIN grupos as g ON e.grupos_id = g.id
                                    ) as e ON users.id = e.user_id AND users.tipo_de_usuario = "Estudiante" AND users.anno = ' . $anno . '
         ');
-        }else{
+        } else {
             $diagnosticopreventivo = DB::select('SELECT e.user_id, users.anno as anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante,e.grupo, e.dp_id
         FROM users INNER JOIN (SELECT e.user_id, g.name as grupo, e.dp_id
                                FROM (SELECT e.user_id, e.grupos_id,dp.id as dp_id
@@ -110,7 +110,7 @@ class DiagnosticopreventivoController extends Controller
                                INNER JOIN grupos as g ON e.grupos_id = g.id
                                WHERE p.user_id = ' . auth()->id() . ') as e ON users.id = e.user_id AND users.tipo_de_usuario = "Estudiante" AND users.anno = ' . $anno . '
         ');
-        }                                      
+        }
 
         return view(
             'Modulo_PerfildeUsuario.diagnosticopreventivo.index',
@@ -172,11 +172,11 @@ class DiagnosticopreventivoController extends Controller
         $tipo_medicamentos = ['Consumo de medicamentos por prescripción médica' => 'Consumo de medicamentos por prescripción médica', 'Consumo de medicamentos por automedicación' => 'Consumo de medicamentos por automedicación'];
         $grupo_social = ['Hippies' => 'Hippies', 'Rockeros' => 'Rockeros', 'Raperos' => 'Raperos', 'Góticos' => 'Góticos', 'Emos' => 'Emos', 'Punk' => 'Punk', 'Heavyes' => 'Heavyes', 'Darks' => 'Darks',];
         $creencia_religiosa = ['Ateos' => 'Ateos', 'Católicos' => 'Católicos', 'Cristianos' => 'Cristianos', 'Protestantes' => 'Protestantes', 'Santería' => 'Santería', 'Yoruba' => 'Yoruba', 'Hermandad' => 'Hermandad', 'Palo Monte' => 'Palo Monte'];
-        
 
-        $anno  = session()->get('anno') ;
-        if(User::find(auth()->id())->hasRole('Vicedecana')){
-        $users = DB::select('SELECT e.user_id as id,users.anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante
+
+        $anno  = session()->get('anno');
+        if (User::find(auth()->id())->hasRole('Vicedecana')) {
+            $users = DB::select('SELECT e.user_id as id,users.anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante
         FROM users INNER JOIN (SELECT e.user_id
                                FROM (SELECT e.user_id, e.grupos_id
                                    FROM estudiantes as e
@@ -185,18 +185,18 @@ class DiagnosticopreventivoController extends Controller
                                INNER JOIN profesores as p ON e.grupos_id = p.grupos_id
                                ) as e ON users.id = e.user_id AND users.tipo_de_usuario = "Estudiante"
         ');
-        }else if(User::find(auth()->id())->hasRole('ProfesorJefeAño')){
-        $users = DB::select('SELECT e.user_id as id,users.anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante
+        } else if (User::find(auth()->id())->hasRole('ProfesorJefeAño')) {
+            $users = DB::select('SELECT e.user_id as id,users.anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante
         FROM users INNER JOIN (SELECT e.user_id
                                FROM (SELECT e.user_id, e.grupos_id
                                    FROM estudiantes as e
                                    WHERE e.user_id NOT IN (SELECT e.user_id
                                    FROM estudiantes as e INNER JOIN diagnosticopreventivo as dp ON e.user_id = dp.user_id)) as e
                                INNER JOIN profesores as p ON e.grupos_id = p.grupos_id
-                               ) as e ON users.id = e.user_id AND users.tipo_de_usuario = "Estudiante" AND users.anno = ' . $anno . '                       
+                               ) as e ON users.id = e.user_id AND users.tipo_de_usuario = "Estudiante" AND users.anno = ' . $anno . '
         ');
-        }else{
-        $users = DB::select('SELECT e.user_id as id,users.anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante
+        } else {
+            $users = DB::select('SELECT e.user_id as id,users.anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante
         FROM users INNER JOIN (SELECT e.user_id
                                FROM (SELECT e.user_id, e.grupos_id
                                    FROM estudiantes as e
@@ -207,16 +207,18 @@ class DiagnosticopreventivoController extends Controller
         ');
         }
         $diagnosticopreventivo = Diagnosticopreventivo::all();
-        return view('Modulo_PerfildeUsuario.diagnosticopreventivo.create', compact('users',
-         'diagnosticopreventivo',
-         'adicciones_Alcohol',
-         'adicciones_Tabaco',
-         'adicciones_Café',
-         'adicciones_Tecnoadicciones',
-         'adicciones_Drogas',
-         'tipo_medicamentos',
-         'grupo_social',
-         'creencia_religiosa',));
+        return view('Modulo_PerfildeUsuario.diagnosticopreventivo.create', compact(
+            'users',
+            'diagnosticopreventivo',
+            'adicciones_Alcohol',
+            'adicciones_Tabaco',
+            'adicciones_Café',
+            'adicciones_Tecnoadicciones',
+            'adicciones_Drogas',
+            'tipo_medicamentos',
+            'grupo_social',
+            'creencia_religiosa',
+        ));
     }
 
     /**
@@ -238,7 +240,7 @@ class DiagnosticopreventivoController extends Controller
         ];
 
         $this->validate($request, $rules, $messages);
-        
+
 
 
         $diagnosticopreventivo = Diagnosticopreventivo::create($request->all());
@@ -252,7 +254,7 @@ class DiagnosticopreventivoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-   
+
 
     /**
      * Show the form for editing the specified resource.
@@ -262,18 +264,28 @@ class DiagnosticopreventivoController extends Controller
      */
     public function edit($id)
     {
-        $adicciones_Alcohol = ['Consumo social de alcohol' => 'Consumo social de alcohol', 'Consumo riesgoso de alcohol' => 'Consumo riesgoso de alcohol'];
-        $adicciones_Tabaco = ['Consumo ocasional de cigarros' => 'Consumo ocasional de cigarros', 'Consumo regular de Cigarros' => 'Consumo regular de Cigarros'];
-        $adicciones_Café = ['Consumo dañino de Café' => 'Consumo dañino de Café'];
-        $adicciones_Tecnoadicciones = ['Ciberadicción' => 'Ciberadicción', 'Uso excesivo de videojuegos' => 'Uso excesivo de videojuegos'];
-        $adicciones_Drogas = ['Cocaina' => 'Cocaina', 'Marihuana' => 'Marihuana', 'drogas sintéticas' => 'drogas sintéticas'];
-        $tipo_medicamentos = ['Consumo de medicamentos por prescripción médica' => 'Consumo de medicamentos por prescripción médica', 'Consumo de medicamentos por automedicación' => 'Consumo de medicamentos por automedicación'];
-        $grupo_social = ['Hippies' => 'Hippies', 'Rockeros' => 'Rockeros', 'Raperos' => 'Raperos', 'Góticos' => 'Góticos', 'Emos' => 'Emos', 'Punk' => 'Punk', 'Heavyes' => 'Heavyes', 'Darks' => 'Darks',];
-        $creencia_religiosa = ['Ateos' => 'Ateos', 'Católicos' => 'Católicos', 'Cristianos' => 'Cristianos', 'Protestantes' => 'Protestantes', 'Santería' => 'Santería', 'Yoruba' => 'Yoruba', 'Hermandad' => 'Hermandad', 'Palo Monte' => 'Palo Monte'];
+        session()->put('anno', User::find(auth()->id())->anno);
+        $anno = session()->get('anno');
 
-        $diagnosticopreventivo = Diagnosticopreventivo::findOrFail($id);
+        $select_anno = DB::select('SELECT users.anno FROM users WHERE users.id = (SELECT diagnosticopreventivo.user_id FROM diagnosticopreventivo WHERE diagnosticopreventivo.id = ' . $id . ')');
 
-        return view('Modulo_PerfildeUsuario.diagnosticopreventivo.edit', compact('diagnosticopreventivo', 'adicciones_Alcohol', 'adicciones_Tabaco', 'adicciones_Café', 'adicciones_Tecnoadicciones', 'adicciones_Drogas', 'tipo_medicamentos', 'grupo_social', 'creencia_religiosa'));
+        if ($anno === $select_anno[0]->anno || (User::find(auth()->id())->hasRole('Vicedecana'))) {
+
+            $adicciones_Alcohol = ['Consumo social de alcohol' => 'Consumo social de alcohol', 'Consumo riesgoso de alcohol' => 'Consumo riesgoso de alcohol'];
+            $adicciones_Tabaco = ['Consumo ocasional de cigarros' => 'Consumo ocasional de cigarros', 'Consumo regular de Cigarros' => 'Consumo regular de Cigarros'];
+            $adicciones_Café = ['Consumo dañino de Café' => 'Consumo dañino de Café'];
+            $adicciones_Tecnoadicciones = ['Ciberadicción' => 'Ciberadicción', 'Uso excesivo de videojuegos' => 'Uso excesivo de videojuegos'];
+            $adicciones_Drogas = ['Cocaina' => 'Cocaina', 'Marihuana' => 'Marihuana', 'drogas sintéticas' => 'drogas sintéticas'];
+            $tipo_medicamentos = ['Consumo de medicamentos por prescripción médica' => 'Consumo de medicamentos por prescripción médica', 'Consumo de medicamentos por automedicación' => 'Consumo de medicamentos por automedicación'];
+            $grupo_social = ['Hippies' => 'Hippies', 'Rockeros' => 'Rockeros', 'Raperos' => 'Raperos', 'Góticos' => 'Góticos', 'Emos' => 'Emos', 'Punk' => 'Punk', 'Heavyes' => 'Heavyes', 'Darks' => 'Darks',];
+            $creencia_religiosa = ['Ateos' => 'Ateos', 'Católicos' => 'Católicos', 'Cristianos' => 'Cristianos', 'Protestantes' => 'Protestantes', 'Santería' => 'Santería', 'Yoruba' => 'Yoruba', 'Hermandad' => 'Hermandad', 'Palo Monte' => 'Palo Monte'];
+
+            $diagnosticopreventivo = Diagnosticopreventivo::findOrFail($id);
+
+            return view('Modulo_PerfildeUsuario.diagnosticopreventivo.edit', compact('diagnosticopreventivo', 'adicciones_Alcohol', 'adicciones_Tabaco', 'adicciones_Café', 'adicciones_Tecnoadicciones', 'adicciones_Drogas', 'tipo_medicamentos', 'grupo_social', 'creencia_religiosa'));
+        } else {
+            abort(401);
+        }
     }
 
     /**
@@ -295,7 +307,7 @@ class DiagnosticopreventivoController extends Controller
         ];
 
         $this->validate($request, $rules, $messages);
-       
+
         $diagnosticopreventivo->update($request->all());
 
         return redirect()->route('usuarios.show', $diagnosticopreventivo->users->id)->with('info', 'modificar-diagnostico');

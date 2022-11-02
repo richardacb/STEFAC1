@@ -44,26 +44,26 @@ class EstudiantesController extends Controller
             ->join('estudiantes', 'users.id', '=', 'estudiantes.user_id')
             ->select('users.*', 'estudiantes.*')
             ->get();
-       
+        $anno  = session()->get('anno');
 
-        $anno  = session()->get('anno') ;
-// $usuario =User::find(auth()->id())->roles;
-// dd($usuario);
-        if(User::find(auth()->id())->hasRole('Vicedecana')){
+        if (User::find(auth()->id())->hasRole('Vicedecana')) {
             $estudiantes = DB::select('SELECT users.id, users.anno as anno, e.e_id, e.name as grupo,CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante
 
             FROM users  INNER JOIN  (SELECT e.user_id, e.id as e_id, g.name  FROM estudiantes as e INNER JOIN
             grupos as g ON e.grupos_id = g.id) as e ON users.id = e.user_id
             ');
-        }else{
-             $estudiantes = DB::select('SELECT users.id, users.anno as anno, e.e_id, e.name as grupo,CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante
+        } else {
+            $estudiantes = DB::select('SELECT users.id, users.anno as anno, e.e_id, e.name as grupo,CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante
             FROM users  INNER JOIN  (SELECT e.user_id, e.id as e_id, g.name  FROM estudiantes as e INNER JOIN
             grupos as g ON e.grupos_id = g.id) as e ON users.id = e.user_id
             WHERE users.anno = ' . $anno . '
             ');
+
         
         // $estudiantes = Estudiantes::all();
         $grupos = Grupos::all();
+            // $estudiantes = Estudiantes::all();
+            $grupos = Grupos::all();
 
         }
 
@@ -88,15 +88,15 @@ class EstudiantesController extends Controller
             'Extranjero Financiado por un Gobierno' => 'Extranjero Financiado por un Gobierno',
             'Becado Extranjero Autofinanciado' => 'Becado Extranjero Autofinanciado'
         ];
-        if(User::find(auth()->id())->hasRole('Vicedecana')){
-        $grupos = Grupos::pluck('name', 'id')->toArray();
-        $users = DB::select('SELECT users.id,users.anno, users.primer_nombre,users.segundo_nombre,users.primer_apellido,users.segundo_apellido
+        if (User::find(auth()->id())->hasRole('Vicedecana')) {
+            $grupos = Grupos::pluck('name', 'id')->toArray();
+            $users = DB::select('SELECT users.id,users.anno, users.primer_nombre,users.segundo_nombre,users.primer_apellido,users.segundo_apellido
         FROM users WHERE users.id NOT IN (SELECT users.id FROM users
         INNER JOIN estudiantes ON users.id = estudiantes.user_id) AND users.tipo_de_usuario = "Estudiante"
         ');
-        }else{
-        $grupos = Grupos::where('anno', $anno)->pluck('name', 'id')->toArray();
-        $users = DB::select('SELECT users.id, users.primer_nombre,users.segundo_nombre,users.primer_apellido,users.segundo_apellido
+        } else {
+            $grupos = Grupos::where('anno', $anno)->pluck('name', 'id')->toArray();
+            $users = DB::select('SELECT users.id, users.primer_nombre,users.segundo_nombre,users.primer_apellido,users.segundo_apellido
         FROM users WHERE users.id NOT IN (SELECT users.id FROM users
         INNER JOIN estudiantes ON users.id = estudiantes.user_id) AND users.tipo_de_usuario = "Estudiante"  AND users.anno = ' . $anno . '
         ');
@@ -165,28 +165,35 @@ class EstudiantesController extends Controller
         session()->put('anno', User::find(auth()->id())->anno);
         $anno = session()->get('anno');
 
-        $estudiantes = Estudiantes::findOrFail($id);
-        //$grupos = Grupos::all()->where('anno', $anno);
-        $grupos = Grupos::where('anno', $anno)->pluck('name', 'id')->toArray();
+        $select_anno = DB::select('SELECT users.anno FROM users WHERE users.id = (SELECT estudiantes.user_id FROM estudiantes WHERE estudiantes.id =' . $id . ')');
 
-        $anno  = session()->get('anno') ;
-        if(User::find(auth()->id())->hasRole('Vicedecana')){
-        $grupos = Grupos::pluck('name', 'id')->toArray();
-        }else{
+        if ($anno === $select_anno[0]->anno || (User::find(auth()->id())->hasRole('Vicedecana'))) {
+
+            $estudiantes = Estudiantes::findOrFail($id);
+
             $grupos = Grupos::where('anno', $anno)->pluck('name', 'id')->toArray();
+
+            $anno  = session()->get('anno');
+            if (User::find(auth()->id())->hasRole('Vicedecana')) {
+                $grupos = Grupos::pluck('name', 'id')->toArray();
+            } else {
+                $grupos = Grupos::where('anno', $anno)->pluck('name', 'id')->toArray();
+            }
+
+            $tipo_estudiante = [
+                'Becado Nacional' => 'Becado Nacional',
+                'Extranjero Financiado por un Gobierno' => 'Extranjero Financiado por un Gobierno',
+                'Becado Extranjero Autofinanciado' => 'Becado Extranjero Autofinanciado'
+            ];
+            $sexo = [
+                'Masculino' => 'Masculino',
+                'Femenino' => 'Femenino'
+            ];
+
+            return view('Modulo_PerfildeUsuario.estudiantes.edit', compact('estudiantes', 'grupos', 'tipo_estudiante', 'sexo'));
+        } else {
+            abort(401);
         }
-
-        $tipo_estudiante = [
-            'Becado Nacional' => 'Becado Nacional',
-            'Extranjero Financiado por un Gobierno' => 'Extranjero Financiado por un Gobierno',
-            'Becado Extranjero Autofinanciado' => 'Becado Extranjero Autofinanciado'
-        ];
-        $sexo = [
-            'Masculino' => 'Masculino',
-            'Femenino' => 'Femenino'
-        ];
-
-        return view('Modulo_PerfildeUsuario.estudiantes.edit', compact('estudiantes', 'grupos', 'tipo_estudiante', 'sexo'));
     }
 
     /**

@@ -184,7 +184,7 @@ class AfectacionesController extends Controller
 
         $afectacion = Afectaciones::find($id);
 
-        if ($anno === $afectacion->anno) {
+        if ($anno === $afectacion->anno || (User::find(auth()->id())->hasRole('Vicedecana'))) {
             $profesores = Profesores::all();
             $asignatura = Asignaturas::find($id);
 
