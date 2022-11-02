@@ -16,7 +16,8 @@
         @can('Modulo_PerfildeUsuario.profesores.create')
             <a href="{{ route('profesores.create') }}" class="btn btn-primary ">Insertar profesor</a>
         @endcan
-
+        {{-- <a href="{{ route('profesores.export') }}" class="btn btn-danger float-right" role="button">Exportar
+            datos de estudiantes</a> --}}
 
     </div>
     <div class="card-body">
@@ -34,7 +35,21 @@
                 @foreach ($profesores as $profesor)
                     <tr>
                         <td> {{ $profesor->nombre_profesor }} </td>
-                        <td>{{ $profesor->anno }}</td>
+                        <td> @if ($profesor->anno == '1')
+                            Primer Año
+                        @endif
+                        @if ($profesor->anno == '2')
+                            Segundo Año
+                        @endif
+                        @if ($profesor->anno == '3')
+                            Tercer Año
+                        @endif
+                        @if ($profesor->anno == '4')
+                            Cuarto Año
+                        @endif
+                        @if ($profesor->anno == '5')
+                            Quinto Año
+                        @endif</td>
                         <td>{{ $profesor->grupo }}</td>
 
                         <td width="140px">

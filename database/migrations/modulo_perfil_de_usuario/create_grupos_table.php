@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('grupos', function (Blueprint $table) {
             $table->engine="InnoDB";
             $table->bigIncrements('id');
-            $table->string('name')->nullable();
+            $table->string('name')->nullable()->unique();
             $table->integer('anno');
             $table->timestamps();
 

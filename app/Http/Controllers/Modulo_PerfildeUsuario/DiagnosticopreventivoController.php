@@ -16,6 +16,7 @@ class DiagnosticopreventivoController extends Controller
         $this->middleware('can:Modulo_PerfildeUsuario.diagnosticopreventivo.index')->only('index');
         $this->middleware('can:Modulo_PerfildeUsuario.diagnosticopreventivo.create')->only('create', 'store');
         $this->middleware('can:Modulo_PerfildeUsuario.diagnosticopreventivo.edit')->only('edit', 'update');
+        $this->middleware('can:Modulo_PerfildeUsuario.diagnosticopreventivo.destroy')->only('destroy');
     }
     /**
      * Display a listing of the resource.
@@ -79,10 +80,29 @@ class DiagnosticopreventivoController extends Controller
         $count_probAS = count(DB::table('diagnosticopreventivo')->where("prob_de_asistencia", "Problemas de asistencia")->get());
 
         session()->put('anno', User::find(auth()->id())->anno);
-        $anno  = session()->get('anno') ;
+        $anno  = session()->get('anno');
 
-
+        
+        if(User::find(auth()->id())->hasRole('Vicedecana')){
         $diagnosticopreventivo = DB::select('SELECT e.user_id, users.anno as anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante,e.grupo, e.dp_id
+                               FROM users INNER JOIN (SELECT e.user_id, g.name as grupo, e.dp_id
+                                                      FROM (SELECT e.user_id, e.grupos_id,dp.id as dp_id
+                                                            FROM estudiantes as e INNER JOIN diagnosticopreventivo as dp ON e.user_id = dp.user_id) as e
+                                                      INNER JOIN profesores as p ON e.grupos_id = p.grupos_id
+                                                      INNER JOIN grupos as g ON e.grupos_id = g.id
+                                                      ) as e ON users.id = e.user_id AND users.tipo_de_usuario = "Estudiante"
+        ');      
+        }else if(User::find(auth()->id())->hasRole('ProfesorJefeAño')){
+            $diagnosticopreventivo = DB::select('SELECT e.user_id, users.anno as anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante,e.grupo, e.dp_id
+            FROM users INNER JOIN (SELECT e.user_id, g.name as grupo, e.dp_id
+                                   FROM (SELECT e.user_id, e.grupos_id,dp.id as dp_id
+                                         FROM estudiantes as e INNER JOIN diagnosticopreventivo as dp ON e.user_id = dp.user_id) as e
+                                   INNER JOIN profesores as p ON e.grupos_id = p.grupos_id
+                                   INNER JOIN grupos as g ON e.grupos_id = g.id
+                                   ) as e ON users.id = e.user_id AND users.tipo_de_usuario = "Estudiante" AND users.anno = ' . $anno . '
+        ');
+        }else{
+            $diagnosticopreventivo = DB::select('SELECT e.user_id, users.anno as anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante,e.grupo, e.dp_id
         FROM users INNER JOIN (SELECT e.user_id, g.name as grupo, e.dp_id
                                FROM (SELECT e.user_id, e.grupos_id,dp.id as dp_id
                                      FROM estudiantes as e INNER JOIN diagnosticopreventivo as dp ON e.user_id = dp.user_id) as e
@@ -90,8 +110,8 @@ class DiagnosticopreventivoController extends Controller
                                INNER JOIN grupos as g ON e.grupos_id = g.id
                                WHERE p.user_id = ' . auth()->id() . ') as e ON users.id = e.user_id AND users.tipo_de_usuario = "Estudiante" AND users.anno = ' . $anno . '
         ');
+        }                                      
 
-        //  $diagnosticopreventivo= Diagnosticopreventivo::all();
         return view(
             'Modulo_PerfildeUsuario.diagnosticopreventivo.index',
             compact(
@@ -155,7 +175,28 @@ class DiagnosticopreventivoController extends Controller
         
 
         $anno  = session()->get('anno') ;
-        $users = DB::select('SELECT e.user_id as id, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante
+        if(User::find(auth()->id())->hasRole('Vicedecana')){
+        $users = DB::select('SELECT e.user_id as id,users.anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante
+        FROM users INNER JOIN (SELECT e.user_id
+                               FROM (SELECT e.user_id, e.grupos_id
+                                   FROM estudiantes as e
+                                   WHERE e.user_id NOT IN (SELECT e.user_id
+                                   FROM estudiantes as e INNER JOIN diagnosticopreventivo as dp ON e.user_id = dp.user_id)) as e
+                               INNER JOIN profesores as p ON e.grupos_id = p.grupos_id
+                               ) as e ON users.id = e.user_id AND users.tipo_de_usuario = "Estudiante"
+        ');
+        }else if(User::find(auth()->id())->hasRole('ProfesorJefeAño')){
+        $users = DB::select('SELECT e.user_id as id,users.anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante
+        FROM users INNER JOIN (SELECT e.user_id
+                               FROM (SELECT e.user_id, e.grupos_id
+                                   FROM estudiantes as e
+                                   WHERE e.user_id NOT IN (SELECT e.user_id
+                                   FROM estudiantes as e INNER JOIN diagnosticopreventivo as dp ON e.user_id = dp.user_id)) as e
+                               INNER JOIN profesores as p ON e.grupos_id = p.grupos_id
+                               ) as e ON users.id = e.user_id AND users.tipo_de_usuario = "Estudiante" AND users.anno = ' . $anno . '                       
+        ');
+        }else{
+        $users = DB::select('SELECT e.user_id as id,users.anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante
         FROM users INNER JOIN (SELECT e.user_id
                                FROM (SELECT e.user_id, e.grupos_id
                                    FROM estudiantes as e
@@ -164,8 +205,7 @@ class DiagnosticopreventivoController extends Controller
                                INNER JOIN profesores as p ON e.grupos_id = p.grupos_id
                                WHERE p.user_id = ' . auth()->id() . ') as e ON users.id = e.user_id AND users.tipo_de_usuario = "Estudiante" AND users.anno = ' . $anno . '
         ');
-
-        // $estudiantes= Estudiantes::all();
+        }
         $diagnosticopreventivo = Diagnosticopreventivo::all();
         return view('Modulo_PerfildeUsuario.diagnosticopreventivo.create', compact('users',
          'diagnosticopreventivo',
@@ -189,7 +229,7 @@ class DiagnosticopreventivoController extends Controller
     {
 
         $rules = [
-            'user_id' => 'required',
+            'user_id' => 'required|not_in:0',
             'nacionalidad' => 'required',
         ];
         $messages = [
@@ -198,41 +238,12 @@ class DiagnosticopreventivoController extends Controller
         ];
 
         $this->validate($request, $rules, $messages);
-        // $diagnosticopreventivo = new Diagnosticopreventivo();
-        // $diagnosticopreventivo->user_id = $request->get('user_id');
-        // $diagnosticopreventivo->nacionalidad = $request->get('nacionalidad');
-        // $diagnosticopreventivo->adicciones_Alcohol = $request->get('adicciones_Alcohol') == NULL ? " ": $request->get('adicciones_Alcohol');
-        // $diagnosticopreventivo->adicciones_Tabaco = $request->get('adicciones_Tabaco') == NULL ? " ": $request->get('adicciones_Tabaco');
-        // $diagnosticopreventivo->adicciones_Café = $request->get('adicciones_Café') == NULL ? " ": $request->get('adicciones_Café');
-        // $diagnosticopreventivo->adicciones_Tecnoadicciones = $request->get('adicciones_Tecnoadicciones') == NULL ? " ": $request->get('adicciones_Tecnoadicciones');
-        // $diagnosticopreventivo->adicciones_Drogas = $request->get('adicciones_Drogas') == NULL ? " ": $request->get('adicciones_Drogas');
-        // $diagnosticopreventivo->tipo_medicamentos =$request->get('tipo_medicamentos') == NULL ? " ": $request->get('tipo_medicamentos');
-        // $diagnosticopreventivo->tipo_medicamentos_consumo = $request->get('tipo_medicamentos_consumo') == NULL ? " ": $request->get('tipo_medicamentos_consumo');
-        // $diagnosticopreventivo->grupo_social = $request->get('grupo_social') == NULL ? " ": $request->get('grupo_social');
-        // $diagnosticopreventivo->creencia_religiosa = $request->get('creencia_religiosa') == NULL ? " ": $request->get('creencia_religiosa');
-        // $diagnosticopreventivo->prob_de_personalidad = $request->get('prob_de_personalidad') == NULL ? " ": $request->get('prob_de_personalidad');
-        // $diagnosticopreventivo->desc_prob_de_personalidad = $request->get('desc_prob_de_personalidad') == NULL ? " ": $request->get('desc_prob_de_personalidad');
-        // $diagnosticopreventivo->prob_de_psiquiatricos = $request->get('prob_de_psiquiatricos') == NULL ? " ": $request->get('prob_de_psiquiatricos');
-        // $diagnosticopreventivo->desc_prob_de_psiquiatricos = $request->get('desc_prob_de_psiquiatricos') == NULL ? " ": $request->get('desc_prob_de_psiquiatricos');
-        // $diagnosticopreventivo->prob_de_economicos = $request->get('prob_de_economicos') == NULL ? " ": $request->get('prob_de_economicos');
-        // $diagnosticopreventivo->desc_prob_de_economicos = $request->get('desc_prob_de_economicos') == NULL ? " ": $request->get('desc_prob_de_economicos');
-        // $diagnosticopreventivo->prob_de_sociales = $request->get('prob_de_sociales') == NULL ? " ": $request->get('prob_de_sociales');
-        // $diagnosticopreventivo->desc_prob_de_sociales = $request->get('desc_prob_de_sociales') == NULL ? " ": $request->get('desc_prob_de_sociales');
-        // $diagnosticopreventivo->prob_de_familiares = $request->get('prob_de_familiares') == NULL ? " ": $request->get('prob_de_familiares');
-        // $diagnosticopreventivo->desc_prob_de_familiares = $request->get('desc_prob_de_familiares') == NULL ? " ": $request->get('desc_prob_de_familiares');
-        // $diagnosticopreventivo->prob_de_academicos = $request->get('prob_de_academicos') == NULL ? " ": $request->get('prob_de_academicos');
-        // $diagnosticopreventivo->desc_prob_de_academicos = $request->get('desc_prob_de_academicos') == NULL ? " ": $request->get('desc_prob_de_academicos');
-        // $diagnosticopreventivo->prob_de_disciplina = $request->get('prob_de_disciplina') == NULL ? " ": $request->get('prob_de_disciplina');
-        // $diagnosticopreventivo->desc_prob_de_disciplina = $request->get('desc_prob_de_disciplina') == NULL ? " ": $request->get('desc_prob_de_disciplina');
-        // $diagnosticopreventivo->prob_de_asistencia = $request->get('prob_de_asistencia') == NULL ? " ": $request->get('prob_de_asistencia');
-        // $diagnosticopreventivo->desc_prob_de_asistencia = $request->get('desc_prob_de_asistencia') == NULL ? " ": $request->get('desc_prob_de_asistencia');
-
-        // $diagnosticopreventivo->save();
+        
 
 
         $diagnosticopreventivo = Diagnosticopreventivo::create($request->all());
 
-        return redirect()->route('diagnosticopreventivo.index', compact('diagnosticopreventivo'))->with('info', 'adicionar-diagnostico-estudiantes');
+        return redirect()->route('diagnosticopreventivo.index')->with('info', 'adicionar-diagnostico-estudiantes');
     }
 
     /**
@@ -284,33 +295,7 @@ class DiagnosticopreventivoController extends Controller
         ];
 
         $this->validate($request, $rules, $messages);
-        // $diagnosticopreventivo->nacionalidad = $request->get('nacionalidad');
-        // $diagnosticopreventivo->adicciones_Alcohol = $request->get('adicciones_Alcohol') == NULL ? " ": $request->get('adicciones_Alcohol');
-        // $diagnosticopreventivo->adicciones_Tabaco = $request->get('adicciones_Tabaco') == NULL ? " ": $request->get('adicciones_Tabaco');
-        // $diagnosticopreventivo->adicciones_Café = $request->get('adicciones_Café') == NULL ? " ": $request->get('adicciones_Café');
-        // $diagnosticopreventivo->adicciones_Tecnoadicciones = $request->get('adicciones_Tecnoadicciones') == NULL ? " ": $request->get('adicciones_Tecnoadicciones');
-        // $diagnosticopreventivo->adicciones_Drogas = $request->get('adicciones_Drogas') == NULL ? " ": $request->get('adicciones_Drogas');
-        // $diagnosticopreventivo->tipo_medicamentos =$request->get('tipo_medicamentos') == NULL ? " ": $request->get('tipo_medicamentos');
-        // $diagnosticopreventivo->tipo_medicamentos_consumo = $request->get('tipo_medicamentos_consumo') == NULL ? " ": $request->get('tipo_medicamentos_consumo');
-        // $diagnosticopreventivo->grupo_social = $request->get('grupo_social') == NULL ? " ": $request->get('grupo_social');
-        // $diagnosticopreventivo->creencia_religiosa = $request->get('creencia_religiosa') == NULL ? " ": $request->get('creencia_religiosa');
-        // $diagnosticopreventivo->prob_de_personalidad = $request->get('prob_de_personalidad') == NULL ? " ": $request->get('prob_de_personalidad');
-        // $diagnosticopreventivo->desc_prob_de_personalidad = $request->get('desc_prob_de_personalidad') == NULL ? " ": $request->get('desc_prob_de_personalidad');
-        // $diagnosticopreventivo->prob_de_psiquiatricos = $request->get('prob_de_psiquiatricos') == NULL ? " ": $request->get('prob_de_psiquiatricos');
-        // $diagnosticopreventivo->desc_prob_de_psiquiatricos = $request->get('desc_prob_de_psiquiatricos') == NULL ? " ": $request->get('desc_prob_de_psiquiatricos');
-        // $diagnosticopreventivo->prob_de_economicos = $request->get('prob_de_economicos') == NULL ? " ": $request->get('prob_de_economicos');
-        // $diagnosticopreventivo->desc_prob_de_economicos = $request->get('desc_prob_de_economicos') == NULL ? " ": $request->get('desc_prob_de_economicos');
-        // $diagnosticopreventivo->prob_de_sociales = $request->get('prob_de_sociales') == NULL ? " ": $request->get('prob_de_sociales');
-        // $diagnosticopreventivo->desc_prob_de_sociales = $request->get('desc_prob_de_sociales') == NULL ? " ": $request->get('desc_prob_de_sociales');
-        // $diagnosticopreventivo->prob_de_familiares = $request->get('prob_de_familiares') == NULL ? " ": $request->get('prob_de_familiares');
-        // $diagnosticopreventivo->desc_prob_de_familiares = $request->get('desc_prob_de_familiares') == NULL ? " ": $request->get('desc_prob_de_familiares');
-        // $diagnosticopreventivo->prob_de_academicos = $request->get('prob_de_academicos') == NULL ? " ": $request->get('prob_de_academicos');
-        // $diagnosticopreventivo->desc_prob_de_academicos = $request->get('desc_prob_de_academicos') == NULL ? " ": $request->get('desc_prob_de_academicos');
-        // $diagnosticopreventivo->prob_de_disciplina = $request->get('prob_de_disciplina') == NULL ? " ": $request->get('prob_de_disciplina');
-        // $diagnosticopreventivo->desc_prob_de_disciplina = $request->get('desc_prob_de_disciplina') == NULL ? " ": $request->get('desc_prob_de_disciplina');
-        // $diagnosticopreventivo->prob_de_asistencia = $request->get('prob_de_asistencia') == NULL ? " ": $request->get('prob_de_asistencia');
-        // $diagnosticopreventivo->desc_prob_de_asistencia = $request->get('desc_prob_de_asistencia') == NULL ? " ": $request->get('desc_prob_de_asistencia');
-
+       
         $diagnosticopreventivo->update($request->all());
 
         return redirect()->route('usuarios.show', $diagnosticopreventivo->users->id)->with('info', 'modificar-diagnostico');

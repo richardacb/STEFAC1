@@ -22,12 +22,31 @@
                     <option value="0" selected="selected">--Seleccione--</option>
                     @foreach ($users as $user)
                         <option value="{{ $user->id }}">
-                            {{ $user->nombre_estudiante }}
+                            @role('Vicedecana')
+                            {{ $user->nombre_estudiante }} 
+                            ( @if ($user->anno == '1')
+                            Primer Año
+                        @endif
+                        @if ($user->anno == '2')
+                            Segundo Año
+                        @endif
+                        @if ($user->anno == '3')
+                            Tercer Año
+                        @endif
+                        @if ($user->anno == '4')
+                            Cuarto Año
+                        @endif
+                        @if ($user->anno == '5')
+                            Quinto Año
+                        @endif)
+                        @else
+                        {{ $user->nombre_estudiante }} 
+                        @endrole
                         </option>
                     @endforeach
                 </select>
                 @error('user_id')
-                    <strong class="error-message text-danger"> {{ $message }} </strong>
+                <strong class="error-message text-danger"> {{ 'Campo Requerido' }} </strong>
                 @enderror
             </div>
         </div>
@@ -44,7 +63,7 @@
                                 {!! Form::text('nacionalidad', null, [
                                     'class' => 'form-control',
                                     'id' => 'nacionalidad',
-                                    'placeholder' => 'Ingrece la Nacionalidad',
+                                    'placeholder' => 'Ingrese la Nacionalidad',
                                 ]) !!}
                                 @error('nacionalidad')
                                     <strong class="error-message text-danger"> {{ $message }} </strong>
@@ -183,7 +202,7 @@
                                     'style'=> 'display: none',
                                     'rows' => 1,
                                     'id' => 'tipo_medicamentos_consumo',
-                                    'placeholder' => 'Ingrece el medicamento que consume',
+                                    'placeholder' => 'Ingrese el medicamento que consume',
                                 ]) !!}
                                 @error('tipo_medicamentos_consumo')
                                     <strong class="error-message text-danger"> {{ $message }} </strong>

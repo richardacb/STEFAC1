@@ -23,7 +23,9 @@ class UsuariosController extends Controller
     public function __construct()
     {
         $this->middleware('can:Modulo_PerfildeUsuario.usuarios.index')->only('index');
+        $this->middleware('can:Modulo_PerfildeUsuario.usuarios.create')->only('create');
         $this->middleware('can:Modulo_PerfildeUsuario.usuarios.edit')->only('edit', 'update');
+        $this->middleware('can:Modulo_PerfildeUsuario.usuarios.show')->only('show');
     }
 
     /**

@@ -27,7 +27,11 @@ class GruposController extends Controller
     public function index()
     {
         session()->put('anno', User::find(auth()->id())->anno);
-        $grupos = Grupos::all()->where('anno', session()->get('anno'));
+        if(User::find(auth()->id())->hasRole('Vicedecana')){
+        $grupos = Grupos::all();
+        }else{
+            $grupos = Grupos::all()->where('anno', session()->get('anno')); 
+        }
 
         return view('Modulo_PerfildeUsuario.grupos.index', compact('grupos'));
     }
@@ -39,8 +43,13 @@ class GruposController extends Controller
      */
     public function create()
     {
+        if(User::find(auth()->id())->hasRole('Vicedecana')){
         $annosgrupos = session()->get('anno');
         $grupos = Grupos::all()->where('anno', session()->get('anno'));
+        }else{
+        $annosgrupos = session()->get('anno');
+        $grupos = Grupos::all()->where('anno', session()->get('anno'));
+        }
         return view('Modulo_PerfildeUsuario.grupos.create', compact('annosgrupos','grupos'));
     }
 
@@ -52,14 +61,16 @@ class GruposController extends Controller
      */
     public function store(Request $request)
     {
-        //  $rules = [
-        //     'name' => 'required|unique:grupos',
-        //  ];
-        //  $messages = [
-        //     'name.required' =>'Campo Requerido',
-        //     'name.unique' => 'Campo Único',
-        //  ];
-        //  $this->validate( $request,$rules, $messages);
+         $rules = [
+            'name' => 'required|unique:grupos',
+            'anno' => 'required',
+         ];
+         $messages = [
+            'name.required' =>'Campo Requerido',
+            'name.unique' => 'Campo Único',
+            'anno.required' =>'Campo Requerido',
+         ];
+         $this->validate( $request,$rules, $messages);
 
         $grupo = new Grupo;
         $grupo->name = "IDF1" . $request->get('anno') . "0" . $request->get('name');
@@ -109,14 +120,16 @@ class GruposController extends Controller
     {
         $grupos = Grupos::findOrFail($id);
 
-        // $rules = [
-        //     'name' => "required|unique:grupos,name,$grupos->id",
-        // ];
-        // $messages = [
-        //     'name.required' => 'Campo Requerido',
-        //     'name.unique' => 'Campo Único',
-        // ];
-        // $this->validate($request, $rules, $messages);
+        $rules = [
+            'name' => "required|unique:grupos,name,$grupos->id",
+            'anno' => 'required',
+        ];
+        $messages = [
+            'name.required' => 'Campo Requerido',
+            'name.unique' => 'Campo Único',
+            'anno.required' =>'Campo Requerido',
+        ];
+        $this->validate($request, $rules, $messages);
 
         $grupos->name = "IDF1" . $request->get('anno') . "0" . $request->get('name');
         $grupos->anno = $request->get('anno');

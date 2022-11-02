@@ -29,14 +29,21 @@ class AfectacionesController extends Controller
     public function index()
     {
         session()->put('anno', User::find(auth()->id())->anno);
-
+        if(User::find(auth()->id())->hasRole('Vicedecana')){
         $afectaciones = DB::select('SELECT a.id, afect.afectado, a.anno, a.semana, a.dia, a.turno
         FROM afectaciones as a
         INNER JOIN
         (SELECT a.profesores_afectados_id, CONCAT(u.primer_nombre," ",u.segundo_nombre," ",u.primer_apellido," ",u.segundo_apellido) as afectado
         FROM users as u INNER JOIN afectaciones as a ON u.id = a.profesores_afectados_id) as afect ON a.profesores_afectados_id = afect.profesores_afectados_id
-        WHERE a.anno = ' . session()->get('anno') . '');
-
+       ');
+        }else{
+            $afectaciones = DB::select('SELECT a.id, afect.afectado, a.anno, a.semana, a.dia, a.turno
+            FROM afectaciones as a
+            INNER JOIN
+            (SELECT a.profesores_afectados_id, CONCAT(u.primer_nombre," ",u.segundo_nombre," ",u.primer_apellido," ",u.segundo_apellido) as afectado
+            FROM users as u INNER JOIN afectaciones as a ON u.id = a.profesores_afectados_id) as afect ON a.profesores_afectados_id = afect.profesores_afectados_id
+            WHERE a.anno = ' . session()->get('anno') . '');
+        }
         return view('Modulo_Horario.afectaciones.index', compact('afectaciones'));
     }
 
@@ -49,11 +56,17 @@ class AfectacionesController extends Controller
     {
         session()->put('anno', User::find(auth()->id())->anno);
         $anno  = session()->get('anno');
-
+        if(User::find(auth()->id())->hasRole('Vicedecana')){
         $profesores = DB::select('SELECT users.id, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_profesor
         FROM users
-        INNER JOIN profesores ON users.id = profesores.user_id WHERE users.anno = ' . $anno  . '
+        INNER JOIN profesores ON users.id = profesores.user_id
         ');
+        }else{
+            $profesores = DB::select('SELECT users.id, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_profesor
+            FROM users
+            INNER JOIN profesores ON users.id = profesores.user_id WHERE users.anno = ' . $anno  . '
+            ');
+        }
 
         return view('Modulo_Horario.afectaciones.create', compact('profesores', 'anno'));
     }

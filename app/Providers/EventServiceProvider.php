@@ -10,9 +10,14 @@ use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 use App\Models\User;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use App\Providers\RouteServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('can:Modulo_PerfildeUsuario.usuarios.show')->only('show');
+    // }
     /**
      * The event to listener mappings for the application.
      *
@@ -38,6 +43,7 @@ class EventServiceProvider extends ServiceProvider
                 'text' => $usuario->username,
                 'icon' => 'fas fa-fw fa-user',
                 'url' => '/admin/usuarios/' . $usuario->id,
+                'can'  => 'Modulo_PerfildeUsuario.usuarios.show',
                 'active' => false,
             ]);
 

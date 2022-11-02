@@ -55,8 +55,8 @@
             <thead class="bg-primary text-white">
                 <tr>
                     <th>Nombre y Apellido</th>
-                    <th>Grupo</th>
                     <th>Año</th>
+                    <th>Grupo</th>
                     <th>Acción</th>
                 </tr>
             </thead>
@@ -64,24 +64,45 @@
                 @foreach ($diagnosticopreventivo as $dp)
                     <tr>
                         <td>{{ $dp->nombre_estudiante }}</td>
+                        <td>
+                            @if ($dp->anno == '1')
+                            Primer Año
+                        @endif
+                        @if ($dp->anno == '2')
+                            Segundo Año
+                        @endif
+                        @if ($dp->anno == '3')
+                            Tercer Año
+                        @endif
+                        @if ($dp->anno == '4')
+                            Cuarto Año
+                        @endif
+                        @if ($dp->anno == '5')
+                            Quinto Año
+                        @endif</td>
                         <td>{{ $dp->grupo }}</td>
-                        <td>{{ $dp->anno }}</td>
                         <td>
                              <form action="{{ route('diagnosticopreventivo.destroy', $dp->dp_id) }}" method="POST"
                                 class="eliminar_datos_diagnosticopreventivo">
                                 @csrf
                                 @method('delete')
+                                @can('Modulo_PerfildeUsuario.diagnosticopreventivo.destroy')
                                 <button class="btn btn-danger float-right btn-sm mr-2" type="submit"
                                 data-bs-toggle="tooltip" data-bs-placement="right"
                                 title="Eliminar datos del diagnostico preventivo"><i class="fa fa-trash-alt"></i></button>
+                                 @endcan
+                                @can('Modulo_PerfildeUsuario.diagnosticopreventivo.edit')
                             <a class="btn btn-primary btn-sm float-right mr-2"
                                 href="{{ route('diagnosticopreventivo.edit', $dp->dp_id) }}"><i class="fa fa-edit"
                                     data-bs-toggle="tooltip" data-bs-placement="right"
                                     title="Editar Diagnóstico Preventivo"></i></a>
+                                     @endcan
+                                @can('Modulo_PerfildeUsuario.diagnosticopreventivo.create')
                             <a class="btn btn-success btn-sm float-right mr-2"
                                 href="{{ route('usuarios.show', $dp->user_id) }}" data-bs-toggle="tooltip"
                                 data-bs-placement="right" title="Mostar Datos del Diagnóstico"><i
                                     class="fa fa-user"></i></a>
+                                     @endcan
                                 </form>
                         </td>
                     </tr>

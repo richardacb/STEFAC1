@@ -1,6 +1,6 @@
 // Select multiple de Estudiantes
 $(function () {
-    $('#anno').on('change', onSelectGruposestudiantes);
+    $('#user_id').on('change', onSelectGruposestudiantes);
     });
     function onSelectGruposestudiantes() {
         let gruposest = $(this).val();
