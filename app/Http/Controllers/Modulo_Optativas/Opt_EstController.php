@@ -18,7 +18,7 @@ class Opt_EstController extends Controller
     {
         $this->middleware('can:Modulo_Optativas.opt_est.index')->only('index');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -123,8 +123,8 @@ class Opt_EstController extends Controller
      */
     public function show($id)
     {
-        $cant_opt = count(DB::table('opt_ests')->where('id_est', $id)->get());
-        return view('Modulo_Optativas.opt_est.show', compact('cant_opt'));
+        // $cant_opt = count(DB::table('opt_ests')->where('id_est', $id)->get());
+        // return view('Modulo_Optativas.opt_est.show', compact('cant_opt'));
     }
 
     /**

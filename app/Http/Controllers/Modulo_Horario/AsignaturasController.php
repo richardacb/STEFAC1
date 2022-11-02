@@ -113,7 +113,7 @@ class AsignaturasController extends Controller
         $anno = session()->get('anno');
 
         $asignatura = Asignaturas::find($id);
-        if ($anno === $asignatura->anno) {
+        if ($anno === $asignatura->anno || (User::find(auth()->id())->hasRole('Vicedecana'))) {
 
             $secciones = Secciones::all();
 
