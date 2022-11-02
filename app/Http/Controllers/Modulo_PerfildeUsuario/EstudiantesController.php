@@ -40,13 +40,11 @@ class EstudiantesController extends Controller
         session()->put('anno', User::find(auth()->id())->anno);
 
         $anno  = session()->get('anno');
-        // $usuario =User::find(auth()->id())->roles;
-        // dd($usuario);
         $users = DB::table('users')
             ->join('estudiantes', 'users.id', '=', 'estudiantes.user_id')
             ->select('users.*', 'estudiantes.*')
             ->get();
-        $estudiantes = DB::select('SELECT users.id, users.anno as anno, e.e_id, e.name as grupo,CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante
+       
 
         $anno  = session()->get('anno') ;
 // $usuario =User::find(auth()->id())->roles;
@@ -63,7 +61,7 @@ class EstudiantesController extends Controller
             grupos as g ON e.grupos_id = g.id) as e ON users.id = e.user_id
             WHERE users.anno = ' . $anno . '
             ');
-
+        
         // $estudiantes = Estudiantes::all();
         $grupos = Grupos::all();
 

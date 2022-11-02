@@ -72,7 +72,7 @@ class UsuariosController extends Controller
 
 
         $users->save();
-        $users->roles()->attach(Role::where('name', 'Vicedecana')->first());
+        $users->roles()->attach(Role::where('name', 'Usuario')->first());
 
 
         return redirect()->route('usuarios.index', compact('users'));
