@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\DB;
 
 class Opt_ProfController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('can:Modulo_Optativas.opt_prof.index')->only('index');
+    }
     /**
      * Display a listing of the resource.
      *

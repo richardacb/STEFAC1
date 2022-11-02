@@ -33,7 +33,6 @@ return new class extends Migration
             $table->string('nombre_madre');
             $table->string('organizacion_politica')->nullable();
             $table->string('opcion_uci')->nullable();
-            $table->boolean('is_enabled')->default(1);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->cascadeOnUpdate();

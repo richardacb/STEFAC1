@@ -31,7 +31,7 @@ class OptativaController extends Controller
     {
         session()->put('anno', User::find(auth()->id())->anno);
         $anno = session()->get('anno');
-
+        if(User::find(auth()->id())->hasRole('Vicedecana')){
         $optativas = DB::select('SELECT o.id, o.nombre, o.descripcion, o.capacidad, o.anno_academico, o.semestre, o.estado,
         CONCAT(pp.primer_nombre," ",pp.segundo_nombre," ",pp.primer_apellido," ",pp.segundo_apellido) as prof_principal,
         CONCAT(pa.primer_nombre," ",pa.segundo_nombre," ",pa.primer_apellido," ",pa.segundo_apellido) as prof_auxiliar
@@ -44,7 +44,22 @@ class OptativaController extends Controller
         LEFT JOIN
         (SELECT users.id, users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido
         FROM users INNER JOIN profesores ON users.id = profesores.user_id) as pa ON o.prof_auxiliar = pa.id
+        ');
+        }else{
+            $optativas = DB::select('SELECT o.id, o.nombre, o.descripcion, o.capacidad, o.anno_academico, o.semestre, o.estado,
+        CONCAT(pp.primer_nombre," ",pp.segundo_nombre," ",pp.primer_apellido," ",pp.segundo_apellido) as prof_principal,
+        CONCAT(pa.primer_nombre," ",pa.segundo_nombre," ",pa.primer_apellido," ",pa.segundo_apellido) as prof_auxiliar
+        FROM optativas as o
+
+        LEFT JOIN
+        (SELECT users.id, users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido
+        FROM users INNER JOIN profesores ON users.id = profesores.user_id) as pp ON o.prof_principal = pp.id
+
+        LEFT JOIN
+        (SELECT users.id, users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido
+        FROM users INNER JOIN profesores ON users.id = profesores.user_id) as pa ON o.prof_auxiliar = pa.id
         WHERE o.anno_academico = ' . $anno . '');
+        }
 
         return view('Modulo_Optativas.optativa.index')->with('optativas',  $optativas);
     }
@@ -57,7 +72,7 @@ class OptativaController extends Controller
     public function create()
     {
         $anno = session()->get('anno');
-
+        if(User::find(auth()->id())->hasRole('Vicedecana')){
         $profesores = DB::select('SELECT u.id, CONCAT(u.primer_nombre," ",u.segundo_nombre," ",u.primer_apellido," ",u.segundo_apellido) as prof_nombre
                         FROM users as u INNER JOIN (SELECT profesores.user_id
                                                 FROM profesores
@@ -66,7 +81,19 @@ class OptativaController extends Controller
                                                                 UNION
                                                                 SELECT IFNULL(optativas.prof_principal, 0)
                                                                 FROM optativas)) as p ON
+                                                                u.id = p.user_id');
+        }else{
+            $profesores = DB::select('SELECT u.id, CONCAT(u.primer_nombre," ",u.segundo_nombre," ",u.primer_apellido," ",u.segundo_apellido) as prof_nombre
+                        FROM users as u INNER JOIN (SELECT profesores.user_id
+                                                FROM profesores
+                                                WHERE profesores.user_id NOT IN (SELECT IFNULL(optativas.prof_auxiliar, 0)
+                                                                FROM optativas
+                                                                UNION
+                                                                SELECT IFNULL(optativas.prof_principal, 0)
+                                                                FROM optativas)) as p ON
                                                                 u.id = p.user_id WHERE u.anno = ' . $anno . '');
+        }
+
 
         return view('Modulo_Optativas.optativa.create', compact('anno'))
             ->with('profesores', $profesores);
@@ -178,7 +205,7 @@ class OptativaController extends Controller
 
         $prof_auxiliar = $opt->prof_auxiliar == NULL ? 0 : $opt->prof_auxiliar;
         $prof_principal = $opt->prof_principal == NULL ? 0 : $opt->prof_principal;
-
+        if(User::find(auth()->id())->hasRole('Vicedecana')){
         $profesores = DB::select('SELECT u.id,
         CONCAT(u.primer_nombre," ",u.segundo_nombre," ",u.primer_apellido," ",u.segundo_apellido) as prof_nombre
         FROM users as u
@@ -190,8 +217,23 @@ class OptativaController extends Controller
                                                                 UNION SELECT optativas.prof_principal
                                                                 FROM optativas
                                                                 WHERE optativas.prof_principal <> ' . $prof_principal . ')) as p ON u.id = p.user_id
-                                                                WHERE u.anno = ' . $anno . '
+                                                                
 ');
+        }else{
+            $profesores = DB::select('SELECT u.id,
+            CONCAT(u.primer_nombre," ",u.segundo_nombre," ",u.primer_apellido," ",u.segundo_apellido) as prof_nombre
+            FROM users as u
+            INNER JOIN (SELECT profesores.user_id
+                                   FROM profesores
+                                   WHERE profesores.user_id NOT IN (SELECT optativas.prof_auxiliar
+                                                                    FROM optativas
+                                                                    WHERE optativas.prof_auxiliar <> ' . $prof_auxiliar . '
+                                                                    UNION SELECT optativas.prof_principal
+                                                                    FROM optativas
+                                                                    WHERE optativas.prof_principal <> ' . $prof_principal . ')) as p ON u.id = p.user_id
+                                                                    WHERE u.anno = ' . $anno . '
+    ');  
+        }
 
         return view('Modulo_Optativas.optativa.edit')
             ->with('optativa', $opt)

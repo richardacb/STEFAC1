@@ -23,10 +23,15 @@ class ParcialesController extends Controller
     {
         session()->put('anno', User::find(auth()->id())->anno);
         $anno = session()->get('anno');
-
+        if(User::find(auth()->id())->hasRole('Vicedecana')){
         $parciales = DB::select('SELECT pp.id, a.nombre, pp.anno, pp.semestre, pp.dia, pp.turno, pp.semana
         FROM pruebasparciales as pp INNER JOIN asignaturas as a ON pp.asignaturas_id = a.id
+        ');
+         }else{
+            $parciales = DB::select('SELECT pp.id, a.nombre, pp.anno, pp.semestre, pp.dia, pp.turno, pp.semana
+        FROM pruebasparciales as pp INNER JOIN asignaturas as a ON pp.asignaturas_id = a.id
         WHERE a.anno = ' . $anno . ' ');
+            }
 
         return view('Modulo_Horario.parciales.index', compact('parciales'));
     }
@@ -40,7 +45,11 @@ class ParcialesController extends Controller
     {
         session()->put('anno', User::find(auth()->id())->anno);
         $anno = session()->get('anno');
-        $asignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
+        if(User::find(auth()->id())->hasRole('Vicedecana')){
+        $asignaturas = Asignaturas::all();
+        }else{
+            $asignaturas = Asignaturas::all()->where('anno', session()->get('anno')); 
+        }
         return view('Modulo_Horario.parciales.create', compact('asignaturas', 'anno'));
     }
 

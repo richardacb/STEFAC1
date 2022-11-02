@@ -36,7 +36,7 @@
                                     {!! Form::text('nacionalidad', null, [
                                         'class' => 'form-control',
                                         'id' => 'nacionalidad',
-                                        'placeholder' => 'Ingrece la Nacionalidad',
+                                        'placeholder' => 'Ingrese la Nacionalidad',
                                     ]) !!}
                                     @error('nacionalidad')
                                         <strong class="error-message text-danger"> {{ $message }} </strong>
@@ -175,7 +175,7 @@
                                         'style'=> 'display: none',
                                         'rows' => 1,
                                         'id' => 'tipo_medicamentos_consumo',
-                                        'placeholder' => 'Ingrece el medicamento que consume',
+                                        'placeholder' => 'Ingrese el medicamento que consume',
                                     ]) !!}
                                     @error('tipo_medicamentos_consumo')
                                         <strong class="error-message text-danger"> {{ $message }} </strong>

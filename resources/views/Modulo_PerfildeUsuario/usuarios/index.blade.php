@@ -12,11 +12,13 @@
 @endsection
 <div class="card">
     <div class="card-header">
-        {{--  @can('Modulo_PerfildeUsuario.usuarios.create')  --}}
+        @can('Modulo_PerfildeUsuario.usuarios.create')
         <a href="{{ route('usuarios.create') }}" class="btn btn-primary ">Registrar Usuario</a>
-        {{--  @endcan  --}}
+        @endcan
+        @can('Import.UsuariosImport')
          <button type="button" class="btn btn-danger float-right" data-toggle="modal"
                 data-target=".bd-example-modal-lg">Importar datos de usuarios</button>
+        @endcan
          {{-- <a href="{{ route('usuarios.pdf') }}" class="btn btn-primary ">Convertir a PDF</a> --}}
           
     </div>
@@ -30,6 +32,7 @@
                     <th>Nombre y Apellidos</th>
                     <th>Usuario</th>
                     <th>Tipo de usuario</th>
+                    <th>Año</th>
                     <th>Accion</th>
                 </tr>
             </thead>
@@ -40,22 +43,39 @@
                             {{ $user->segundo_apellido }}</td>
                         <th>{{ $user->username }}</th>
                         <th>{{ $user->tipo_de_usuario }}</th>
+                        <th>
+                            @if ( $user->anno == '1')
+                            Primer Año
+                        @endif
+                        @if ( $user->anno == '2')
+                            Segundo Año
+                        @endif
+                        @if ( $user->anno == '3')
+                            Tercer Año
+                        @endif
+                        @if ( $user->anno == '4')
+                            Cuarto Año
+                        @endif
+                        @if ( $user->anno == '5')
+                            Quinto Año
+                        @endif
+                        </th>
                         <td width="150px">
                             @can('Modulo_PerfildeUsuario.usuarios.edit')
                                 <a class="btn btn-warning btn-sm " href="{{ route('usuarios.edit', $user->id) }}"
                                     data-bs-toggle="tooltip" data-bs-placement="right" title="Asignar Rol"><i
                                         class="fa fa-users-cog"></i></a>
                             @endcan
-                            {{--  @can('Modulo_PerfildeUsuario.usuarios.editar')  --}}
+                            @can('Modulo_PerfildeUsuario.usuarios.editar')
                             <a class="btn btn-primary btn-sm" href="{{ route('usuarios.editar', $user->id) }}"
                                 data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Usuario"><i
                                     class="fa fa-edit"></i></a>
-                            {{--  @endcan  --}}
-                            {{--  @can('Modulo_PerfildeUsuario.usuarios.editar')  --}}
+                            @endcan
+                            @can('Modulo_PerfildeUsuario.usuarios.show')
                             <a class="btn btn-success btn-sm" href="{{ route('usuarios.show', $user->id) }}"
                                 data-bs-toggle="tooltip" data-bs-placement="right" title="Mostrar Datos"><i
                                     class="fa fa-user"></i></a>
-                            {{--  @endcan  --}}
+                            @endcan
                         </td>
                     </tr>
                 @endforeach

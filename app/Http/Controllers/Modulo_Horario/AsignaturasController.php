@@ -28,7 +28,15 @@ class AsignaturasController extends Controller
 
         session()->put('anno', User::find(auth()->id())->anno);
 
+        if(User::find(auth()->id())->hasRole('Vicedecana')){
+        $asignaturas=Asignaturas::all();
+        }else{
+        $asignaturas=Asignaturas::all()->where('anno',session()->get('anno'));
+        }
+
+
         $asignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
+
         $secciones = Secciones::all();
         return view('Modulo_Horario.asignaturas.index', compact('asignaturas', 'secciones'));
     }

@@ -452,7 +452,7 @@ return [
                     'text'    => 'Optativas Ofertadas',
                     'icon'    => 'fa fa-bars',
                     'route'  => 'opt_est.index',
-                    // 'can'  => 'opt_est.index',
+                    'can'  => 'Modulo_Optativas.opt_est.index',
                     'active' => ['admin/opt_est*']
 
                 ],
@@ -460,7 +460,7 @@ return [
                     'text'    => 'Optativas Asignada',
                     'icon'    => 'fa fa-check',
                     'route'  => 'opt_prof.index',
-                    // 'can'  => 'opt_prof.index',
+                    'can'  => 'Modulo_Optativas.opt_prof.index',
                     'active' => ['admin/opt_prof*']
 
                 ],

@@ -49,7 +49,13 @@
                                             @endif
                                         @endforeach
                                         <td>{{ $asignatura->semestre }}</td>
-                                        <td>{{ $asignatura->estado }}</td>
+                                        <td>
+                                        @if ($asignatura->estado == '1')
+                                            Activa
+                                        @endif
+                                        @if ($asignatura->estado == '0')
+                                            Inactiva
+                                        @endif</td>
                                         <td width="150px">
                                             <form action="{{ route('asignaturas.destroy', $asignatura) }}" method="POST"
                                                 class="eliminar-asignatura">
