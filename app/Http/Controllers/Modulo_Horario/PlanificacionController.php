@@ -30,17 +30,10 @@ class PlanificacionController extends Controller
 
         session()->put('anno', User::find(auth()->id())->anno);
         $anno = session()->get('anno');
-        // $profesores = DB::select('SELECT users.id, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as normbre_prof
-        //                         FROM users INNER JOIN (SELECT profesores.user_id
-        //                                                 FROM profesores INNER JOIN planificacions ON profesores.user_id = planificacions.profesores_id) as p ON
-        //                                                 users.id = p.user_id WHERE users.anno = ' . session()->get('anno') . '');
-        // $grupos = Grupos::all()->where('anno', session()->get('anno'));
-        // $asignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
-        // $planificacion = Planificacion::all();
-
+        
         $planificaciones = DB::select('SELECT p.id, prof.normbre_prof, g.name as grupo, a.nombre as asignatura
         FROM planificacions as p
-        INNER JOIN (SELECT users.id, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as normbre_prof
+        LEFT JOIN (SELECT users.id, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as normbre_prof
         FROM users INNER JOIN profesores ON users.id = profesores.user_id
         WHERE users.anno = ' . $anno . ') as prof ON p.profesores_id = prof.id
 
@@ -123,12 +116,24 @@ class PlanificacionController extends Controller
      */
     public function edit($id)
     {
-        $planificacion = Planificacion::find($id);
-        $profesores = Profesores::all();
-        $grupos = Grupos::all();
-        $asignaturas = Asignaturas::all();
 
-        return view('Modulo_Horario.planificacion.edit', compact('profesores', 'grupos', 'asignaturas', 'planificacion'));
+        session()->put('anno', User::find(auth()->id())->anno);
+        $anno  = session()->get('anno');
+
+        $select_anno = DB::select('SELECT a.anno
+        FROM planificacions as p INNER JOIN asignaturas as a ON p.asignaturas_id = a.id
+        WHERE p.id = ' . $id . '');
+
+        if ($anno === $select_anno[0]->anno) {
+            $planificacion = Planificacion::find($id);
+            $profesores = Profesores::all();
+            $grupos = Grupos::all();
+            $asignaturas = Asignaturas::all();
+
+            return view('Modulo_Horario.planificacion.edit', compact('profesores', 'grupos', 'asignaturas', 'planificacion'));
+        } else {
+            abort(401);
+        }
     }
 
     /**

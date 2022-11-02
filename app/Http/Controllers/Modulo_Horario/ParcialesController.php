@@ -52,6 +52,10 @@ class ParcialesController extends Controller
      */
     public function store(Request $request)
     {
+
+        // require('./app/generar_horario/update_horario.php');
+        // $p = "hola";
+
         // $rules = [
         //     'asignaturas_id' => 'required|not_in:0',
         //     'anno' => 'required',

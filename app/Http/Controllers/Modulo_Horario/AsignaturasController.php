@@ -101,10 +101,15 @@ class AsignaturasController extends Controller
      */
     public function edit($id)
     {
-        $asignatura = Asignaturas::find($id);
-        $secciones = Secciones::all();
+        session()->put('anno', User::find(auth()->id())->anno);
+        $anno = session()->get('anno');
 
-        $seccion = DB::select('SELECT asignaturas.*
+        $asignatura = Asignaturas::find($id);
+        if ($anno === $asignatura->anno) {
+
+            $secciones = Secciones::all();
+
+            $seccion = DB::select('SELECT asignaturas.*
         FROM asignaturas
         WHERE asignaturas.secciones_id NOT IN (SELECT secciones.id
                                     FROM secciones
@@ -112,7 +117,10 @@ class AsignaturasController extends Controller
                                   )
 ');
 
-        return view('Modulo_Horario.asignaturas.edit', compact('asignatura', 'secciones', 'seccion'));
+            return view('Modulo_Horario.asignaturas.edit', compact('asignatura', 'secciones', 'seccion'));
+        } else {
+            abort(401);
+        }
     }
 
     /**
