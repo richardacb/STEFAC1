@@ -40,13 +40,10 @@ class EstudiantesController extends Controller
         session()->put('anno', User::find(auth()->id())->anno);
 
         $anno  = session()->get('anno');
-        // $usuario =User::find(auth()->id())->roles;
-        // dd($usuario);
         $users = DB::table('users')
             ->join('estudiantes', 'users.id', '=', 'estudiantes.user_id')
             ->select('users.*', 'estudiantes.*')
             ->get();
-
         $anno  = session()->get('anno');
 
         if (User::find(auth()->id())->hasRole('Vicedecana')) {
@@ -62,8 +59,12 @@ class EstudiantesController extends Controller
             WHERE users.anno = ' . $anno . '
             ');
 
+        
+        // $estudiantes = Estudiantes::all();
+        $grupos = Grupos::all();
             // $estudiantes = Estudiantes::all();
             $grupos = Grupos::all();
+
         }
 
         return view('Modulo_PerfildeUsuario.estudiantes.index', compact('estudiantes'));
