@@ -45,14 +45,16 @@
         <div class="mb-3">
             <label for="" class="form-label">Año Docente</label>
             <input type="text" class="form-control" id="anno" name="anno"
-                placeholder="Ingrese el número de su año docente" value="{{ $asignatura->anno }}">
+                placeholder="Ingrese el número de su año docente" value="{{ $asignatura->anno }}" readonly>
             @error('anno')
                 <strong class="error-message text-danger">{{ $message }}</strong>
             @enderror
         </div>
         <div class="mb-3">
             <label for="" class="form-label">Semestre</label>
-            <input type="number" class="form-control" id="semestre" name="semestre"  placeholder="Ingrese el número del Semestre">
+            <input type="number" class="form-control" id="semestre" name="semestre"
+                placeholder="Ingrese el número del Semestre" min="{{ $asignatura->anno + ($asignatura->anno - 1) }}"
+                max="{{ $asignatura->anno * 2 }}">
             @error('semestre')
                 <strong class="error-message text-danger"> {{ $message }} </strong>
             @enderror

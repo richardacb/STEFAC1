@@ -24,7 +24,7 @@
                 <div class="mt-3 w-50 mx-1">
                     <label for="id_prof_1">Profesor Principal</label>
                     <select class="form-control" name="prof_principal" id="prof_principal">
-                        <option value=""></option>
+                        <option value="">- Seleccione Profesor Principal -</option>
                         @foreach ($profesores as $profesor)
                             <option value="{{ $profesor->id }}">{{ $profesor->prof_nombre }}</option>
                         @endforeach
@@ -36,7 +36,7 @@
                 <div class="mt-3 w-50 mx-1">
                     <label for="id_prof_2">Profesor Auxiliar</label>
                     <select class="form-control" name="prof_auxiliar" id="prof_auxiliar">
-                        <option value=""></option>
+                        <option value="">- Seleccione Profesor Auxiliar -</option>
                         @foreach ($profesores as $profesor)
                             <option value="{{ $profesor->id }}">{{ $profesor->prof_nombre }}</option>
                         @endforeach
@@ -58,10 +58,17 @@
             </div>
             <div class="mt-3 w-25 mx-1">
                 <label class="form-label">Año Académico</label>
+
+                <input type="number" name="anno_academico" id="anno_academico" value="{{ $anno }}"
+                    min="{{ $anno }}" max="{{ $anno }}" class="form-control" min="1"
+                    max="5" readonly>
+                @error('anno_academico')
+
                 @role('Vicedecana')
                 <input type="number" class="form-control" id="anno" name="anno" value=""
             min="1" max="5" placeholder="Ingrese el número de su año docente">
             @error('anno_academico')
+
                     <strong class="error-message text-danger"> {{ $message }} </strong>
                 @enderror
             @else
@@ -72,7 +79,8 @@
             </div>
             <div class="mt-3 w-25 mx-1">
                 <label class="form-label">Semestre</label>
-                <input type="number" name="semestre" id="semestre" class="form-control" min="{{ $anno }}" max="{{ $anno + 1 }}">
+                <input type="number" name="semestre" id="semestre" class="form-control" min="{{ $anno + ($anno - 1) }}"
+                    max="{{ $anno * 2 }}">
                 @error('semestre')
                     <strong class="error-message text-danger"> {{ $message }} </strong>
                 @enderror

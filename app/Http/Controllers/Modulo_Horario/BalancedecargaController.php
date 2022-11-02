@@ -30,7 +30,8 @@ class BalancedecargaController extends Controller
     {
         return Excel::download(new BalancedecargaExport, 'Balance de Carga.xlsx');
     }
-    public function createPDF(){
+    public function createPDF()
+    {
         //Recuperar todos los productos de la db
         session()->put('anno', User::find(auth()->id())->anno);
         $anno = session()->get('anno');
@@ -39,8 +40,10 @@ class BalancedecargaController extends Controller
             ->select('asignaturas.nombre', 'balance_de_carga.semana', 'balance_de_carga.frecuencia', 'balance_de_carga.tipo_clase')
             ->where('asignaturas.anno', '=', $anno)->get();
 
-        view()->share('Modulo_Horario.balancedecarga.indexpdf',
-        compact('balancedecarga'));
+        view()->share(
+            'Modulo_Horario.balancedecarga.indexpdf',
+            compact('balancedecarga')
+        );
         $pdf = PDF::loadView('Modulo_Horario.balancedecarga.indexpdf',  compact('balancedecarga'));
         return $pdf->download('archivo-pdf.pdf');
     }
@@ -137,6 +140,22 @@ class BalancedecargaController extends Controller
      */
     public function edit($id)
     {
+
+        session()->put('anno', User::find(auth()->id())->anno);
+        $anno  = session()->get('anno');
+
+        $select_anno = DB::select('SELECT a.anno
+        FROM balance_de_carga as bc INNER JOIN asignaturas as a ON bc.asignaturas_id = a.id
+        WHERE bc.id = ' . $id . '');
+        
+        if ($anno === $select_anno[0]->anno) {
+            $balancedecarga = Balancedecarga::find($id);
+            $nombreasignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
+            return view('Modulo_Horario.balancedecarga.edit', compact('balancedecarga', 'nombreasignaturas'));
+        } else {
+            abort(401);
+        }
+
         $balancedecarga = Balancedecarga::find($id);
         if(User::find(auth()->id())->hasRole('Vicedecana')){
         $nombreasignaturas = Asignaturas::all();
@@ -144,6 +163,7 @@ class BalancedecargaController extends Controller
         $nombreasignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
         }
         return view('Modulo_Horario.balancedecarga.edit', compact('balancedecarga', 'nombreasignaturas'));
+
     }
 
     /**

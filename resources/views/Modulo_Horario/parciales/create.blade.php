@@ -7,7 +7,21 @@
 @stop
 
 @section('content')
-    <form  action="http://localhost/STEFAC1/app/generar_horario/update_horario.php?form=create_pp" method="POST">
+
+    <?php
+    if (isset($_GET['msg'])) {
+        echo "
+                                                    <div class=\"alert alert-warning alert-dismissible fade show w-50\" role=\"alert\">
+                                                        <strong>" .
+            $_GET['msg'] .
+            "</strong>
+                                                        <button type=\"button\" class=\"close btn btn-warning\" data-dismiss=\"alert\" aria-label=\"Close\">
+                                                            <span>X</span>
+                                                        </button>
+                                                      </div>";
+    }
+    ?>
+    <form action="http://localhost/STEFAC1/app/generar_horario/update_horario.php?form=create_pp" id="create_pp"  method="POST">
         @csrf
         <div class="mb-3">
             <label for="" class="form-label">Año Docente</label>
@@ -82,6 +96,6 @@
 
 @section('js')
 
-    {{--  <script src="{{ asset('js/myjs.js') }}" defer></script>  --}}
+    <script src="{{ asset('js/create_pp.js') }}" defer></script>
 
 @stop

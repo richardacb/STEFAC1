@@ -38,11 +38,22 @@ class EstudiantesController extends Controller
     {
 
         session()->put('anno', User::find(auth()->id())->anno);
+
+        $anno  = session()->get('anno');
+        // $usuario =User::find(auth()->id())->roles;
+        // dd($usuario);
+        $users = DB::table('users')
+            ->join('estudiantes', 'users.id', '=', 'estudiantes.user_id')
+            ->select('users.*', 'estudiantes.*')
+            ->get();
+        $estudiantes = DB::select('SELECT users.id, users.anno as anno, e.e_id, e.name as grupo,CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante
+
         $anno  = session()->get('anno') ;
 // $usuario =User::find(auth()->id())->roles;
 // dd($usuario);
         if(User::find(auth()->id())->hasRole('Vicedecana')){
             $estudiantes = DB::select('SELECT users.id, users.anno as anno, e.e_id, e.name as grupo,CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante
+
             FROM users  INNER JOIN  (SELECT e.user_id, e.id as e_id, g.name  FROM estudiantes as e INNER JOIN
             grupos as g ON e.grupos_id = g.id) as e ON users.id = e.user_id
             ');
@@ -52,15 +63,16 @@ class EstudiantesController extends Controller
             grupos as g ON e.grupos_id = g.id) as e ON users.id = e.user_id
             WHERE users.anno = ' . $anno . '
             ');
+
+        // $estudiantes = Estudiantes::all();
+        $grupos = Grupos::all();
+
         }
-           
-           
-         
 
         return view('Modulo_PerfildeUsuario.estudiantes.index', compact('estudiantes'));
     }
 
-   
+
     /**
      * Show the form for creating a new resource.
      *
@@ -70,6 +82,9 @@ class EstudiantesController extends Controller
     {
 
         $anno  = session()->get('anno');
+
+        $grupos = Grupos::where('anno', $anno)->pluck('name', 'id')->toArray();
+
         $tipo_estudiante = [
             'Becado Nacional' => 'Becado Nacional',
             'Extranjero Financiado por un Gobierno' => 'Extranjero Financiado por un Gobierno',
@@ -91,7 +106,7 @@ class EstudiantesController extends Controller
 
 
         //$users = User::all();
-        return view('Modulo_PerfildeUsuario.estudiantes.create', compact('grupos', 'tipo_estudiante', 'users','anno'));
+        return view('Modulo_PerfildeUsuario.estudiantes.create', compact('grupos', 'tipo_estudiante', 'users', 'anno'));
     }
 
     /**
@@ -149,7 +164,12 @@ class EstudiantesController extends Controller
     public function edit($id)
     {
 
+        session()->put('anno', User::find(auth()->id())->anno);
+        $anno = session()->get('anno');
+
         $estudiantes = Estudiantes::findOrFail($id);
+        //$grupos = Grupos::all()->where('anno', $anno);
+        $grupos = Grupos::where('anno', $anno)->pluck('name', 'id')->toArray();
 
         $anno  = session()->get('anno') ;
         if(User::find(auth()->id())->hasRole('Vicedecana')){
@@ -157,6 +177,7 @@ class EstudiantesController extends Controller
         }else{
             $grupos = Grupos::where('anno', $anno)->pluck('name', 'id')->toArray();
         }
+
         $tipo_estudiante = [
             'Becado Nacional' => 'Becado Nacional',
             'Extranjero Financiado por un Gobierno' => 'Extranjero Financiado por un Gobierno',
@@ -230,11 +251,9 @@ class EstudiantesController extends Controller
 
         return redirect()->route('estudiantes.index')->with('info', 'eliminar-datos-estudiantes');
     }
-    
+
     public function exportExcelEstudiantes()
     {
         return Excel::download(new EstudiantesExport, 'Datos de estudiantes.xlsx');
     }
-  
-
 }

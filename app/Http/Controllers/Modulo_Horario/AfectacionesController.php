@@ -29,6 +29,12 @@ class AfectacionesController extends Controller
     public function index()
     {
         session()->put('anno', User::find(auth()->id())->anno);
+
+        $anno  = session()->get('anno');
+
+        $afectaciones = DB::select('SELECT a.id, CONCAT(u.primer_nombre," ",u.segundo_nombre," ",u.primer_apellido," ",u.segundo_apellido) as afectado, a.anno, a.semana, a.dia, a.turno
+        FROM users as u INNER JOIN (SELECT a.* FROM afectaciones as a WHERE a.anno = ' . $anno . ') as a ON u.id = a.profesores_afectados_id');
+
         if(User::find(auth()->id())->hasRole('Vicedecana')){
         $afectaciones = DB::select('SELECT a.id, afect.afectado, a.anno, a.semana, a.dia, a.turno
         FROM afectaciones as a
@@ -44,6 +50,7 @@ class AfectacionesController extends Controller
             FROM users as u INNER JOIN afectaciones as a ON u.id = a.profesores_afectados_id) as afect ON a.profesores_afectados_id = afect.profesores_afectados_id
             WHERE a.anno = ' . session()->get('anno') . '');
         }
+
         return view('Modulo_Horario.afectaciones.index', compact('afectaciones'));
     }
 
@@ -176,9 +183,12 @@ class AfectacionesController extends Controller
         $anno  = session()->get('anno');
 
         $afectacion = Afectaciones::find($id);
-        $profesores = Profesores::all();
 
-        $profesor = DB::select('SELECT users.id, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_profesor
+        if ($anno === $afectacion->anno) {
+            $profesores = Profesores::all();
+            $asignatura = Asignaturas::find($id);
+
+            $profesor = DB::select('SELECT users.id, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_profesor
         FROM users INNER JOIN (SELECT profesores.user_id
                                 FROM profesores
                                 WHERE profesores.id NOT IN (SELECT afectaciones.profesores_afectados_id
@@ -186,18 +196,11 @@ class AfectacionesController extends Controller
                                                 WHERE afectaciones.profesores_afectados_id <> ' . $afectacion->profesores_afectados_id . ')) as profesores ON users.id = profesores.user_id
         ');
 
-//         $profesor = DB::select('SELECT profesores.*
-//         FROM profesores
-//         WHERE profesores.id NOT IN (SELECT afectaciones.profesores_afectados_id
-//                                     FROM afectaciones
-//                                     WHERE afectaciones.profesores_afectados_id <> ' . $afectacion->profesores_afectados_id . ')
-// ');
-        // $dia = DB::select('SELECT afectaciones.*
-        // FROM afectaciones
-        // WHERE afectaciones.dia');
 
-        //var_dump($profesor)
-        return view('Modulo_Horario.afectaciones.edit', compact('afectacion', 'profesores', 'profesor', 'anno'));
+            return view('Modulo_Horario.afectaciones.edit', compact('afectacion', 'profesores', 'profesor', 'anno'));
+        } else {
+            abort(401);
+        }
     }
 
     /**

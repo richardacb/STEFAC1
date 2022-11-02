@@ -31,7 +31,7 @@
                 @endforeach
             </select>
             @error('profesor_id')
-                <strong class="error-message text-danger"> {{ "Campos Requeridos" }} </strong>
+                <strong class="error-message text-danger"> {{ 'Campos Requeridos' }} </strong>
             @enderror
         </div>
         <div class="mb-3">
@@ -45,31 +45,21 @@
         <div class="mb-3">
             <label for="" class="form-label">Día de la Semana Afectado</label>
             <select name="dia" id="dia" class="form-control mr-sm-2 form-select">
-                <option value="0" selected="selected">--Seleccione--</option>
-                <option value="1">Lunes</option>
-                <option value="2">Martes</option>
-                <option value="3">Miércoles</option>
-                <option value="4">Jueves</option>
-                <option value="5">Viernes</option>
-                {{--  @foreach ($afectacion as $a)
-                    @if ($a->dia === $dia)
-                        <option value="1">Lunes</option>
-                        <option value="2">Martes</option>
-                        <option value="3">Miércoles</option>
-                        <option value="4">Jueves</option>
-                        <option value="5">Viernes</option>
-                        </option>
+                <option value="{{ $afectacion->dia }}">{{ $afectacion->dia }}</option>
+                @for ($i = 1; $i < 6; $i++)
+                    @if ($i !== $afectacion->dia)
+                        <option value="{{ $i }}">{{ $i }}</option>
                     @endif
-                @endforeach  --}}
+                @endfor
             </select>
             @error('dia')
-                <strong class="error-message text-danger"> {{ "Campos Requeridos" }} </strong>
+                <strong class="error-message text-danger"> {{ 'Campos Requeridos' }} </strong>
             @enderror
         </div>
         <div class="mb-3">
             <label for="" class="form-label">Turno de Clases</label>
-            <input type="number" class="form-control" id="turno" name="turno" value="{{ $afectacion->turno }}" min="1" max="6"
-                placeholder="Ingrese el Turno Afectado">
+            <input type="number" class="form-control" id="turno" name="turno" value="{{ $afectacion->turno }}"
+                min="1" max="6" placeholder="Ingrese el Turno Afectado">
             @error('turno')
                 <strong class="error-message text-danger"> {{ $message }} </strong>
             @enderror
@@ -77,7 +67,7 @@
         <div class="mb-3">
             <label for="" class="form-label">Año Docente</label>
             <input type="number" class="form-control" id="anno" name="anno" min="{{ $anno }}"
-            max="{{ $anno }}" value="{{ $anno }}">
+                max="{{ $anno }}" value="{{ $anno }}">
             @error('anno')
                 <strong class="error-message text-danger"> {{ $message }} </strong>
             @enderror
