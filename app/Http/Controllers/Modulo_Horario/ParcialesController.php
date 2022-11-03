@@ -14,6 +14,13 @@ use Illuminate\Support\Facades\DB;
 
 class ParcialesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:Modulo_Horario.parciales.index')->only('index');
+        $this->middleware('can:Modulo_Horario.parciales.create')->only('create', 'store');
+        $this->middleware('can:Modulo_Horario.parciales.edit')->only('edit', 'update');
+        $this->middleware('can:Modulo_Horario.parciales.destroy')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -48,7 +55,7 @@ class ParcialesController extends Controller
         if(User::find(auth()->id())->hasRole('Vicedecana')){
         $asignaturas = Asignaturas::all();
         }else{
-            $asignaturas = Asignaturas::all()->where('anno', session()->get('anno')); 
+            $asignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
         }
         return view('Modulo_Horario.parciales.create', compact('asignaturas', 'anno'));
     }
@@ -163,6 +170,8 @@ class ParcialesController extends Controller
         $anno = session()->get('anno');
         $parciales = Parciales::find($id);
         $nombreasignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
+
+        
         return view('Modulo_Horario.parciales.edit', compact('parciales', 'nombreasignaturas', 'anno'));
     }
 

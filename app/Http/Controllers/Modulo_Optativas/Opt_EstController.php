@@ -26,8 +26,10 @@ class Opt_EstController extends Controller
      */
     public function index()
     {
-
         session()->put('anno', User::find(auth()->id())->anno);
+        session()->put('semestre', DB::select('SELECT estudiantes.periodo_lectivo FROM estudiantes WHERE estudiantes.user_id = ' . auth()->id() . '')[0]);
+        $anno = session()->get('anno');
+        $semestre = session()->get('anno');
 
         $optativas = DB::select('SELECT o.id, o.nombre, o.descripcion, o.capacidad, o.anno_academico, o.semestre, o.estado,
         CONCAT(pp.primer_nombre," ",pp.segundo_nombre," ",pp.primer_apellido," ",pp.segundo_apellido) as prof_principal,
@@ -40,7 +42,9 @@ class Opt_EstController extends Controller
 
         LEFT JOIN
         (SELECT users.id, users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido
-        FROM users INNER JOIN profesores ON users.id = profesores.user_id) as pa ON o.prof_auxiliar = pa.id WHERE o.anno_academico = ' . session()->get('anno') . ' ');
+        FROM users INNER JOIN profesores ON users.id = profesores.user_id) as pa ON o.prof_auxiliar = pa.id
+        WHERE o.anno_academico = ' . $anno . ' AND o.semestre = ' . $semestre . '
+        AND o.id NOT IN (SELECT opt_ests.id_opt FROM opt_ests WHERE opt_ests.id_est = ' . auth()->id() . ' AND opt_ests.estado = 1 AND opt_ests.nota <> 0 )');
 
         $opt_mat = array();
         $opt_matriculadas = DB::table('opt_ests')->where('id_est', auth()->id())->get('id_opt');
