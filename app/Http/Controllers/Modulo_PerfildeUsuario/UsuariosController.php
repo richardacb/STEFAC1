@@ -153,31 +153,7 @@ class UsuariosController extends Controller
     public function show($id)
     {
 
-        session()->put('anno', User::find(auth()->id())->anno);
-        $anno = session()->get('anno');
-
-        // $select_anno = DB::select('SELECT users.anno FROM users WHERE users.id = ' . $id . '');
-        $select_anno_dp = DB::select('SELECT users.anno FROM users INNER JOIN diagnosticopreventivo ON users.id = diagnosticopreventivo.user_id  WHERE users.id =  ' . $id . '');
-        $select_anno_e = DB::select('SELECT users.anno FROM users INNER JOIN estudiantes ON users.id = estudiantes.user_id  WHERE users.id = ' . $id . '');
         
-        if (($id == auth()->id()) || 
-
-         ($anno == $select_anno_e[0]->anno  && (User::find(auth()->id())->hasRole('ProfesorJefeAño') )) ||
-            (User::find(auth()->id())->hasRole('ProfesorGuia') && $anno == $select_anno_dp[0]->anno ) ||
-            (User::find(auth()->id())->hasRole('Administrador')) ||
-            (User::find(auth()->id())->hasRole('Vicedecana'))
-        ) {
-
-            $users = User::findOrFail($id);
-            $cant_opt_finalizadas = DB::select('SELECT COUNT(opt_ests.id_est) as cant_opt
-                                            FROM opt_ests
-                                            WHERE opt_ests.id_est = ' . $id . ' AND opt_ests.estado = 1')[0];
-
-            $cant_opt = $cant_opt_finalizadas->cant_opt;
-            return view('Modulo_PerfildeUsuario.usuarios.show', compact('users', 'cant_opt'));
-        } else {
-            abort(401);
-        }
 
     }
 

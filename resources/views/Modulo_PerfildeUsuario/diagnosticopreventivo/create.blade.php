@@ -365,6 +365,4 @@
     <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
     <script src="{{ asset('js/diagnosticopreventino.js') }}"></script>
 @endsection
-
-
 @stop
