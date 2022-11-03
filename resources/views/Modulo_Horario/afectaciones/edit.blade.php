@@ -66,11 +66,19 @@
         </div>
         <div class="mb-3">
             <label for="" class="form-label">Año Docente</label>
-            <input type="number" class="form-control" id="anno" name="anno" min="{{ $anno }}"
-                max="{{ $anno }}" value="{{ $anno }}">
-            @error('anno')
-                <strong class="error-message text-danger"> {{ $message }} </strong>
-            @enderror
+            @role('Vicedecana')
+                <input type="number" class="form-control" id="anno" name="anno" value="" min="1"
+                    max="5" placeholder="Ingrese el número de su año docente">
+                @error('anno')
+                    <strong class="error-message text-danger"> {{ $message }} </strong>
+                @enderror
+            @else
+                <input type="number" class="form-control" id="anno" name="anno" min="{{ $anno }}"
+                    max="{{ $anno }}" value="{{ $anno }}">
+                @error('anno')
+                    <strong class="error-message text-danger"> {{ $message }} </strong>
+                @enderror
+            @endrole
         </div>
         <div class="mb-3">
             <a href="{{ route('afectaciones.index') }}" class="btn btn-danger">Cancelar</a>

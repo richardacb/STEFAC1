@@ -298,7 +298,7 @@ return [
                     'text'    => 'Pruebas Parciales',
                     'icon'    => 'fas fa-fw fa-users',
                     'route'   => 'parciales.index',
-                    // 'can'  => 'Modulo_Horario.parciales.index',
+                    'can'  => 'Modulo_Horario.parciales.index',
                     'active' => ['admin/parciales*']
                 ],
                 [

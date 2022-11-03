@@ -16,10 +16,10 @@ class Tipo_de_localesSeeder extends Seeder
     public function run()
     {
         DB::table('tipo_de_locales')->insert([
-            'tipo' => 'Aula',
+            'tipo' => 'Salon',
         ]);
         DB::table('tipo_de_locales')->insert([
-            'tipo' => 'Salon',
+            'tipo' => 'Aula',
         ]);
         DB::table('tipo_de_locales')->insert([
             'tipo' => 'Laboratorio',

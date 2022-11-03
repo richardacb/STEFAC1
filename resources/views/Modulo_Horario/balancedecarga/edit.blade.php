@@ -24,11 +24,31 @@
                 <option value="0" selected="selected">--Seleccione--</option>
                 @foreach ($nombreasignaturas as $na)
                     <option value="{{ $na->id }}">
+                        @role('Vicedecana')
                         {{ $na->nombre }}
+                        (@if ($na->anno == '1')
+                            Primer Año
+                        @endif
+                        @if ($na->anno == '2')
+                            Segundo Año
+                        @endif
+                        @if ($na->anno == '3')
+                            Tercer Año
+                        @endif
+                        @if ($na->anno == '4')
+                            Cuarto Año
+                        @endif
+                        @if ($na->anno == '5')
+                            Quinto Año
+                        @endif)
+                    @else
+                        {{ $na->nombre }}
+                        @endrole
                     </option>
                 @endforeach
                 </option>
             </select>
+
             @error('asignaturas_id')
                 <strong class="error-message text-danger"> {{ 'Campos Requeridos' }} </strong>
             @enderror

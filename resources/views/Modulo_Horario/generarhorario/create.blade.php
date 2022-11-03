@@ -4,8 +4,11 @@
 
 @section('content_header')
 
-<form method="POST" action="http://localhost/STEFAC1/app/generar_horario/generar_horario.php" /*action="{{ route('generarhorario.generar') }}"*/>
+<form method="POST" action="http://localhost/STEFAC1/app/generar_horario/generar_horario.php" /*action="{{ route('generarhorario.generar') }}"*/ id="generarhorario">
     @csrf
+    <div class="mb-3"  >
+        <strong class="error-message text-danger" id="error_horario"></strong>
+    </div>
     <div class="mb-3">
         <label for="" class="form-label">Sección a Impartir</label>
         <br>
@@ -35,4 +38,5 @@
 @stop
 @section('js')
     <script src="{{ asset('js/generarhorario.js') }}"></script>
+    <script src="{{ asset('js/validargenerarhorario.js') }}"></script>
 @endsection

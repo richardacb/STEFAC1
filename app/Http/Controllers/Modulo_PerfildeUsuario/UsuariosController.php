@@ -152,6 +152,7 @@ class UsuariosController extends Controller
      */
     public function show($id)
     {
+
         session()->put('anno', User::find(auth()->id())->anno);
         $anno = session()->get('anno');
 
@@ -177,6 +178,7 @@ class UsuariosController extends Controller
         } else {
             abort(401);
         }
+
     }
 
     public function importar_usuarios(Request $request)

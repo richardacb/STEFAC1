@@ -21,16 +21,16 @@
                                                       </div>";
     }
     ?>
-    <form action="http://localhost/STEFAC1/app/generar_horario/update_horario.php?form=create_pp" id="create_pp"  method="POST">
+    <form action="http://localhost/STEFAC1/app/generar_horario/update_horario.php?form=create_pp" method="POST">
         @csrf
         <div class="mb-3">
             <label for="" class="form-label">Año Docente</label>
             @role('Vicedecana')
             <input type="number" class="form-control" id="anno" name="anno" value=""
-            min="1" max="5" placeholder="Ingrese el número de su año docente">   
+            min="1" max="5" placeholder="Ingrese el número de su año docente">
             @error('anno')
                 <strong class="error-message text-danger"> {{ $message }} </strong>
-            @enderror 
+            @enderror
              @else
             <input type="number" class="form-control" id="anno" name="anno" value="{{ $anno }}"
                 min="{{ $anno }}" max="{{ $anno }}">
@@ -96,6 +96,6 @@
 
 @section('js')
 
-    <script src="{{ asset('js/create_pp.js') }}" defer></script>
+
 
 @stop
