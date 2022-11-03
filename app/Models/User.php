@@ -11,6 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 use App\Models\Modulo_PerfildeUsuario\Estudiantes;
 use App\Models\Modulo_PerfildeUsuario\Profesores;
 use App\Models\Modulo_PerfildeUsuario\Diagnosticopreventivo;
+use App\Models\Modulo_Actividades\Evidencias;
 use DB;
 
 class User extends Authenticatable
@@ -72,5 +73,15 @@ class User extends Authenticatable
      * @var array<string, string>
      */
 
+
+     /**
+    * Get all of the usuario for the Evidencia
+    *
+    * @return \Illuminate\Database\Eloquent\Relations\HasMany
+    */
+    public function evidencia()
+    {
+        return $this->hasMany(Evidencias::class, 'id');
+    }
 
 }

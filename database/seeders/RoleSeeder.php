@@ -121,13 +121,13 @@ class RoleSeeder extends Seeder
                            'description' => 'Insertar datos de diagnostico preventivo'])->syncRoles([$role1,$role2,$role3,$role4]);
         Permission::create(['name' => 'Modulo_PerfildeUsuario.diagnosticopreventivo.edit',
                            'description' => 'Editar datos de diagnostico preventivo'])->syncRoles([$role1,$role2,$role3,$role4]);
-        Permission::create(['name' => 'Modulo_PerfildeUsuario.grupos.destroy',
+        Permission::create(['name' => 'Modulo_PerfildeUsuario.diagnosticopreventivo.destroy',
                            'description' => 'Eliminar datos de diagnostico preventivo'])->syncRoles([$role1,$role2,$role3,$role4]);
 
         Permission::create(['name' => 'Modulo_PerfildeUsuario.usuarios.index',
                            'description' => 'Ver listado de usuarios'])->syncRoles([$role1]);
         Permission::create(['name' => 'Modulo_PerfildeUsuario.usuarios.edit',
-                           'description' => 'Ver lista de roles ha asignar'])->syncRoles([$role1]);               
+                           'description' => 'Ver lista de roles ha asignar'])->syncRoles([$role1]);
         Permission::create(['name' => 'Modulo_PerfildeUsuario.usuarios.show',
                           'description' => 'Ver detalles del usuarios'])->syncRoles([$role1,$role2,$role3,$role4]);
         Permission::create(['name' => 'Modulo_PerfildeUsuario.usuarios.update',
@@ -144,7 +144,7 @@ class RoleSeeder extends Seeder
 
         Permission::create(['name' => 'Import.UsuariosImport',
                            'description' => 'Importar listado de usuarios'])->syncRoles([$role1]);
-        
+
         Permission::create(['name' => 'Import.ProfesoresImport',
                            'description' => 'Importar listado de profesores'])->syncRoles([$role1,$role2,$role3]);
 

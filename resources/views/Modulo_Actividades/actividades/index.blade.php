@@ -29,25 +29,24 @@
         <thead class="bg-primary text-white">
             <tr>
 
-                <th>ID</th>
                 <th>Nombre</th>
                 <th>Tipo de Actividad</th>
                 <th>Año</th>
 
-                <th width="160px">Accion</th>
+                <th width="160px">Acción</th>
             </tr>
         </thead>
 
         <tbody>
             @foreach ($actividades as $actividad)
                 <tr>
-                    <td>{{$actividad->id }}</td>
+
                     <td>{{$actividad->nombre }}</td>
                     <td>{{$actividad->tipo_actividad}}</td>
                     <td>{{$actividad->año}}</td>
                     <td>
                         <form action="{{ route('actividades.destroy', $actividad) }}" method="POST"
-                            class="eliminar_grupo">
+                            class="eliminar-actividad">
                             @csrf
                             @method('delete')
                                 <a class="btn btn-primary btn-sm" href="{{ route('actividades.edit', $actividad->id) }}"><i
@@ -123,15 +122,25 @@
     </script>
 @endif
 
-@if (session('info') == 'eliminar-actividad')
-    <script>
-        Swal.fire(
-            '¡Eliminado!',
-            'La actividad se elimino con exito.',
-            'success'
-        )
-    </script>
-@endif
+<script>
+    $('.eliminar-actividad').submit(function(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¿Está seguro que desea eliminar?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.submit();
+            }
+        })
+    });
+</script>
 
 
 @endsection

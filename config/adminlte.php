@@ -392,7 +392,7 @@ return [
             'submenu' => [],
         ],
         [
-            'text'    => 'Actividades',
+            'text'    => 'Gestión de Actividades',
             'icon'    => 'fas fa-fw fa-share',
             'url'  => '',
             'active' => [''],
