@@ -150,17 +150,16 @@ class BalancedecargaController extends Controller
 
         if ($anno === $select_anno[0]->anno || (User::find(auth()->id())->hasRole('Vicedecana'))) {
             $balancedecarga = Balancedecarga::find($id);
+
             $nombreasignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
-            return view('Modulo_Horario.balancedecarga.edit', compact('balancedecarga', 'nombreasignaturas'));
+
+            if(User::find(auth()->id())->hasRole('Vicedecana')){
+                $nombreasignaturas = Asignaturas::all();
+                }else{
+                $nombreasignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
+                }
         } else {
             abort(401);
-        }
-
-        $balancedecarga = Balancedecarga::find($id);
-        if(User::find(auth()->id())->hasRole('Vicedecana')){
-        $nombreasignaturas = Asignaturas::all();
-        }else{
-        $nombreasignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
         }
         return view('Modulo_Horario.balancedecarga.edit', compact('balancedecarga', 'nombreasignaturas'));
 

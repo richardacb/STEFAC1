@@ -22,13 +22,6 @@
 @endsection
 
 @section('content')
-
-    @if (session('info'))
-        <div class="alert alert-succes">
-            <strong>{{ session('info') }}</strong>
-        </div>
-    @endif
-
     <div class="container-fluid">
         <div class="row">
             <div class="col-xl-12">
@@ -38,6 +31,7 @@
                             <thead class="bg-primary text-white">
                                 <tr>
                                     <th>Nombre</th>
+                                    <th>Tipo de Local</th>
                                     <th>Disponibilidad</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -46,20 +40,22 @@
                                 @foreach ($locales as $l)
                                     <tr>
                                         <td>{{ $l->local }}</td>
+                                        <td>{{ $l->tipo }}</td>
                                         <td>{{ $l->disponibilidad }}</td>
                                         <td width="150px">
-                                            <form action="{{ route('locales.destroy', $l) }}" method="POST"
+                                            <form action="{{ route('locales.destroy', $l->id) }}" method="POST"
                                                 class="eliminar-local">
                                                 @csrf
                                                 @method('delete')
                                                 @can('Modulo_Horario.locales.edit')
-                                                <a class="btn btn-primary btn-sm"
-                                                    href="{{ route('locales.edit', $l->id) }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Local"><i
-                                                    class="fa fa-edit"></i></a>
+                                                    <a class="btn btn-primary btn-sm" href="{{ route('locales.edit', $l->id) }}"
+                                                        data-bs-toggle="tooltip" data-bs-placement="right"
+                                                        title="Editar Local"><i class="fa fa-edit"></i></a>
                                                 @endcan
                                                 @can('Modulo_Horario.locales.destroy')
-                                                <button class="btn btn-danger btn-sm" type="submit" data-bs-toggle="tooltip" data-bs-placement="right" title="Eliminar Local"><i
-                                                    class="fa fa-trash-alt"></i></button>
+                                                    <button class="btn btn-danger btn-sm" type="submit"
+                                                        data-bs-toggle="tooltip" data-bs-placement="right"
+                                                        title="Eliminar Local"><i class="fa fa-trash-alt"></i></button>
                                                 @endcan
                                             </form>
                                         </td>

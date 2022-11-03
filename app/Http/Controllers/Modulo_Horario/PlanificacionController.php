@@ -84,11 +84,17 @@ class PlanificacionController extends Controller
      */
     public function create()
     {
-        $profesores = Profesores::all();
-        $grupos = Grupos::all()->where('anno', session()->get('anno'));
-        $asignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
-        $id = 'gg';
-        return view('Modulo_Horario.planificacion.create', compact('profesores', 'grupos', 'asignaturas', 'id'));
+        if(User::find(auth()->id())->hasRole('Vicedecana')){
+            $profesores = Profesores::all();
+            $grupos = Grupos::all();
+            $asignaturas = Asignaturas::all();
+        }
+        else{
+            $profesores = Profesores::all();
+            $grupos = Grupos::all()->where('anno', session()->get('anno'));
+            $asignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
+        }
+        return view('Modulo_Horario.planificacion.create', compact('profesores', 'grupos', 'asignaturas'));
     }
 
     /**

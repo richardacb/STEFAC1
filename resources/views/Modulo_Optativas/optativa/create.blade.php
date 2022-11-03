@@ -58,32 +58,30 @@
             </div>
             <div class="mt-3 w-25 mx-1">
                 <label class="form-label">Año Académico</label>
-
-                <input type="number" name="anno_academico" id="anno_academico" value="{{ $anno }}"
-                    min="{{ $anno }}" max="{{ $anno }}" class="form-control" min="1"
-                    max="5" readonly>
-                @error('anno_academico')
-
                 @role('Vicedecana')
-                <input type="number" class="form-control" id="anno" name="anno" value=""
-            min="1" max="5" placeholder="Ingrese el número de su año docente">
-            @error('anno_academico')
-
-                    <strong class="error-message text-danger"> {{ $message }} </strong>
-                @enderror
-            @else
-                <input type="number" name="anno_academico" id="anno_academico" value="{{ $anno }}" min="{{ $anno }}" max="{{ $anno }}" class="form-control" min="1"
-                    max="5">
-                 @endrole
+                    <input type="number" class="form-control" id="anno_academico" name="anno_academico" value=""
+                        min="1" max="5" placeholder="Ingrese el número de su año docente">
+                    @error('anno_academico')
+                        <strong class="error-message text-danger"> {{ $message }} </strong>
+                    @enderror
+                @else
+                    <input type="number" name="anno_academico" id="anno_academico" value="{{ $anno }}"
+                        min="{{ $anno }}" max="{{ $anno }}" class="form-control" readonly>
+                @endrole
 
             </div>
             <div class="mt-3 w-25 mx-1">
                 <label class="form-label">Semestre</label>
-                <input type="number" name="semestre" id="semestre" class="form-control" min="{{ $anno + ($anno - 1) }}"
-                    max="{{ $anno * 2 }}">
-                @error('semestre')
-                    <strong class="error-message text-danger"> {{ $message }} </strong>
-                @enderror
+                @role('Vicedecana')
+                    <input type="number" name="semestre" id="semestre" class="form-control" min="1" max="10">
+                    @error('semestre')
+                        <strong class="error-message text-danger"> {{ $message }} </strong>
+                    @enderror
+                @else
+                    <input type="number" name="semestre" id="semestre" class="form-control" min="{{ $anno + ($anno - 1) }}"
+                        max="{{ $anno * 2 }}">
+                @endrole
+
             </div>
             <div class="mt-3 w-25 mx-1">
                 <label class="form-label">Estado</label>

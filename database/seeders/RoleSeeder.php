@@ -77,6 +77,16 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'Modulo_Horario.planificacion.destroy',
                            'description' => 'Eliminar Carga Docente'])->syncRoles([$role2,$role3]);
 
+        Permission::create(['name' => 'Modulo_Horario.parciales.index',
+                           'description' => 'Ver listado de Pruebas Parciales'])->syncRoles([$role2,$role3]);
+        Permission::create(['name' => 'Modulo_Horario.parciales.create',
+                           'description' => 'Insertar Prueba Parcial'])->syncRoles([$role2,$role3]);
+        Permission::create(['name' => 'Modulo_Horario.parciales.edit',
+                           'description' => 'Editar Prueba Parcial'])->syncRoles([$role2,$role3]);
+        Permission::create(['name' => 'Modulo_Horario.parciales.destroy',
+                           'description' => 'Eliminar Prueba Parcial'])->syncRoles([$role2,$role3]);
+
+
         Permission::create(['name' => 'Modulo_Horario.generarhorario.index',
                            'description' => 'Permitir Generar Horario'])->syncRoles([$role2,$role3]);
         Permission::create(['name' => 'Modulo_Horario.generarhorario.create',
@@ -129,20 +139,20 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'Modulo_PerfildeUsuario.usuarios.create',
                            'description' => 'Insertar datos a un usuario'])->syncRoles([$role1]);
         Permission::create(['name' => 'Modulo_PerfildeUsuario.usuarios.editar',
-                           'description' => 'Editar datos del usuario'])->syncRoles([$role1]);      
+                           'description' => 'Editar datos del usuario'])->syncRoles([$role1]);
         Permission::create(['name' => 'Modulo_PerfildeUsuario.usuarios.actualizar',
-                           'description' => 'Asignar roles'])->syncRoles([$role1]); 
+                           'description' => 'Asignar roles'])->syncRoles([$role1]);
         Permission::create(['name' => 'Modulo_PerfildeUsuario.usuarios.edit',
-                           'description' => 'Ver lista de roles ha asignar'])->syncRoles([$role1]); 
+                           'description' => 'Ver lista de roles ha asignar'])->syncRoles([$role1]);
         Permission::create(['name' => 'Modulo_PerfildeUsuario.usuarios.update',
-                           'description' => 'Asignar roles'])->syncRoles([$role1]);      
+                           'description' => 'Asignar roles'])->syncRoles([$role1]);
         Permission::create(['name' => 'Import.UsuariosImport',
-                           'description' => 'Importar listado de usuarios'])->syncRoles([$role1]);  
+                           'description' => 'Importar listado de usuarios'])->syncRoles([$role1]);
 
 
         Permission::create(['name' => 'Modulo_PerfildeUsuario.usuarios.show',
                           'description' => 'Ver detalles del usuarios'])->syncRoles([$role1,$role2,$role3,$role4,$role5,$role6,$role7]);
-        
+
 
         Permission::create(['name' => 'Modulo_PerfildeUsuario.roles.index',
                            'description' => 'Ver listado de roles'])->syncRoles([$role1]);
@@ -152,9 +162,9 @@ class RoleSeeder extends Seeder
                            'description' => 'Editar rol'])->syncRoles([$role1]);
         Permission::create(['name' => 'Modulo_PerfildeUsuario.roles.destroy',
                            'description' => 'Eliminar rol'])->syncRoles([$role1]);
-        
-        
-    
+
+
+
 
         /*====================================End Modulo Perfil de usuario========================================================*/
 

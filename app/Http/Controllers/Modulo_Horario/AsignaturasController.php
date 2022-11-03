@@ -33,10 +33,6 @@ class AsignaturasController extends Controller
         }else{
         $asignaturas=Asignaturas::all()->where('anno',session()->get('anno'));
         }
-
-
-        $asignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
-
         $secciones = Secciones::all();
         return view('Modulo_Horario.asignaturas.index', compact('asignaturas', 'secciones'));
     }
@@ -50,7 +46,6 @@ class AsignaturasController extends Controller
     {
         $secciones = Secciones::all();
         $anno = session()->get('anno');
-
         return view('Modulo_Horario.asignaturas.create', compact('secciones', 'anno'));
     }
 
@@ -111,12 +106,9 @@ class AsignaturasController extends Controller
     {
         session()->put('anno', User::find(auth()->id())->anno);
         $anno = session()->get('anno');
-
         $asignatura = Asignaturas::find($id);
         if ($anno === $asignatura->anno || (User::find(auth()->id())->hasRole('Vicedecana'))) {
-
             $secciones = Secciones::all();
-
             $seccion = DB::select('SELECT asignaturas.*
         FROM asignaturas
         WHERE asignaturas.secciones_id NOT IN (SELECT secciones.id
@@ -124,7 +116,6 @@ class AsignaturasController extends Controller
                                     WHERE secciones.id <> ' . $asignatura->secciones_id . '
                                   )
 ');
-
             return view('Modulo_Horario.asignaturas.edit', compact('asignatura', 'secciones', 'seccion'));
         } else {
             abort(401);
