@@ -29,7 +29,7 @@
                         <!--  Diagnostico preventivo  -->
                         <legend class="legend-personalizado-dp">Diagnostico preventivo </legend>
                         <div class="row">
-            
+
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <div class="form-group">
                                     {!! Form::label('name', 'Nacionalidad:') !!}
@@ -59,7 +59,7 @@
                                     @enderror
                                 </div>
                             </div>
-                           
+
                             <div class="col-md-4 col-sm-6 col-xs-12">
                                 <div class="form-group">
                                     {!! Form::label('name', 'Tabaco:') !!}
@@ -73,7 +73,7 @@
                                     @enderror
                                 </div>
                             </div>
-                           
+
                             <div class="col-md-4 col-sm-6 col-xs-12">
                                 <div class="form-group">
                                     {!! Form::label('name', 'Café:') !!}
@@ -87,7 +87,7 @@
                                     @enderror
                                 </div>
                             </div>
-                           
+
                             <div class="col-md-6 col-xs-12">
                                 <div class="form-group">
                                     {!! Form::label('name', 'Tecnoadicciones:') !!}
@@ -101,7 +101,7 @@
                                     @enderror
                                 </div>
                             </div>
-                           
+
                             <div class="col-md-6 col-xs-12">
                                 <div class="form-group">
                                     {!! Form::label('name', 'Drogas:') !!}
@@ -118,8 +118,8 @@
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <h2 class="h3">Grupos Sociales y Creencias Religiosas</h2>
                             </div>
-            
-                         
+
+
                             <div class="col-md-6 col-xs-12">
                                 <div class="form-group">
                                     {!! Form::label('name', 'Grupos Sociales:') !!}
@@ -133,7 +133,7 @@
                                     @enderror
                                 </div>
                             </div>
-                           
+
                             <div class="col-md-6 col-xs-12">
                                 <div class="form-group">
                                     {!! Form::label('name', 'Creencias Religiosas:') !!}
@@ -150,12 +150,10 @@
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <h2 class="h3">Medicamentos</h2>
                             </div>
-                           
+
                             <div class="col-md-12 col-xs-12">
                                 <div class="form-group">
-                                    {!! Form::label(
-                                        'name','Consumo de Medicamentos:',
-                                    ) !!}
+                                    {!! Form::label('name', 'Consumo de Medicamentos:') !!}
                                     {!! Form::select('tipo_medicamentos', $tipo_medicamentos, null, [
                                         'class' => 'form-control',
                                         'id' => 'tipo_medicamentos',
@@ -166,13 +164,12 @@
                                     @enderror
                                 </div>
                             </div>
-            
+
                             <div class="col-md-12 col-sm-12">
                                 <div class="form-group">
-                                    {!! Form::label('name', 'Medicamentos:', ['style'=> 'display: none', 'id' => 'tipo_medicamentos_cons' ]) !!}
+                                    {!! Form::label('name', 'Medicamentos:', ['id' => 'tipo_medicamentos_cons']) !!}
                                     {!! Form::textarea('tipo_medicamentos_consumo', null, [
                                         'class' => 'form-control',
-                                        'style'=> 'display: none',
                                         'rows' => 1,
                                         'id' => 'tipo_medicamentos_consumo',
                                         'placeholder' => 'Ingrese el medicamento que consume',
@@ -182,151 +179,177 @@
                                     @enderror
                                 </div>
                             </div>
-            
+
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <div class="form-group">
-            
+
                                     {!! Form::label('name', 'Tipo de problemas:') !!}<br>
-                                    <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12" ><input type="checkbox" id="prob_de_personalidad" name="prob_de_personalidad" value = " {{ isset($diagnosticopreventivo->prob_de_personalidad) ? 'checked' : 'unchecked'}}" onClick="p1(event)"> Problemas de personalidad</label>
-                                    <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12" ><input type="checkbox" id="prob_de_psiquiatricos" name="prob_de_psiquiatricos" value = "{{$diagnosticopreventivo->prob_de_psiquiatricos}}"onClick="p2(event)"> Problemas psiquiátricos</label>
-                                    <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12" ><input type="checkbox" id="prob_de_economicos" name="prob_de_economicos" value = "{{$diagnosticopreventivo->prob_de_economicos}}" onClick="p3(event)"> Problemas económicos</label>
-                                    <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12" ><input type="checkbox" id="prob_de_sociales" name="prob_de_sociales" value = "{{$diagnosticopreventivo->prob_de_sociales}}"onClick="p4(event)"> Problemas sociales</label>
-                                    <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12" ><input type="checkbox" id="prob_de_familiares" name="prob_de_familiares" value = "{{$diagnosticopreventivo->prob_de_familiares}}"onClick="p5(event)"> Problemas familiares</label>
-                                    <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12" ><input type="checkbox" id="prob_de_academicos" name="prob_de_academicos" value = "{{$diagnosticopreventivo->prob_de_academicos}}"onClick="p6(event)"> Problemas académicos</label>
-                                    <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12" ><input type="checkbox" id="prob_de_disciplina" name="prob_de_disciplina" value = "{{$diagnosticopreventivo->prob_de_disciplina}}"onClick="p7(event)"> Problemas  de disciplina</label>
-                                    <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12" ><input type="checkbox" id="prob_de_asistencia" name="prob_de_asistencia" value = "{{$diagnosticopreventivo->prob_de_asistencia}}"onClick="p8(event)"> Problemas de asistencia</label>
+                                    <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12"><input type="checkbox"
+                                            id="prob_de_personalidad" name="prob_de_personalidad"
+                                            value="Problemas de personalidad"
+                                            onClick="p1(event)"{{ $diagnosticopreventivo->prob_de_personalidad == null ? 'unchecked' : 'checked' }}> Problemas de personalidad</label>
+                                    <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12"><input type="checkbox"
+                                            id="prob_de_psiquiatricos" name="prob_de_psiquiatricos"
+                                            value="Problemas psiquiátricos"
+                                            onClick="p2(event)"{{ $diagnosticopreventivo->prob_de_psiquiatricos == null ? 'unchecked' : 'checked' }}> Problemas psiquiátricos</label>
+                                    <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12"><input type="checkbox"
+                                            id="prob_de_economicos" name="prob_de_economicos"
+                                            value="Problemas económicos"
+                                            onClick="p3(event)"{{ $diagnosticopreventivo->prob_de_economicos == null ? 'unchecked' : 'checked' }}> Problemas económicos</label>
+                                    <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12"><input type="checkbox"
+                                            id="prob_de_sociales" name="prob_de_sociales"
+                                            value="Problemas sociales"
+                                            onClick="p4(event)" {{ $diagnosticopreventivo->prob_de_sociales == null ? 'unchecked' : 'checked' }}> Problemas sociales</label>
+                                    <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12"><input type="checkbox"
+                                            id="prob_de_familiares" name="prob_de_familiares"
+                                            value="Problemas familiares"
+                                            onClick="p5(event)"{{ $diagnosticopreventivo->prob_de_familiares == null ? 'unchecked' : 'checked' }}> Problemas familiares</label>
+                                    <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12"><input type="checkbox"
+                                            id="prob_de_academicos" name="prob_de_academicos"
+                                            value="Problemas académicos"
+                                            onClick="p6(event)"{{ $diagnosticopreventivo->prob_de_academicos == null ? 'unchecked' : 'checked' }}> Problemas académicos</label>
+                                    <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12"><input type="checkbox"
+                                            id="prob_de_disciplina" name="prob_de_disciplina"
+                                            value="Problemas de disciplina"
+                                            onClick="p7(event)"{{ $diagnosticopreventivo->prob_de_disciplina == null ? 'unchecked' : 'checked' }}> Problemas de disciplina</label>
+                                    <label class="col-lg-4 col-md-4 col-sm-6 col-xs-12"><input type="checkbox"
+                                            id="prob_de_asistencia" name="prob_de_asistencia"
+                                            value="Problemas de asistencia"
+                                            onClick="p8(event)"{{ $diagnosticopreventivo->prob_de_asistencia == null ? 'unchecked' : 'checked' }}> Problemas de asistencia</label>
                                 </div>
-                           
-                            <div class="col-md-12 col-sm-12">
-                                <div class="form-group">
-                                    {!! Form::label('name', 'Descripcion del problema de personalidad:', [ 'id' => 'label_desc_prob_de_personalidad']) !!}
-                                    {!! Form::textarea('desc_prob_de_personalidad', null, [
-                                        'class' => 'form-control',
+
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        {!! Form::label('name', 'Descripcion del problema de personalidad:', [
+                                            'id' => 'label_desc_prob_de_personalidad',
+                                        ]) !!}
+                                        {!! Form::textarea('desc_prob_de_personalidad', null, [
+                                            'class' => 'form-control',
                                         
-                                        'rows' => 1,
-                                        'id' => 'desc_prob_de_personalidad',
-                                        'placeholder' => 'Ingrese el problema',
-                                    ]) !!}
-                                    @error('desc_prob_de_personalidad')
-                                        <strong class="error-message text-danger"> {{ $message }} </strong>
-                                    @enderror
+                                            'rows' => 1,
+                                            'id' => 'desc_prob_de_personalidad',
+                                            'placeholder' => 'Ingrese el problema',
+                                        ]) !!}
+                                        @error('desc_prob_de_personalidad')
+                                            <strong class="error-message text-danger"> {{ $message }} </strong>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </div>
-            
-                            <div class="col-md-12 col-sm-12">
-                                <div class="form-group">
-                                    {!! Form::label('name', 'Descripcion del problema psiquiátrico:', [ 'id' => 'label_desc_prob_de_psiquiatricos'  ]) !!}
-                                    {!! Form::textarea('desc_prob_de_psiquiatricos', null, [
-                                        'class' => 'form-control',
+
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        {!! Form::label('name', 'Descripcion del problema psiquiátrico:', ['id' => 'label_desc_prob_de_psiquiatricos']) !!}
+                                        {!! Form::textarea('desc_prob_de_psiquiatricos', null, [
+                                            'class' => 'form-control',
                                         
-                                        'rows' => 1,
-                                        'id' => 'desc_prob_de_psiquiatricos',
-                                        'placeholder' => 'Ingrese el problema',
-                                    ]) !!}
-                                    @error('desc_prob_de_psiquiatricos')
-                                        <strong class="error-message text-danger"> {{ $message }} </strong>
-                                    @enderror
+                                            'rows' => 1,
+                                            'id' => 'desc_prob_de_psiquiatricos',
+                                            'placeholder' => 'Ingrese el problema',
+                                        ]) !!}
+                                        @error('desc_prob_de_psiquiatricos')
+                                            <strong class="error-message text-danger"> {{ $message }} </strong>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </div>
-            
-                            <div class="col-md-12 col-sm-12">
-                                <div class="form-group">
-                                    {!! Form::label('name', 'Descripcion del problema económico:', [ 'id' => 'label_desc_prob_de_economicos'  ]) !!}
-                                    {!! Form::textarea('desc_prob_de_economicos', null, [
-                                        'class' => 'form-control',
+
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        {!! Form::label('name', 'Descripcion del problema económico:', ['id' => 'label_desc_prob_de_economicos']) !!}
+                                        {!! Form::textarea('desc_prob_de_economicos', null, [
+                                            'class' => 'form-control',
                                         
-                                        'rows' => 1,
-                                        'id' => 'desc_prob_de_economicos',
-                                        'placeholder' => 'Ingrese el problema',
-                                    ]) !!}
-                                    @error('desc_prob_de_economicos')
-                                        <strong class="error-message text-danger"> {{ $message }} </strong>
-                                    @enderror
+                                            'rows' => 1,
+                                            'id' => 'desc_prob_de_economicos',
+                                            'placeholder' => 'Ingrese el problema',
+                                        ]) !!}
+                                        @error('desc_prob_de_economicos')
+                                            <strong class="error-message text-danger"> {{ $message }} </strong>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </div>
-            
-                            <div class="col-md-12 col-sm-12">
-                                <div class="form-group">
-                                    {!! Form::label('name', 'Descripcion del problema social:', [ 'id' => 'label_desc_prob_de_sociales' ]) !!}
-                                    {!! Form::textarea('desc_prob_de_sociales', null, [
-                                        'class' => 'form-control',
+
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        {!! Form::label('name', 'Descripcion del problema social:', ['id' => 'label_desc_prob_de_sociales']) !!}
+                                        {!! Form::textarea('desc_prob_de_sociales', null, [
+                                            'class' => 'form-control',
                                         
-                                        'rows' => 1,
-                                        'id' => 'desc_prob_de_sociales',
-                                        'placeholder' => 'Ingrese el problema',
-                                    ]) !!}
-                                    @error('desc_prob_de_sociales')
-                                        <strong class="error-message text-danger"> {{ $message }} </strong>
-                                    @enderror
+                                            'rows' => 1,
+                                            'id' => 'desc_prob_de_sociales',
+                                            'placeholder' => 'Ingrese el problema',
+                                        ]) !!}
+                                        @error('desc_prob_de_sociales')
+                                            <strong class="error-message text-danger"> {{ $message }} </strong>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </div>
-            
-                            <div class="col-md-12 col-sm-12">
-                                <div class="form-group">
-                                    {!! Form::label('name', 'Descripcion del problema familiar:', [ 'id' => 'label_desc_prob_de_familiares' ]) !!}
-                                    {!! Form::textarea('desc_prob_de_familiares', null, [
-                                        'class' => 'form-control',
+
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        {!! Form::label('name', 'Descripcion del problema familiar:', ['id' => 'label_desc_prob_de_familiares']) !!}
+                                        {!! Form::textarea('desc_prob_de_familiares', null, [
+                                            'class' => 'form-control',
                                         
-                                        'rows' => 1,
-                                        'id' => 'desc_prob_de_familiares',
-                                        'placeholder' => 'Ingrese el problema',
-                                    ]) !!}
-                                    @error('desc_prob_de_familiares')
-                                        <strong class="error-message text-danger"> {{ $message }} </strong>
-                                    @enderror
+                                            'rows' => 1,
+                                            'id' => 'desc_prob_de_familiares',
+                                            'placeholder' => 'Ingrese el problema',
+                                        ]) !!}
+                                        @error('desc_prob_de_familiares')
+                                            <strong class="error-message text-danger"> {{ $message }} </strong>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12 col-sm-12">
-                                <div class="form-group">
-                                    {!! Form::label('name', 'Descripcion del problema académico:', [ 'id' => 'label_desc_prob_de_academicos'  ]) !!}
-                                    {!! Form::textarea('desc_prob_de_academicos', null, [
-                                        'class' => 'form-control',
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        {!! Form::label('name', 'Descripcion del problema académico:', ['id' => 'label_desc_prob_de_academicos']) !!}
+                                        {!! Form::textarea('desc_prob_de_academicos', null, [
+                                            'class' => 'form-control',
                                         
-                                        'rows' => 1,
-                                        'id' => 'desc_prob_de_academicos',
-                                        'placeholder' => 'Ingrese el problema',
-                                    ]) !!}
-                                    @error('desc_prob_de_academicos')
-                                        <strong class="error-message text-danger"> {{ $message }} </strong>
-                                    @enderror
+                                            'rows' => 1,
+                                            'id' => 'desc_prob_de_academicos',
+                                            'placeholder' => 'Ingrese el problema',
+                                        ]) !!}
+                                        @error('desc_prob_de_academicos')
+                                            <strong class="error-message text-danger"> {{ $message }} </strong>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </div>
-            
-                            <div class="col-md-12 col-sm-12">
-                                <div class="form-group">
-                                    {!! Form::label('name', 'Descripcion del problema de disciplina:', [ 'id' => 'label_desc_prob_de_disciplina'  ]) !!}
-                                    {!! Form::textarea('desc_prob_de_disciplina', null, [
-                                        'class' => 'form-control',
+
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        {!! Form::label('name', 'Descripcion del problema de disciplina:', ['id' => 'label_desc_prob_de_disciplina']) !!}
+                                        {!! Form::textarea('desc_prob_de_disciplina', null, [
+                                            'class' => 'form-control',
                                         
-                                        'rows' => 1,
-                                        'id' => 'desc_prob_de_disciplina',
-                                        'placeholder' => 'Ingrese el problema',
-                                    ]) !!}
-                                    @error('desc_prob_de_disciplina')
-                                        <strong class="error-message text-danger"> {{ $message }} </strong>
-                                    @enderror
+                                            'rows' => 1,
+                                            'id' => 'desc_prob_de_disciplina',
+                                            'placeholder' => 'Ingrese el problema',
+                                        ]) !!}
+                                        @error('desc_prob_de_disciplina')
+                                            <strong class="error-message text-danger"> {{ $message }} </strong>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </div>
-            
-                            <div class="col-md-12 col-sm-12">
-                                <div class="form-group">
-                                    {!! Form::label('name', 'Descripcion del problema de asistencia:', [ 'id' => 'label_desc_prob_de_asistencia'  ]) !!}
-                                    {!! Form::textarea('desc_prob_de_asistencia', null, [
-                                        'class' => 'form-control',
+
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        {!! Form::label('name', 'Descripcion del problema de asistencia:', ['id' => 'label_desc_prob_de_asistencia']) !!}
+                                        {!! Form::textarea('desc_prob_de_asistencia', null, [
+                                            'class' => 'form-control',
                                         
-                                        'rows' => 1,
-                                        'id' => 'desc_prob_de_asistencia',
-                                        'placeholder' => 'Ingrese el problema',
-                                    ]) !!}
-                                    @error('desc_prob_de_asistencia')
-                                        <strong class="error-message text-danger"> {{ $message }} </strong>
-                                    @enderror
+                                            'rows' => 1,
+                                            'id' => 'desc_prob_de_asistencia',
+                                            'placeholder' => 'Ingrese el problema',
+                                        ]) !!}
+                                        @error('desc_prob_de_asistencia')
+                                            <strong class="error-message text-danger"> {{ $message }} </strong>
+                                        @enderror
+                                    </div>
                                 </div>
+
                             </div>
-            
-                        </div>
                     </fieldset>
-            
+
                 </div>
             </div>
             <a href="{{ route('estudiantes.index', $diagnosticopreventivo->users->id) }}"
@@ -338,6 +361,6 @@
 </form>
 
 @stop
-@section('js')
+{{-- @section('js')
 <script src="{{ asset('js/diagnosticopreventino.js') }}"></script>
-@endsection
+@endsection --}}

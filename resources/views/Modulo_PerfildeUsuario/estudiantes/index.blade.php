@@ -19,8 +19,8 @@
                 <a href="{{ route('estudiantes.create') }}" class="btn btn-primary ">Insertar datos al estudiante</a>
             @endcan
             @can('Export.EstudiantesExport')
-                <a href="{{ route('estudiantes.export') }}" class="btn btn-danger float-right" role="button">Exportar
-                    datos de estudiantes</a>
+                <a href="{{ route('estudiantes.export') }}" class="btn btn-warning float-right" role="button">Exportar
+                    datos a Excel</a>
             @endcan
         </div>
     </div>

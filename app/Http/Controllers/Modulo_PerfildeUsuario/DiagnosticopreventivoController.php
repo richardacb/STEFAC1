@@ -298,7 +298,10 @@ class DiagnosticopreventivoController extends Controller
     public function update(Request $request, $id)
     {
 
-        $diagnosticopreventivo = Diagnosticopreventivo::findOrFail($id);
+        echo $request->adicciones_Café;
+        echo $request->prob_de_personalidad;
+        echo 'ok';
+         $diagnosticopreventivo = Diagnosticopreventivo::findOrFail($id);
         $rules = [
             'nacionalidad' => 'required',
         ];
@@ -307,7 +310,14 @@ class DiagnosticopreventivoController extends Controller
         ];
 
         $this->validate($request, $rules, $messages);
-
+        $diagnosticopreventivo->prob_de_personalidad = $request->get('prob_de_personalidad');
+        $diagnosticopreventivo->prob_de_psiquiatricos = $request->get('prob_de_psiquiatricos');
+        $diagnosticopreventivo->prob_de_economicos = $request->get('prob_de_economicos');
+        $diagnosticopreventivo->prob_de_sociales = $request->get('prob_de_sociales');
+        $diagnosticopreventivo->prob_de_familiares = $request->get('prob_de_familiares');
+        $diagnosticopreventivo->prob_de_academicos = $request->get('prob_de_academicos');
+        $diagnosticopreventivo->prob_de_disciplina = $request->get('prob_de_disciplina');
+        $diagnosticopreventivo->prob_de_asistencia = $request->get('prob_de_asistencia');
         $diagnosticopreventivo->update($request->all());
 
         return redirect()->route('usuarios.show', $diagnosticopreventivo->users->id)->with('info', 'modificar-diagnostico');
