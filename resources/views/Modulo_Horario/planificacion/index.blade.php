@@ -74,15 +74,6 @@
         </div>
     </div>
 
-
-    @if (session('info'))
-        <div class="alert alert-succes">
-            <strong>{{ session('info') }}</strong>
-        </div>
-    @endif
-
-
-
 @stop
 @section('js')
     <script src="{{ asset('js/jquery-3.5.1.js') }}"></script>

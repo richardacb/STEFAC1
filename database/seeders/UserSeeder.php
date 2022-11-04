@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
            'email' => 'adminjpq@admin.com',
            'username' => 'adminjpq',
            'sexo' => 'Masculino',
-           'anno'=>'1',
+           'anno'=>NULL,
            'municipio' => 'Matanzas',
            'provincia' => 'Habana',
            'color_piel' => 'Blanco',
