@@ -155,15 +155,25 @@ class UsuariosController extends Controller
 
         session()->put('anno', User::find(auth()->id())->anno);
         $anno = session()->get('anno');
+        // // $select_anno = DB::select('SELECT users.anno FROM users WHERE users.id = ' . $id . '');
+        // $select_anno_dp = DB::select('SELECT users.anno FROM users INNER JOIN diagnosticopreventivo ON users.id = diagnosticopreventivo.user_id  WHERE users.id =  ' . $id . '');
+        // $select_anno_e = DB::select('SELECT users.anno FROM users INNER JOIN estudiantes ON users.id = estudiantes.user_id  WHERE users.id = ' . $id . '');
+        // $select_anno_p = DB::select('SELECT users.anno FROM users INNER JOIN profesores ON users.id = profesores.user_id  WHERE users.id = ' . $id . '');
 
-        // $select_anno = DB::select('SELECT users.anno FROM users WHERE users.id = ' . $id . '');
-        $select_anno_dp = DB::select('SELECT users.anno FROM users INNER JOIN diagnosticopreventivo ON users.id = diagnosticopreventivo.user_id  WHERE users.id =  ' . $id . '');
-        $select_anno_e = DB::select('SELECT users.anno FROM users INNER JOIN estudiantes ON users.id = estudiantes.user_id  WHERE users.id = ' . $id . '');
-        
-        if (($id == auth()->id()) || 
+        if (DB::select('SELECT users.anno FROM users INNER JOIN diagnosticopreventivo ON users.id = diagnosticopreventivo.user_id  WHERE users.id =  ' . $id . '')) {
+            $select_anno = DB::select('SELECT users.anno FROM users INNER JOIN diagnosticopreventivo ON users.id = diagnosticopreventivo.user_id  WHERE users.id =  ' . $id . '');
+        }
+        if (DB::select('SELECT users.anno FROM users INNER JOIN estudiantes ON users.id = estudiantes.user_id  WHERE users.id = ' . $id . '')) {
+            $select_anno = DB::select('SELECT users.anno FROM users INNER JOIN estudiantes ON users.id = estudiantes.user_id  WHERE users.id = ' . $id . '');
+        }
 
-         ($anno == $select_anno_e[0]->anno  && (User::find(auth()->id())->hasRole('ProfesorJefeAño') )) ||
-            (User::find(auth()->id())->hasRole('ProfesorGuia') && $anno == $select_anno_dp[0]->anno ) ||
+        if (DB::select('SELECT users.anno FROM users INNER JOIN profesores ON users.id = profesores.user_id  WHERE users.id = ' . $id . '')) {
+            $select_anno = DB::select('SELECT users.anno FROM users INNER JOIN profesores ON users.id = profesores.user_id  WHERE users.id = ' . $id . '');
+        }
+
+
+        if (($id == auth()->id()) ||
+            ($anno == $select_anno[0]->anno  && (User::find(auth()->id())->hasRole('ProfesorJefeAño') || User::find(auth()->id())->hasRole('ProfesorGuia'))) ||
             (User::find(auth()->id())->hasRole('Administrador')) ||
             (User::find(auth()->id())->hasRole('Vicedecana'))
         ) {
@@ -178,7 +188,6 @@ class UsuariosController extends Controller
         } else {
             abort(401);
         }
-
     }
 
     public function importar_usuarios(Request $request)

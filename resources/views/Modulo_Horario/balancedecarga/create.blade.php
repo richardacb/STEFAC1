@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Crear Horario')
+@section('title', 'Crear Balance de Carga')
 
 @section('content_header')
     <h1>Crear Balance de Carga</h1>
