@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'STE')
+@section('title', 'Grupos')
 
 @section('content_header')
     <h1>Lista de Grupos</h1>
@@ -24,7 +24,7 @@
                 <tr>
                     <th>Nombre</th>
                     <th>Año</th>
-                    <th width="160px">Accion</th>
+                    <th width="160px">Acción</th>
                 </tr>
             </thead>
             <tbody>
