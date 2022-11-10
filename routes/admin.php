@@ -21,6 +21,7 @@ use App\Http\Controllers\Modulo_Horario\ParcialesController;
 use App\Http\Controllers\Modulo_Actividades\ActividadesController;
 use App\Http\Controllers\Modulo_Actividades\EvidenciasController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Modulo_GECE\CronogramaController;
 
 
 Route::get('', [HomeController::class, 'index']);
@@ -68,3 +69,11 @@ Route::get('actividades.form', 'Modulo_Actividades\ActividadesController@edit')-
 Route::resource('evidencias',EvidenciasController::class)->name('*','Modulo_Actividades.evidencias');
 Route::post('evidencias.form', 'Modulo_Actividades\EvidenciasController@edit')->name('Modulo_Actividades.evidencias');
 Route::get('evidencias.form', 'Modulo_Actividades\EvidenciasController@edit')->name('Modulo_Actividades.evidencias');
+
+/*---------------Rutas del Mododulo GECE--------------------------------*/
+
+Route::resource('cronograma', CronogramaController::class)->name('*', 'Modulo_GECE.cronograma');
+Route::resource('cronograma/mostrar', CronogramaController::class)->name('*','Modulo_GECE.cronograma');
+Route::resource('cronograma/agregar', CronogramaController::class)->name('*','Modulo_GECE.cronograma');
+
+/*---------------Rutas del Mododulo GECE--------------------------------*/
