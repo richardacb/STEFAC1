@@ -116,7 +116,7 @@ Route::resource('opt_est', 'App\Http\Controllers\Modulo_Optativas\Opt_EstControl
 
 Route::get('cronograma', [App\Http\Controllers\ModuloGECE\CronogramaController::class, 'index'])->middleware('auth');
 Route::post('cronograma/agregar', [App\Http\Controllers\ModuloGECE\CronogramaController::class, 'store'])->middleware('auth');
-
+Route::resource('temas', 'App\Http\Controllers\Modulo_GECE\TemaController');
 
 /*---------------Fin Rutas del Mododulo GECE--------------------------------*/
 

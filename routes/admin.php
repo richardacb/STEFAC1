@@ -22,6 +22,7 @@ use App\Http\Controllers\Modulo_Actividades\ActividadesController;
 use App\Http\Controllers\Modulo_Actividades\EvidenciasController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Modulo_GECE\CronogramaController;
+use App\Http\Controllers\Modulo_GECE\TemaController;
 
 
 Route::get('', [HomeController::class, 'index']);
@@ -75,5 +76,6 @@ Route::get('evidencias.form', 'Modulo_Actividades\EvidenciasController@edit')->n
 Route::resource('cronograma', CronogramaController::class)->name('*', 'Modulo_GECE.cronograma');
 Route::resource('cronograma/mostrar', CronogramaController::class)->name('*','Modulo_GECE.cronograma');
 Route::resource('cronograma/agregar', CronogramaController::class)->name('*','Modulo_GECE.cronograma');
+Route::resource('temas', TemaController::class)->name('*','Modulo_GECE.temas');
 
 /*---------------Rutas del Mododulo GECE--------------------------------*/

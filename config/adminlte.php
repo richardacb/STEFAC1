@@ -389,6 +389,13 @@ return [
                     'active'=>['admin/cronograma*']
 
                 ],
+                [
+                    'text'    => 'Temas',
+                    'icon'    => 'far fa-fw fa fa-bookmark',
+                    'route'  => 'temas.index',
+                    'active'=>['admin/temas*']
+
+                ],
             ],
         ],
         [

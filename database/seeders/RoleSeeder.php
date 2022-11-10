@@ -242,6 +242,9 @@ class RoleSeeder extends Seeder
 
         Permission::create(['name'=> 'Modulo_GECE.cronograma.show',
                             'description'=> 'mostrar cronograma'])->syncRoles([$role1,$role2,$role3,$role4,$role5]);
+
+        Permission::create(['name'=> 'Modulo_GECE.temas.index',
+                            'description'=> 'Mostrar Temas'])->syncRoles([$role1,$role2,$role3,$role4,$role5]);
         /*====================================End Modulo GECE=====================================================================*/
 
 
