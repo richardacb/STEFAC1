@@ -260,6 +260,9 @@ class RoleSeeder extends Seeder
 
         Permission::create(['name'=> 'Modulo_GECE.documento.descargar',
                             'description'=> 'Descargar documentos'])->syncRoles([$role1,$role2,$role3,$role4,$role5]);
+
+        Permission::create(['name'=> 'Modulo_GECE.tribunaltaller.index',
+                            'description'=> 'Mostrar Tribunal Taller'])->syncRoles([$role1,$role2,$role3,$role4,$role5]);
         /*====================================End Modulo GECE=====================================================================*/
 
 

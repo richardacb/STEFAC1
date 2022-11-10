@@ -390,6 +390,13 @@ return [
 
                 ],
                 [
+                    'text'    => 'Tribunal Taller',
+                    'icon'    => 'far fa-fw fa fa-bookmark',
+                    'route'  => 'tribunaltaller.index',
+                    'active'=>['admin/tribunaltaller*']
+
+                ],
+                [
                     'text'    => 'Cronograma',
                     'icon'    => 'far fa-fw fa fa-bookmark',
                     'route'  => 'cronograma.index',
