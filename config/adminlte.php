@@ -383,6 +383,13 @@ return [
 
             'submenu' => [
                 [
+                    'text'    => 'Comités',
+                    'icon'    => 'far fa-fw fa fa-bookmark',
+                    'route'  => 'comite.index',
+                    'active'=>['admin/comite*']
+
+                ],
+                [
                     'text'    => 'Cronograma',
                     'icon'    => 'far fa-fw fa fa-bookmark',
                     'route'  => 'cronograma.index',
@@ -396,6 +403,14 @@ return [
                     'active'=>['admin/temas*']
 
                 ],
+                [
+                    'text'    => 'Perfiles',
+                    'icon'    => 'far fa-fw fa fa-bookmark',
+                    'route'  => 'perfil.index',
+                    'active'=>['admin/perfil*']
+
+                ],
+                
             ],
         ],
         [
