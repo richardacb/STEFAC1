@@ -25,6 +25,8 @@ use App\Http\Controllers\Modulo_GECE\CronogramaController;
 use App\Http\Controllers\Modulo_GECE\TemaController;
 use App\Http\Controllers\Modulo_GECE\PerfilController;
 use App\Http\Controllers\Modulo_GECE\ComiteController;
+use App\Http\Controllers\Modulo_GECE\DepositoController;
+use App\Http\Controllers\Modulo_GECE\DocumentoController;
 
 
 Route::get('', [HomeController::class, 'index']);
@@ -81,4 +83,6 @@ Route::resource('cronograma/agregar', CronogramaController::class)->name('*','Mo
 Route::resource('temas', TemaController::class)->name('*','Modulo_GECE.temas');
 Route::resource('perfil', PerfilController::class)->name('*','Modulo_GECE.perfil');
 Route::resource('comite', ComiteController::class)->name('*','Modulo_GECE.comite');
+Route::resource('deposito', DepositoController::class)->name('*','Modulo_GECE.deposito');
+Route::resource('documento', DocumentoController::class)->name('*','Modulo_GECE.documento');
 /*---------------Rutas del Mododulo GECE--------------------------------*/

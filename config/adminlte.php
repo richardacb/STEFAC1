@@ -410,6 +410,14 @@ return [
                     'active'=>['admin/perfil*']
 
                 ],
+                [
+                    'text'    => 'Depósito de Documentos',
+                    'icon'    => 'far fa-fw fa fa-bookmark',
+                    'route'  => 'deposito.index',
+                    'active'=>['admin/deposito*']
+
+                ],
+                
                 
             ],
         ],

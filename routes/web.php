@@ -119,7 +119,9 @@ Route::post('cronograma/agregar', [App\Http\Controllers\ModuloGECE\CronogramaCon
 Route::resource('temas', 'App\Http\Controllers\Modulo_GECE\TemaController');
 Route::resource('perfil', 'App\Http\Controllers\Modulo_GECE\PerfilController');
 Route::resource('comite', 'App\Http\Controllers\Modulo_GECE\ComiteController');
-
+Route::resource('deposito', 'App\Http\Controllers\Modulo_GECE\DepositoController');
+Route::post('documento', [DocumentoController::class, 'store'])->name('documento.store');
+Route::get('documento/{documento}/descargar', [DocumentoController::class, 'descargar'])->name('documento.descargar');
 /*---------------Fin Rutas del Mododulo GECE--------------------------------*/
 
 Auth::routes();
