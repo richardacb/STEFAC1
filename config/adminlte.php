@@ -381,7 +381,22 @@ return [
             'url'  => '',
             'active' => [''],
 
-            'submenu' => [],
+            'submenu' => [
+                [
+                    'text'    => 'Cronograma',
+                    'icon'    => 'far fa-fw fa fa-bookmark',
+                    'route'  => 'cronograma.index',
+                    'active'=>['admin/cronograma*']
+
+                ],
+                [
+                    'text'    => 'Temas',
+                    'icon'    => 'far fa-fw fa fa-bookmark',
+                    'route'  => 'temas.index',
+                    'active'=>['admin/temas*']
+
+                ],
+            ],
         ],
         [
             'text'    => 'Esrategia Educativa',
