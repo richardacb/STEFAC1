@@ -397,6 +397,13 @@ return [
 
                 ],
                 [
+                    'text'    => 'Tribunal de Predefensa y Defensa',
+                    'icon'    => 'far fa-fw fa fa-bookmark',
+                    'route'  => 'tribunalpd.index',
+                    'active'=>['admin/tribunalpd*']
+
+                ],
+                [
                     'text'    => 'Cronograma',
                     'icon'    => 'far fa-fw fa fa-bookmark',
                     'route'  => 'cronograma.index',
