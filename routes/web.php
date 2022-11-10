@@ -124,6 +124,7 @@ Route::post('documento', [DocumentoController::class, 'store'])->name('documento
 Route::get('documento/{documento}/descargar', [DocumentoController::class, 'descargar'])->name('documento.descargar');
 Route::resource('tribunaltaller', 'App\Http\Controllers\Modulo_GECE\TribunalTallerController');
 Route::resource('tribunalpd', 'App\Http\Controllers\Modulo_GECE\TribunalPDController');
+Route::resource('reportes', 'App\Http\Controllers\Modulo_GECE\ReporteController');
 /*---------------Fin Rutas del Mododulo GECE--------------------------------*/
 
 Auth::routes();

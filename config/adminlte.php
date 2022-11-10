@@ -425,6 +425,13 @@ return [
 
                 ],
                 [
+                    'text'    => 'Reportes',
+                    'icon'    => 'far fa-fw fa fa-bookmark',
+                    'route'  => 'reportes.index',
+                    'active'=>['admin/reportes*']
+
+                ],
+                [
                     'text'    => 'Depósito de Documentos',
                     'icon'    => 'far fa-fw fa fa-bookmark',
                     'route'  => 'deposito.index',

@@ -29,6 +29,7 @@ use App\Http\Controllers\Modulo_GECE\DepositoController;
 use App\Http\Controllers\Modulo_GECE\DocumentoController;
 use App\Http\Controllers\Modulo_GECE\TribunalTallerController;
 use App\Http\Controllers\Modulo_GECE\TribunalPDController;
+use App\Http\Controllers\Modulo_GECE\ReporteController;
 
 Route::get('', [HomeController::class, 'index']);
 
@@ -88,4 +89,5 @@ Route::resource('deposito', DepositoController::class)->name('*','Modulo_GECE.de
 Route::resource('documento', DocumentoController::class)->name('*','Modulo_GECE.documento');
 Route::resource('tribunaltaller', TribunalTallerController::class)->name('*','Modulo_GECE.tribunaltaller');
 Route::resource('tribunalpd', TribunalPDController::class)->name('*','Modulo_GECE.tribunalpd');
+Route::resource('reportes', ReporteController::class)->name('*','Modulo_GECE.reportes');
 /*---------------Rutas del Mododulo GECE--------------------------------*/

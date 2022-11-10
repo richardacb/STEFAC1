@@ -5,7 +5,7 @@ namespace App\Models\Modulo_GECE;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tema extends Model
+class Reporte extends Model
 {
     use HasFactory;
     static $rules = [  
@@ -14,7 +14,7 @@ class Tema extends Model
     ];
     protected $perPage = 20;
 
-    protected $table = 'temas';
+    protected $table = 'reportes';
     protected $fillable = ['nombre'];
  
 }
