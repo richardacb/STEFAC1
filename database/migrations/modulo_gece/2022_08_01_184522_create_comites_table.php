@@ -15,7 +15,13 @@ return new class extends Migration
             
             $table->string('nombre');
            
+            $table->bigInteger('estudiante_id')->unsigned();
+            $table->bigInteger('profesor_id')->unsigned();
+
             $table->timestamps();
+
+            $table->foreign('estudiante_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('profesor_id')->references('id')->on('users')->onDelete('cascade');
 
         });
     }

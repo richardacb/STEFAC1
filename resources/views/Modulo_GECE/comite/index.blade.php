@@ -39,15 +39,29 @@
                                         
                                         <th>Nombre</th>
 
+                                        <th>Tesistas</th>
+
+                                        <th>Tribunal</th>
+
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($comites as $comite)
+                                        @foreach ($users as $user)
+                                        @foreach ($usuarios as $usuario)
+                                            @if($user->id == $comite->estudiante_id)
+                                            @if($usuario->id == $comite->profesor_id)
+                                            
+
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             
                                             <td>{{ $comite->nombre }}</td>
+
+                                            <td>{{ $user->primer_nombre}}</td>
+
+                                            <td>{{ $usuario->primer_nombre}}</td>
                                             
                                             <td>
                                                 <form action="{{ route('comite.destroy',$comite->id) }}" method="POST">
@@ -59,6 +73,11 @@
                                                 </form>
                                             </td>
                                         </tr>
+                                        
+                                        @endif
+                                        @endif
+                                        @endforeach
+                                    @endforeach
                                     @endforeach
                                 </tbody>
                             </table>

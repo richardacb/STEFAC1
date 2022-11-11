@@ -3,6 +3,7 @@
     Create Comite
 @endsection
 
+
 @section('content')
     <section class="content container-fluid">
         <div class="row">
@@ -27,3 +28,5 @@
         </div>
     </section>
 @endsection
+
+

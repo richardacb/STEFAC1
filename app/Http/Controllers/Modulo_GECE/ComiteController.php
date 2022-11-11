@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Modulo_GECE;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Modulo_GECE\Comite;
+use App\Models\User;
+use App\Models\Modulo_PerfildeUsuario\Estudiantes;
+use App\Models\Modulo_PerfildeUsuario\Profesores;
 
 
 class ComiteController extends Controller
@@ -13,8 +16,9 @@ class ComiteController extends Controller
     public function index()
     {
         $comites = Comite::paginate();
-
-        return view('Modulo_GECE.comite.index', compact('comites'))
+        $users = User::all();
+        $usuarios = User::all();
+        return view('Modulo_GECE.comite.index', compact('comites', 'users', 'usuarios'))
             ->with('i', (request()->input('page', 1) - 1) * $comites->perPage());
     }
 
@@ -23,7 +27,9 @@ class ComiteController extends Controller
     {
         $comite = new Comite();
         
-        return view('Modulo_GECE.comite.create', compact('comite'));
+        $estudiantes = User::pluck('primer_nombre','id');
+        $profesores = User::pluck('primer_nombre','id');
+        return view('Modulo_GECE.comite.create', compact('comite', 'estudiantes', 'profesores'));
     }
 
     
@@ -48,8 +54,9 @@ class ComiteController extends Controller
     public function edit($id)
     {
         $comite = Comite::find($id);
-        
-        return view('Modulo_GECE.comite.edit', compact('comite'));
+        $estudiantes = User::pluck('primer_nombre','id');
+        $profesores = User::pluck('primer_nombre','id');
+        return view('Modulo_GECE.comite.edit', compact('comite', 'estudiantes', 'profesores'));
     }
 
     

@@ -7,6 +7,8 @@
             {!! $errors->first('nombre', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         <br>
+        
+        
 
     <br>
     </div>
