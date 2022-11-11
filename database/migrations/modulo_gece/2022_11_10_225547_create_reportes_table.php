@@ -19,7 +19,12 @@ return new class extends Migration
             
             $table->string('nombre');
 
+
+            $table->bigInteger('comite_id')->unsigned();
             $table->timestamps();
+
+
+            $table->foreign('comite_id')->references('id')->on('comites')->onDelete('cascade');      
         });
     }
 
