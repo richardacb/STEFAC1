@@ -12,12 +12,15 @@ class Comite extends Model
 		'nombre' => 'required',
     'estudiante_id' => 'required',
     'profesor_id' => 'required',
+    'estudiante2',
+    'secretario' => 'required',
+    'presidente' => 'required',
     ];
 
     protected $perPage = 20;
 
     protected $table = 'comites';
-    protected $fillable = ['nombre', 'estudiante_id', 'profesor_id'];
+    protected $fillable = ['nombre', 'estudiante_id', 'profesor_id', 'estudiante2', 'secretario', 'presidente'];
     
     //Relacion uno a muchos
     public function reportes()
@@ -27,11 +30,11 @@ class Comite extends Model
 
     public function estudiantes()
     {
-      return $this->hasMany('App\Models\Modulo_PerfildeUsuario\Estudiantes');
+      return $this->hasMany('App\Models\Modulo_PerfildeUsuario\Estudiantes', 'estudiante_id', 'id');
     }
 
     public function profesores()
     {
-      return $this->hasMany('App\Models\Modulo_PerfildeUsuario\Profesores');
+      return $this->hasMany('App\Models\Modulo_PerfildeUsuario\Profesores', 'profesor_id', 'id');
     }
 }

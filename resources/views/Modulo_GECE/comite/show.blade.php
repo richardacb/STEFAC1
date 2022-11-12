@@ -25,6 +25,33 @@
                             {{ $comite->nombre }}
                         </div>
 
+                        
+                        <div class="form-group">
+                            <strong>Tesista:</strong>
+                            {{$comite->est1}}
+                        </div>
+                       
+                       
+                        <div class="form-group">
+                            <strong>Tesista:</strong>
+                            {{$comite->est2}}
+                        </div>
+
+                        <div class="form-group">
+                            <strong>Tutor:</strong>
+                            {{ $comite->prof}}
+                        </div>
+
+                        <div class="form-group">
+                            <strong>Secretario:</strong>
+                            {{ $comite->sec}}
+                        </div>
+
+                        <div class="form-group">
+                            <strong>Presidente:</strong>
+                            {{ $comite->pre}}
+                        </div>
+
                     </div>
                 </div>
             </div>

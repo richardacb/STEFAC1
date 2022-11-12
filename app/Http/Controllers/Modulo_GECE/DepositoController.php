@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Modulo_GECE;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Modulo_GECE\Deposito;
+use App\Models\Modulo_GECE\Documento;
 
 
 class DepositoController extends Controller
@@ -15,9 +16,11 @@ class DepositoController extends Controller
     {
         
         $deposito = Deposito::paginate(10);
+        $documentos = Documento::all();
 
         return view('Modulo_GECE.deposito.index', compact('deposito'))
-            ->with('i', (request()->input('page', 1) - 1) * $deposito->perPage());
+            ->with('i', (request()->input('page', 1) - 1) * $deposito->perPage())
+            ->with('documentos', $documentos);
     }
 
     

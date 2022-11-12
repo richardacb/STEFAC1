@@ -11,7 +11,7 @@ return new class extends Migration
     {
         Schema::create('documentos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('deposito_id')->references('id')->on('depositos')->onDelete('cascade')->null();
+            $table->foreignId('deposito_id')->references('id')->on('depositos')->onDelete('cascade')->nullable;
             $table->string('nombre');
             $table->string('nombre_hash');
             $table->string('mime');
