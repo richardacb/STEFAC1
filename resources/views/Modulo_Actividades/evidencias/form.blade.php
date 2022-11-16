@@ -4,11 +4,21 @@
             <!--  Form Evidencia  -->
             <legend class="legend-personalizado">Evidencia</legend>
             <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="form-group">
                         {!! Form::label('descripcion', 'Descripcion de la Evidencia:') !!}
                         {!! Form::text('descripcion', null, ['class' => 'form-control', 'id' => 'descripcion', 'placeholder' => 'Ingrese una descripcion']) !!}
                         @error('descripcion')
+                            <strong class="error-message text-danger"> {{ $message }} </strong>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="form-group">
+                        {!! Form::label('estado', 'Estado:') !!}
+                        {!! Form::select('estado',  ['1' => 'Positiva',
+                        '2' => 'Negativa'], null, ['class' => 'form-control', 'id' => 'estado', 'placeholder' => '--Seleccione--']) !!}
+                        @error('estado')
                             <strong class="error-message text-danger"> {{ $message }} </strong>
                         @enderror
                     </div>
@@ -36,7 +46,7 @@
                     <div class="col-md-6 col-sm-12">
                     <div class="form-group">
                         {!! Form::label('imagen', 'Archivo:') !!}
-                        {!! Form::file('imagen', null, ['class' => 'form-control', 'id' => 'imagen']) !!}
+                        {!! Form::file('imagen', ['class' => 'form-control', 'id' => 'imagen']) !!}
                         @error('imagen')
                             <strong class="error-message text-danger"> {{ $message }} </strong>
                         @enderror

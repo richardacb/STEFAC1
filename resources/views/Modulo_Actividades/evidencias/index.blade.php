@@ -23,49 +23,71 @@
 </div>
 
 <div class="card-body">
+    @if ($tipo_usuario == 'Profesor')
     <table id="evidencia_id" class="table table-striped shadow-lg w-100">
         <thead class="bg-primary text-white">
             <tr>
 
-                <th>ID</th>
-                <th>Descripcion</th>
+                <th>Descripción</th>
                 <th>Actividad</th>
                 <th>Año</th>
                 <th>Imagen</th>
-                <th width="200px">Accion</th>
+                <th style="text-align:center">Acción</th>
             </tr>
         </thead>
 
         <tbody>
+
+
             @foreach ($evidencias as $evidencia )
             @foreach ($actividades as $actividad)
              @if($evidencia->actividades_id == $actividad->id )
-
+             @if ($users[$id] = $evidencia->user_id)
                 <tr>
-                    <td>{{ $evidencia->id }}</td>
                     <td>{{ $evidencia->descripcion }}</td>
                     <td>{{ $actividad->nombre}}</td>
                     <td>{{ $actividad->año}} </td>
-                    <td>{{ $evidencia->imagen}}</td>
-                    <td width="20px">
-                        <form action="{{ route('archivos.destroy', $evidencia) }}" method="POST"
-                            class="eliminar_grupo">
+                    <td class="border px-14 py-1">
+                        <img src="/imagen/{{ $evidencia->imagen}}" width="60%">
+                    </td>
+                    <td style="align:center">
+                        <form action="{{ route('evidencias.destroy', $evidencia) }}" method="POST"
+                            class="eliminar-evidencia">
                             @csrf
                             @method('delete')
 
-                                <a class="btn btn-primary btn-sm" href="{{ route('evidencias.edit', $evidencia->id) }}"><i
-                                        class="fa fa-edit">&nbsp;</i>Editar</a>
+                                <button class="btn btn-danger float-right btn-sm mr-2" type="submit"
+                                    data-bs-toggle="tooltip" data-bs-placement="right"
+                                    title="Eliminar Evidencia" ><i
+                                    class="fa fa-trash-alt">&nbsp;&nbsp;</i></button>
 
-                                <button class="btn btn-danger btn-sm " type="submit"><i
-                                        class="fa fa-trash-alt">&nbsp;</i>Eliminar</button>
+                                <a class="btn btn-primary btn-sm float-right mr-2" href="{{ route('evidencias.edit', $evidencia->id) }}"><i
+                                    class="fa fa-edit"
+                                    data-bs-toggle="tooltip" data-bs-placement="right"
+                                    title="Editar Evidencia" >&nbsp;&nbsp;</i></a>
+
+                                <a class="btn btn-success btn-sm float-right mr-2"
+                                    href="{{ route('evidencias.show', $evidencia->id) }}" data-bs-toggle="tooltip"
+                                    data-bs-placement="right" title="Mostrar Datos de la Evidencia" ><i
+                                    class="fa fa-user">&nbsp;&nbsp;</i></a>
+
+
                         </form>
                     </td>
                 </tr>
+                @endif
                  @endif
                 @endforeach
             @endforeach
         </tbody>
     </table>
+
+
+
+
+
+    @endif
+
 </div>
     </div>
 @include('Modulo_Actividades.evidencias.modal')
@@ -127,15 +149,26 @@
     </script>
 @endif
 
-@if (session('info') == 'eliminar-evidencia')
-    <script>
-        Swal.fire(
-            '¡Eliminado!',
-            'La evidencia se elimino con exito.',
-            'success'
-        )
-    </script>
-@endif
+
+<script>
+    $('.eliminar-evidencia').submit(function(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¿Está seguro que desea eliminar?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.submit();
+            }
+        })
+    });
+</script>
 
 
 @endsection
