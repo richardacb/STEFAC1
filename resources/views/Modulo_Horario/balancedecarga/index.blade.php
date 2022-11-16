@@ -15,10 +15,6 @@
                             <a href="{{ route('balancedecarga.export') }}" class="btn btn-primary btn-sm" role="button">Exportar a
                                 Excel</a>
                         @endcan
-                        @can('Exports.BalancedecargaExport')
-                            <a href="{{ route('balancedecarga.exportpdf') }}" class="btn btn-primary btn-sm"
-                                role="button">Exportar a PDF</a>
-                        @endcan
                         @can('Modulo_Horario.balancedecarga.create')
                             <a class="btn btn-primary btn-sm" href="{{ route('balancedecarga.create') }}"
                                 role="button">Insertar
