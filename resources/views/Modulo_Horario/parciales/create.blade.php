@@ -33,7 +33,7 @@
             @enderror
              @else
             <input type="number" class="form-control" id="anno" name="anno" value="{{ $anno }}"
-                min="{{ $anno }}" max="{{ $anno }}">
+                min="{{ $anno }}" max="{{ $anno }}" readonly>
             @endrole
         </div>
         <div class="mb-3">
