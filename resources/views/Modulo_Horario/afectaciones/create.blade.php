@@ -60,13 +60,13 @@
             <label for="anno" class="form-label">Año Docente</label>
             @role('Vicedecana')
             <input type="number" class="form-control" id="anno" name="anno" value=""
-            min="1" max="5" placeholder="Ingrese el número de su año docente">   
+            min="1" max="5" placeholder="Ingrese el número de su año docente">
             @error('anno')
                 <strong class="error-message text-danger"> {{ $message }} </strong>
             @enderror
             @else
             <input type="number" class="form-control" id="anno" name="anno" min="{{ $anno }}"
-                max="{{ $anno }}" value="{{ $anno }}">
+                max="{{ $anno }}" value="{{ $anno }}" readonly>
                 @endrole
         </div>
         <div class="mb-3">
