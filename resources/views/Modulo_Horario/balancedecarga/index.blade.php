@@ -12,17 +12,17 @@
                     </div>
                     <div class="col-md-3 py-2 ">
                         @can('Exports.BalancedecargaExport')
-                            <a href="{{ route('balancedecarga.export') }}" class="btn btn-primary btn-sm" role="button">Exportar
-                                Balance de Carga en Formato Excel</a>
-                        @endcan
-                        @can('Modulo_Horario.balancedecarga.create')
-                            <a class="btn btn-primary btn-sm" href="{{ route('balancedecarga.create') }}" role="button">Insertar
-                                Datos</a>
+                            <a href="{{ route('balancedecarga.export') }}" class="btn btn-primary btn-sm" role="button">Exportar a
+                                Excel</a>
                         @endcan
                         @can('Exports.BalancedecargaExport')
                             <a href="{{ route('balancedecarga.exportpdf') }}" class="btn btn-primary btn-sm"
-                                role="button">Exportar
-                                Balance de Carga en Formato PDF</a>
+                                role="button">Exportar a PDF</a>
+                        @endcan
+                        @can('Modulo_Horario.balancedecarga.create')
+                            <a class="btn btn-primary btn-sm" href="{{ route('balancedecarga.create') }}"
+                                role="button">Insertar
+                                Datos</a>
                         @endcan
                     </div>
                 </div>

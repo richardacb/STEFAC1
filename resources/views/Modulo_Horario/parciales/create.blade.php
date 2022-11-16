@@ -7,15 +7,34 @@
 @stop
 
 @section('content')
-    <form  action="http://localhost/STEFAC1/app/generar_horario/update_horario.php?form=create_pp" method="POST">
+
+    <?php
+    if (isset($_GET['msg'])) {
+        echo "
+                                                    <div class=\"alert alert-warning alert-dismissible fade show w-50\" role=\"alert\">
+                                                        <strong>" .
+            $_GET['msg'] .
+            "</strong>
+                                                        <button type=\"button\" class=\"close btn btn-warning\" data-dismiss=\"alert\" aria-label=\"Close\">
+                                                            <span>X</span>
+                                                        </button>
+                                                      </div>";
+    }
+    ?>
+    <form action="http://localhost/STEFAC1/app/generar_horario/update_horario.php?form=create_pp" method="POST">
         @csrf
         <div class="mb-3">
             <label for="" class="form-label">Año Docente</label>
-            <input type="number" class="form-control" id="anno" name="anno" value="{{ $anno }}"
-                min="{{ $anno }}" max="{{ $anno }}" placeholder="">
+            @role('Vicedecana')
+            <input type="number" class="form-control" id="anno" name="anno" value=""
+            min="1" max="5" placeholder="Ingrese el número de su año docente">
             @error('anno')
-                <strong class="error-message text-danger"> {{ 'Campos Requeridos' }} </strong>
+                <strong class="error-message text-danger"> {{ $message }} </strong>
             @enderror
+             @else
+            <input type="number" class="form-control" id="anno" name="anno" value="{{ $anno }}"
+                min="{{ $anno }}" max="{{ $anno }}">
+            @endrole
         </div>
         <div class="mb-3">
             <label for="" class="form-label">Semestre Docente</label>
@@ -77,6 +96,6 @@
 
 @section('js')
 
-    {{--  <script src="{{ asset('js/myjs.js') }}" defer></script>  --}}
+
 
 @stop

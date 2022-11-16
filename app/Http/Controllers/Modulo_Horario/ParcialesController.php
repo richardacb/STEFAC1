@@ -14,6 +14,13 @@ use Illuminate\Support\Facades\DB;
 
 class ParcialesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:Modulo_Horario.parciales.index')->only('index');
+        $this->middleware('can:Modulo_Horario.parciales.create')->only('create', 'store');
+        $this->middleware('can:Modulo_Horario.parciales.edit')->only('edit', 'update');
+        $this->middleware('can:Modulo_Horario.parciales.destroy')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -23,10 +30,15 @@ class ParcialesController extends Controller
     {
         session()->put('anno', User::find(auth()->id())->anno);
         $anno = session()->get('anno');
-
+        if(User::find(auth()->id())->hasRole('Vicedecana')){
         $parciales = DB::select('SELECT pp.id, a.nombre, pp.anno, pp.semestre, pp.dia, pp.turno, pp.semana
         FROM pruebasparciales as pp INNER JOIN asignaturas as a ON pp.asignaturas_id = a.id
+        ');
+         }else{
+            $parciales = DB::select('SELECT pp.id, a.nombre, pp.anno, pp.semestre, pp.dia, pp.turno, pp.semana
+        FROM pruebasparciales as pp INNER JOIN asignaturas as a ON pp.asignaturas_id = a.id
         WHERE a.anno = ' . $anno . ' ');
+            }
 
         return view('Modulo_Horario.parciales.index', compact('parciales'));
     }
@@ -40,7 +52,11 @@ class ParcialesController extends Controller
     {
         session()->put('anno', User::find(auth()->id())->anno);
         $anno = session()->get('anno');
-        $asignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
+        if(User::find(auth()->id())->hasRole('Vicedecana')){
+        $asignaturas = Asignaturas::all();
+        }else{
+            $asignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
+        }
         return view('Modulo_Horario.parciales.create', compact('asignaturas', 'anno'));
     }
 
@@ -52,6 +68,10 @@ class ParcialesController extends Controller
      */
     public function store(Request $request)
     {
+
+        // require('./app/generar_horario/update_horario.php');
+        // $p = "hola";
+
         // $rules = [
         //     'asignaturas_id' => 'required|not_in:0',
         //     'anno' => 'required',
@@ -150,6 +170,8 @@ class ParcialesController extends Controller
         $anno = session()->get('anno');
         $parciales = Parciales::find($id);
         $nombreasignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
+
+        
         return view('Modulo_Horario.parciales.edit', compact('parciales', 'nombreasignaturas', 'anno'));
     }
 

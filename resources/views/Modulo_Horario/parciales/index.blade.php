@@ -1,5 +1,4 @@
 @extends('adminlte::page')
-
 @section('title', 'Pruebas Parciales')
 
 @section('content_header')
@@ -13,6 +12,9 @@
                         Parcial</a>
                 @endcan
             </div>
+            <div class="mt-3" id="respuesta">
+
+            </div>
         </div>
     </div>
 @stop
@@ -23,11 +25,19 @@
 
 @section('content')
 
-    @if (session('info'))
-        <div class="alert alert-succes">
-            <strong>{{ session('info') }}</strong>
-        </div>
-    @endif
+    <?php
+    if (isset($_GET['msg'])) {
+        echo "
+             <div class=\"alert alert-info alert-dismissible fade show w-50\" role=\"alert\">
+                 <strong>" .
+            $_GET['msg'] .
+            "</strong>
+            <button type=\"button\" class=\"close btn btn-info\" data-dismiss=\"alert\" aria-label=\"Close\">
+            <span> X</span>
+            </button>
+            </div>";
+    }
+    ?>
     <div class="container-fluid">
         <div class="row">
             <div class="col-xl-12">
@@ -47,30 +57,31 @@
                             </thead>
                             <tbody>
                                 @foreach ($parciales as $p)
-                                <tr>
-                                    <td scope="row">{{ $p->nombre }}</td>
-                                    <td>{{ $p->anno }}</td>
-                                    <td>{{ $p->semestre }}</td>
-                                    <td>{{ $p->semana }}</td>
-                                    <td>{{ $p->dia }}</td>
-                                    <td>{{ $p->turno }}</td>
-                                    <td width="150px">
-                                        <form action="{{ route('parciales.destroy', $p->id ) }}" method="POST" class="eliminar-parciales">
-                                            @csrf
-                                            @method('delete')
-                                            {{--  @can('Modulo_Horario.asignaturas.edit')  --}}
-                                            {{--  <a class="btn btn-primary btn-sm" href="{{ route('parciales.edit', $p->id) }}" data-bs-toggle="tooltip"
+                                    <tr>
+                                        <td scope="row">{{ $p->nombre }}</td>
+                                        <td>{{ $p->anno }}</td>
+                                        <td>{{ $p->semestre }}</td>
+                                        <td>{{ $p->semana }}</td>
+                                        <td>{{ $p->dia }}</td>
+                                        <td>{{ $p->turno }}</td>
+                                        <td width="150px">
+                                            <form action="{{ route('parciales.destroy', $p->id) }}" method="POST"
+                                                class="eliminar-parciales">
+                                                @csrf
+                                                @method('delete')
+                                                {{--  @can('Modulo_Horario.asignaturas.edit')  --}}
+                                                {{--  <a class="btn btn-primary btn-sm" href="{{ route('parciales.edit', $p->id) }}" data-bs-toggle="tooltip"
                                                 data-bs-placement="right" title="Editar Prueba Parcial"><i
                                                     class="fa fa-edit"></i></a>  --}}
-                                            {{--  @endcan
+                                                {{--  @endcan
                                                 @can('Modulo_Horario.asignaturas.destroy')  --}}
-                                            <button class="btn btn-danger btn-sm" type="submit" data-bs-toggle="tooltip"
-                                                data-bs-placement="right" title="Eliminar Prueba Parcial"><i
-                                                    class="fa fa-trash-alt"></i></button>
-                                            {{--  @endcan  --}}
-                                        </form>
-                                    </td>
-                                </tr>
+                                                <button class="btn btn-danger btn-sm" type="submit"
+                                                    data-bs-toggle="tooltip" data-bs-placement="right"
+                                                    title="Eliminar Prueba Parcial"><i class="fa fa-trash-alt"></i></button>
+                                                {{--  @endcan  --}}
+                                            </form>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -132,14 +143,14 @@
         </script>
     @endif
     @if (session('info') == 'mostrar-generado')
-    <script>
-        Swal.fire(
-            'Error!',
-            'No se puede planificar Prueba Parcial, el Horario ya está generado, por favor primero inserte las pruebas parciales y luego genere el Horario de la semana correspondiente',
-            'warning'
-        )
-    </script>
-@endif
+        <script>
+            Swal.fire(
+                'Error!',
+                'No se puede planificar Prueba Parcial, el Horario ya está generado, por favor primero inserte las pruebas parciales y luego genere el Horario de la semana correspondiente',
+                'warning'
+            )
+        </script>
+    @endif
 
     @if (session('info') == 'modificar-parciales')
         <script>

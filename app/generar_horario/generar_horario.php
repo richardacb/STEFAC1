@@ -74,6 +74,7 @@ function generar($seccion, $anno, $semana, $conn)
             }
         }
     }
+    
 }
 //
 

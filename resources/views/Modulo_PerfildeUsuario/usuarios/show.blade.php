@@ -25,16 +25,20 @@
                     @endif
 
                     <h2>{{ $users->primer_nombre }} {{ $users->segundo_nombre }}</h2>
-                    <h3>{{ $users->tipo_de_usuario }}</h3>
                     {{-- @if (@Auth::user()->hasRole('Administrador'))
                         <h3>Administrador</h3>
                     @endif --}}
-                    {{-- <p>{{$users->getRoleNames()}}</p> --}}
+                    <p>{{ $users->getRoleNames() }}</p>
                     @if ($users->tipo_de_usuario == 'Profesor')
                         <div class="row">
                             <div class="label ">Grupo Guía: </div>
                             @if (isset($users->profesores))
-                                <div>&nbsp;{{ $users->profesores->grupos->name }}
+                                <div>
+                                    @if (isset($users->profesores->grupos->name))
+                                        {{ $users->profesores->grupos->name }}
+                                    @else
+                                        <div> -- -- -- -- -- -- </div>
+                                    @endif
                                 </div>
                             @else
                                 <div> -- -- -- -- -- -- </div>
@@ -507,17 +511,122 @@
                             </div>
                         </div>
 
+                        <hr>
+                        <h5 class="card-title ml-5 my-2">Tipos de problemas</h5>
+                        <br>
+                        <br>
                         <div class="row">
-                            <div class="col-lg-3 col-md-4 label">Tipo de problemas</div>
-                            <div class="col-lg-9 col-md-8">
-                                @if (isset($users->diagnosticopreventivo->tipos_de_problemas))
-                                    {{ $users->diagnosticopreventivo->tipos_de_problemas }}
-                                @else
-                                    <div class="col-lg-9 col-md-8"> -- -- -- -- -- -- </div>
-                                @endif
-                            </div>
+                            @if (isset($users->diagnosticopreventivo->prob_de_personalidad))
+                                <div class="col-lg-3 col-md-4 label">
+                                    {{ $users->diagnosticopreventivo->prob_de_personalidad }} :</div>
+                                <div class="col-lg-9 col-md-8">
+                                    {{ $users->diagnosticopreventivo->desc_prob_de_personalidad }}</div>
+                            @else
+                                <div class="col-lg-3 col-md-4 col-sm-12 label">1: -- -- -- -- -- -- </div>
+                            @endif
+                        </div>
+
+
+                        <div class="row">
+                            @if (isset($users->diagnosticopreventivo->prob_de_psiquiatricos))
+                                <div class="col-lg-3 col-md-4 label">
+                                    {{ $users->diagnosticopreventivo->prob_de_psiquiatricos }} :
+                                </div>
+                                <div class="col-lg-9 col-md-8">
+                                    {{ $users->diagnosticopreventivo->desc_prob_de_psiquiatricos }}
+                                </div>
+                            @else
+                                <div class="col-lg-3 col-md-4 col-sm-12 label">2: -- -- -- -- -- -- </div>
+                            @endif
+                        </div>
+
+
+                        <div class="row">
+                            @if (isset($users->diagnosticopreventivo->prob_de_economicos))
+                                <div class="col-lg-3 col-md-4 label">
+                                    {{ $users->diagnosticopreventivo->prob_de_economicos }} :
+                                </div>
+                                <div class="col-lg-9 col-md-8">
+                                    {{ $users->diagnosticopreventivo->desc_prob_de_economicos }}
+                                </div>
+                            @else
+                                <div class="col-lg-3 col-md-4 col-sm-12 label">3: -- -- -- -- -- -- </div>
+                            @endif
+                        </div>
+
+
+                        <div class="row">
+                            @if (isset($users->diagnosticopreventivo->prob_de_sociales))
+                                <div class="col-lg-3 col-md-4 label">
+                                    {{ $users->diagnosticopreventivo->prob_de_sociales }}
+                                    :
+                                </div>
+                                <div class="col-lg-9 col-md-8">
+                                    {{ $users->diagnosticopreventivo->desc_prob_de_sociales }}
+                                </div>
+                            @else
+                                <div class="col-lg-3 col-md-4 col-sm-12 label">4: -- -- -- -- -- -- </div>
+                            @endif
+                        </div>
+
+
+                        <div class="row">
+                            @if (isset($users->diagnosticopreventivo->prob_de_familiares))
+                                <div class="col-lg-3 col-md-4 label">
+                                    {{ $users->diagnosticopreventivo->prob_de_familiares }} :
+                                </div>
+                                <div class="col-lg-9 col-md-8">
+                                    {{ $users->diagnosticopreventivo->desc_prob_de_familiares }}
+                                </div>
+                            @else
+                                <div class="col-lg-3 col-md-4 col-sm-12 label">5: -- -- -- -- -- -- </div>
+                            @endif
+                        </div>
+
+
+                        <div class="row">
+                            @if (isset($users->diagnosticopreventivo->prob_de_academicos))
+                                <div class="col-lg-3 col-md-4 label">
+                                    {{ $users->diagnosticopreventivo->prob_de_academicos }} :
+                                </div>
+                                <div class="col-lg-9 col-md-8">
+                                    {{ $users->diagnosticopreventivo->desc_prob_de_academicos }}
+                                </div>
+                            @else
+                                <div class="col-lg-3 col-md-4 col-sm-12 label">6: -- -- -- -- -- -- </div>
+                            @endif
+                        </div>
+
+
+                        <div class="row">
+                            @if (isset($users->diagnosticopreventivo->prob_de_disciplina))
+                                <div class="col-lg-3 col-md-4 label">
+                                    {{ $users->diagnosticopreventivo->prob_de_disciplina }} :
+                                </div>
+                                <div class="col-lg-9 col-md-8">
+                                    {{ $users->diagnosticopreventivo->desc_prob_de_disciplina }}
+                                </div>
+                            @else
+                                <div class="col-lg-3 col-md-4 col-sm-12 label">7: -- -- -- -- -- -- </div>
+                            @endif
+                        </div>
+
+
+                        <div class="row">
+                            @if (isset($users->diagnosticopreventivo->prob_de_asistencia))
+                                <div class="col-lg-3 col-md-4 label">
+                                    {{ $users->diagnosticopreventivo->prob_de_asistencia }} :
+                                </div>
+                                <div class="col-lg-9 col-md-8">
+                                    {{ $users->diagnosticopreventivo->desc_prob_de_asistencia }}
+                                </div>
+                            @else
+                                <div class="col-lg-3 col-md-4 col-sm-12 label">8: -- -- -- -- -- -- </div>
+                            @endif
                         </div>
                     </div>
+
+
                     <div class="tab-pane fade cambiar-contrasena pt-3" id="cambiar-contrasena">
 
 

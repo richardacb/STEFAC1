@@ -18,9 +18,10 @@
             @can('Modulo_PerfildeUsuario.estudiantes.create')
                 <a href="{{ route('estudiantes.create') }}" class="btn btn-primary ">Insertar datos al estudiante</a>
             @endcan
-            
-            <a href="{{ route('estudiantes.export') }}" class="btn btn-danger float-right" role="button">Exportar
-                datos de estudiantes</a>
+            @can('Export.EstudiantesExport')
+                <a href="{{ route('estudiantes.export') }}" class="btn btn-warning float-right" role="button">Exportar
+                    datos a Excel</a>
+            @endcan
         </div>
     </div>
 
@@ -40,26 +41,49 @@
                         <td>
                             {{ $e->nombre_estudiante }}
                         </td>
-                        <td>{{ $e->anno }}</td>
+                        <td>
+                            @if ($e->anno == '1')
+                            Primer Año
+                        @endif
+                        @if ($e->anno == '2')
+                            Segundo Año
+                        @endif
+                        @if ($e->anno == '3')
+                            Tercer Año
+                        @endif
+                        @if ($e->anno == '4')
+                            Cuarto Año
+                        @endif
+                        @if ($e->anno == '5')
+                            Quinto Año
+                        @endif</td>
                         <td>{{ $e->grupo }}</td>
                         <td>
                             <form action="{{ route('estudiantes.destroy', $e->e_id) }}" method="POST"
                                 class="eliminar_datos_estudiantes">
                                 @csrf
                                 @method('delete')
-                                <button class="btn btn-danger float-right btn-sm mr-2" type="submit"
-                                data-bs-toggle="tooltip" data-bs-placement="right"
-                                title="Eliminar datos de estudiante"><i class="fa fa-trash-alt"></i></button>
-
-                                <a class="btn btn-primary btn-sm float-right mr-2"
-                                    href="{{ route('estudiantes.edit', $e->e_id) }}"><i class="fa fa-edit"
+                                @can('Modulo_PerfildeUsuario.estudiantes.destroy')
+                                    <button class="btn btn-danger float-right btn-sm mr-2" type="submit"
                                         data-bs-toggle="tooltip" data-bs-placement="right"
-                                        title="Editar Estudiante"></i></a>
-                                <a class="btn btn-success btn-sm float-right mr-2"
-                                    href="{{ route('usuarios.show', $e->id) }}" data-bs-toggle="tooltip"
-                                    data-bs-placement="right" title="Mostrar Datos del Estudiante"><i
-                                        class="fa fa-user"></i></a>
-                               
+                                        title="Eliminar datos de estudiante"><i class="fa fa-trash-alt"></i></button>
+                                @endcan
+
+                                @can('Modulo_PerfildeUsuario.estudiantes.edit')
+                                    <a class="btn btn-primary btn-sm float-right mr-2"
+                                        href="{{ route('estudiantes.edit', $e->e_id) }}"><i class="fa fa-edit"
+                                            data-bs-toggle="tooltip" data-bs-placement="right"
+                                            title="Editar Estudiante"></i></a>
+                                @endcan
+
+                                @can('Modulo_PerfildeUsuario.usuarios.show')
+                                    <a class="btn btn-success btn-sm float-right mr-2"
+                                        href="{{ route('usuarios.show', $e->id) }}" data-bs-toggle="tooltip"
+                                        data-bs-placement="right" title="Mostrar Datos del Estudiante"><i
+                                            class="fa fa-user"></i></a>
+                                @endcan
+
+
                             </form>
                         </td>
                     </tr>
@@ -68,7 +92,7 @@
         </table>
     </div>
 </div>
-{{--  @include('Modulo_PerfildeUsuario.estudiantes.modal')  --}}
+
 @stop
 
 @section('js')

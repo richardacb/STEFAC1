@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Crear Horario')
+@section('title', 'Crear Balance de Carga')
 
 @section('content_header')
     <h1>Crear Balance de Carga</h1>
@@ -22,11 +22,28 @@
             <select name="asignaturas_id" id="asignaturas_id" class="form-control mr-sm-2 form-select">
                 <option value="0" selected="selected">--Seleccione--</option>
                 @foreach ($nombreasignaturas as $na)
-                    @if ($na->anno >= 1 || $na->anno <= 5)
-                        <option value="{{ $na->id }}">
+                    <option value="{{ $na->id }}">
+                        @role('Vicedecana')
                             {{ $na->nombre }}
-                        </option>
-                    @endif
+                            (@if ($na->anno == '1')
+                                Primer Año
+                            @endif
+                            @if ($na->anno == '2')
+                                Segundo Año
+                            @endif
+                            @if ($na->anno == '3')
+                                Tercer Año
+                            @endif
+                            @if ($na->anno == '4')
+                                Cuarto Año
+                            @endif
+                            @if ($na->anno == '5')
+                                Quinto Año
+                            @endif)
+                        @else
+                            {{ $na->nombre }}
+                        @endrole
+                    </option>
                 @endforeach
             </select>
             @error('asignaturas_id')
