@@ -38,19 +38,21 @@
                                         
 										<th>Nombre</th>
 
-                                        
+                                        <th>Comité</th>
 
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    
                                     @foreach ($reporte as $reporte)
                                         <tr>
+                                            
                                             <td>{{ ++$i }}</td>
                                             
 											<td>{{ $reporte->nombre }}</td>
 
-                                            
+                                            <td>{{ $reporte->comite->nombre}}</td>
 
                                             <td>
                                                 <form action="{{ route('reportes.destroy',$reporte->id) }}" method="POST">

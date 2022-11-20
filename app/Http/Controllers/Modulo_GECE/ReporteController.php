@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Modulo_GECE;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Modulo_GECE\Reporte;
-
+use App\Models\Modulo_GECE\Comite;
 
 class ReporteController extends Controller
 {
@@ -24,8 +24,8 @@ class ReporteController extends Controller
     {
         //
         $reporte = new Reporte();
-        
-        return view('Modulo_GECE.reportes.create', compact('reporte'));
+        $comite = Comite::pluck('nombre', 'id');
+        return view('Modulo_GECE.reportes.create', compact('reporte', 'comite'));
     }
 
     public function store(Request $request)
@@ -53,8 +53,8 @@ class ReporteController extends Controller
     {
         //
         $reporte = Reporte::find($id);
-        
-        return view('Modulo_GECE.reportes.edit', compact('reporte'));
+        $comite = Comite::pluck('nombre', 'id');
+        return view('Modulo_GECE.reportes.edit', compact('reporte', 'comite'));
     }
 
    

@@ -17,4 +17,9 @@ class Comite extends Model
     protected $table = 'comites';
     protected $fillable = ['nombre'];
     
+    //Relacion uno a muchos
+    public function reportes()
+    {
+      return $this->hasMany('App\Models\Modulo_GECE\Reporte');
+    }
 }
