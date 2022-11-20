@@ -381,7 +381,66 @@ return [
             'url'  => '',
             'active' => [''],
 
-            'submenu' => [],
+            'submenu' => [
+                [
+                    'text'    => 'Comités',
+                    'icon'    => 'far fa-fw fa fa-bookmark',
+                    'route'  => 'comite.index',
+                    'active'=>['admin/comite*']
+
+                ],
+                [
+                    'text'    => 'Tribunal Taller',
+                    'icon'    => 'far fa-fw fa fa-bookmark',
+                    'route'  => 'tribunaltaller.index',
+                    'active'=>['admin/tribunaltaller*']
+
+                ],
+                [
+                    'text'    => 'Tribunal de Predefensa y Defensa',
+                    'icon'    => 'far fa-fw fa fa-bookmark',
+                    'route'  => 'tribunalpd.index',
+                    'active'=>['admin/tribunalpd*']
+
+                ],
+                [
+                    'text'    => 'Cronograma',
+                    'icon'    => 'far fa-fw fa fa-bookmark',
+                    'route'  => 'cronograma.index',
+                    'active'=>['admin/cronograma*']
+
+                ],
+                [
+                    'text'    => 'Temas',
+                    'icon'    => 'far fa-fw fa fa-bookmark',
+                    'route'  => 'temas.index',
+                    'active'=>['admin/temas*']
+
+                ],
+                [
+                    'text'    => 'Perfiles',
+                    'icon'    => 'far fa-fw fa fa-bookmark',
+                    'route'  => 'perfil.index',
+                    'active'=>['admin/perfil*']
+
+                ],
+                [
+                    'text'    => 'Reportes',
+                    'icon'    => 'far fa-fw fa fa-bookmark',
+                    'route'  => 'reportes.index',
+                    'active'=>['admin/reportes*']
+
+                ],
+                [
+                    'text'    => 'Depósito de Documentos',
+                    'icon'    => 'far fa-fw fa fa-bookmark',
+                    'route'  => 'deposito.index',
+                    'active'=>['admin/deposito*']
+
+                ],
+                
+                
+            ],
         ],
         [
             'text'    => 'Esrategia Educativa',
@@ -392,7 +451,7 @@ return [
             'submenu' => [],
         ],
         [
-            'text'    => 'Actividades',
+            'text'    => 'Gestión de Actividades',
             'icon'    => 'fas fa-fw fa-share',
             'url'  => '',
             'active' => [''],

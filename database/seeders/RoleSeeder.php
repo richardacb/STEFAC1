@@ -96,6 +96,7 @@ class RoleSeeder extends Seeder
 
         /*====================================Start Modulo Perfil de usuario=======================================================*/
 
+
         Permission::create(['name' => 'Modulo_PerfildeUsuario.estudiantes.index',
                            'description' => 'Ver listado de estudiantes'])->syncRoles([$role2,$role3]);
         Permission::create(['name' => 'Modulo_PerfildeUsuario.estudiantes.create',
@@ -169,8 +170,6 @@ class RoleSeeder extends Seeder
                            'description' => 'Eliminar rol'])->syncRoles([$role1]);
 
 
-
-
         /*====================================End Modulo Perfil de usuario========================================================*/
 
         /*====================================Start Modulo Optativas==============================================================*/
@@ -239,6 +238,41 @@ class RoleSeeder extends Seeder
 
         /*====================================Start Modulo GECE===================================================================*/
 
+        Permission::create(['name'=> 'Modulo_GECE.cronograma.index',
+                            'description'=> 'Ver listado de cronograma'])->syncRoles([$role1,$role2,$role3,$role4,$role5]);
+    
+        Permission::create(['name'=> 'Modulo_GECE.cronograma.store',
+                            'description'=> 'Almacenar cronograma'])->syncRoles([$role1,$role2,$role3,$role4,$role5]);
+
+        Permission::create(['name'=> 'Modulo_GECE.cronograma.show',
+                            'description'=> 'mostrar cronograma'])->syncRoles([$role1,$role2,$role3,$role4,$role5]);
+
+        Permission::create(['name'=> 'Modulo_GECE.temas.index',
+                            'description'=> 'Mostrar Temas'])->syncRoles([$role1,$role2,$role3,$role4,$role5]);
+        
+        Permission::create(['name'=> 'Modulo_GECE.perfil.index',
+                            'description'=> 'Mostrar Perfiles'])->syncRoles([$role1,$role2,$role3,$role4,$role5]);
+
+        Permission::create(['name'=> 'Modulo_GECE.comite.index',
+                            'description'=> 'Mostrar Comités'])->syncRoles([$role1,$role2,$role3,$role4,$role5]);
+
+        Permission::create(['name'=> 'Modulo_GECE.deposito.index',
+                            'description'=> 'Mostrar Depósito de Documentos'])->syncRoles([$role1,$role2,$role3,$role4,$role5]);
+
+        Permission::create(['name'=> 'Modulo_GECE.documento.store',
+                            'description'=> 'Almacenar documentos'])->syncRoles([$role1,$role2,$role3,$role4,$role5]);
+
+        Permission::create(['name'=> 'Modulo_GECE.documento.descargar',
+                            'description'=> 'Descargar documentos'])->syncRoles([$role1,$role2,$role3,$role4,$role5]);
+
+        Permission::create(['name'=> 'Modulo_GECE.tribunaltaller.index',
+                            'description'=> 'Mostrar Tribunal Taller'])->syncRoles([$role1,$role2,$role3,$role4,$role5]);
+
+        Permission::create(['name'=> 'Modulo_GECE.tribunalpd.index',
+                            'description'=> 'Mostrar Tribunal de Predefensa y Defensa'])->syncRoles([$role1,$role2,$role3,$role4,$role5]);
+
+        Permission::create(['name'=> 'Modulo_GECE.reportes.index',
+                            'description'=> 'Mostrar Reportes de Trabajo de Diploma'])->syncRoles([$role1,$role2,$role3,$role4,$role5]);
         /*====================================End Modulo GECE=====================================================================*/
 
 

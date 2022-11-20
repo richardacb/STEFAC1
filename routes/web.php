@@ -109,6 +109,20 @@ Route::resource('opt_est', 'App\Http\Controllers\Modulo_Optativas\Opt_EstControl
 
 /*---------------Fin Rutas del Mododulo Optativas--------------------------------*/
 
+/*---------------Rutas del Mododulo GECE--------------------------------*/
+
+Route::get('cronograma', [App\Http\Controllers\ModuloGECE\CronogramaController::class, 'index'])->middleware('auth');
+Route::post('cronograma/agregar', [App\Http\Controllers\ModuloGECE\CronogramaController::class, 'store'])->middleware('auth');
+Route::resource('temas', 'App\Http\Controllers\Modulo_GECE\TemaController');
+Route::resource('perfil', 'App\Http\Controllers\Modulo_GECE\PerfilController');
+Route::resource('comite', 'App\Http\Controllers\Modulo_GECE\ComiteController');
+Route::resource('deposito', 'App\Http\Controllers\Modulo_GECE\DepositoController');
+Route::post('documento', [DocumentoController::class, 'store'])->name('documento.store');
+Route::get('documento/{documento}/descargar', [DocumentoController::class, 'descargar'])->name('documento.descargar');
+Route::resource('tribunaltaller', 'App\Http\Controllers\Modulo_GECE\TribunalTallerController');
+Route::resource('tribunalpd', 'App\Http\Controllers\Modulo_GECE\TribunalPDController');
+Route::resource('reportes', 'App\Http\Controllers\Modulo_GECE\ReporteController');
+/*---------------Fin Rutas del Mododulo GECE--------------------------------*/
 
 Auth::routes();
 

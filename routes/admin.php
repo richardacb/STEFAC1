@@ -21,7 +21,15 @@ use App\Http\Controllers\Modulo_Horario\ParcialesController;
 use App\Http\Controllers\Modulo_Actividades\ActividadesController;
 use App\Http\Controllers\Modulo_Actividades\EvidenciasController;
 use App\Http\Controllers\Auth\RegisterController;
-
+use App\Http\Controllers\Modulo_GECE\CronogramaController;
+use App\Http\Controllers\Modulo_GECE\TemaController;
+use App\Http\Controllers\Modulo_GECE\PerfilController;
+use App\Http\Controllers\Modulo_GECE\ComiteController;
+use App\Http\Controllers\Modulo_GECE\DepositoController;
+use App\Http\Controllers\Modulo_GECE\DocumentoController;
+use App\Http\Controllers\Modulo_GECE\TribunalTallerController;
+use App\Http\Controllers\Modulo_GECE\TribunalPDController;
+use App\Http\Controllers\Modulo_GECE\ReporteController;
 
 Route::get('', [HomeController::class, 'index']);
 
@@ -68,3 +76,18 @@ Route::get('actividades.form', 'Modulo_Actividades\ActividadesController@edit')-
 Route::resource('evidencias',EvidenciasController::class)->name('*','Modulo_Actividades.evidencias');
 Route::post('evidencias.form', 'Modulo_Actividades\EvidenciasController@edit')->name('Modulo_Actividades.evidencias');
 Route::get('evidencias.form', 'Modulo_Actividades\EvidenciasController@edit')->name('Modulo_Actividades.evidencias');
+
+/*---------------Rutas del Mododulo GECE--------------------------------*/
+
+Route::resource('cronograma', CronogramaController::class)->name('*', 'Modulo_GECE.cronograma');
+Route::resource('cronograma/mostrar', CronogramaController::class)->name('*','Modulo_GECE.cronograma');
+Route::resource('cronograma/agregar', CronogramaController::class)->name('*','Modulo_GECE.cronograma');
+Route::resource('temas', TemaController::class)->name('*','Modulo_GECE.temas');
+Route::resource('perfil', PerfilController::class)->name('*','Modulo_GECE.perfil');
+Route::resource('comite', ComiteController::class)->name('*','Modulo_GECE.comite');
+Route::resource('deposito', DepositoController::class)->name('*','Modulo_GECE.deposito');
+Route::resource('documento', DocumentoController::class)->name('*','Modulo_GECE.documento');
+Route::resource('tribunaltaller', TribunalTallerController::class)->name('*','Modulo_GECE.tribunaltaller');
+Route::resource('tribunalpd', TribunalPDController::class)->name('*','Modulo_GECE.tribunalpd');
+Route::resource('reportes', ReporteController::class)->name('*','Modulo_GECE.reportes');
+/*---------------Rutas del Mododulo GECE--------------------------------*/
