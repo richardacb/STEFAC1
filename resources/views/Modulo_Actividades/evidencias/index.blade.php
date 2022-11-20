@@ -23,7 +23,7 @@
 </div>
 
 <div class="card-body">
-    @if ($tipo_usuario == 'Profesor')
+
     <table id="evidencia_id" class="table table-striped shadow-lg w-100">
         <thead class="bg-primary text-white">
             <tr>
@@ -42,7 +42,7 @@
             @foreach ($evidencias as $evidencia )
             @foreach ($actividades as $actividad)
              @if($evidencia->actividades_id == $actividad->id )
-             @if ($users[$id] = $evidencia->user_id)
+             @if ($user[$id] = $evidencia->user_id)
                 <tr>
                     <td>{{ $evidencia->descripcion }}</td>
                     <td>{{ $actividad->nombre}}</td>
@@ -81,13 +81,6 @@
             @endforeach
         </tbody>
     </table>
-
-
-
-
-
-    @endif
-
 </div>
     </div>
 @include('Modulo_Actividades.evidencias.modal')
