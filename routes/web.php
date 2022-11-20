@@ -23,9 +23,6 @@ Route::get('/', function () {
 });
 
 /*---------------Rutas del Mododulo Perfil de usuario--------------------------------*/
-// Route::get('estudiantes/listarestudiantes',[App\Http\Controllers\Modulo_PerfildeUsuario\EstudiantesController::class, 'listar_estudiantes'])->name('/estudiantes/listarestudiantes');
-
-// Route::get('admin/estudiantes/estado/{id}/{estado}',[App\Http\Controllers\Modulo_PerfildeUsuario\EstudiantesController::class, 'cambiar_estado'])->name('/estudiantes/estado');
 
 Route::get('admin/usuarios/create', [App\Http\Controllers\Modulo_PerfildeUsuario\UsuariosController::class, 'create'])->name('usuarios.create');
 
@@ -49,13 +46,13 @@ Route::post('admin/change-password', [App\Http\Controllers\HomeController::class
 
 Route::post('usuarios.import', [App\Http\Controllers\Modulo_PerfildeUsuario\UsuariosController::class, 'importar_usuarios'])->name('usuarios.import');
 
-Route::get('/usuarios/pdf', [App\Http\Controllers\Modulo_PerfildeUsuario\GruposController::class, 'createPDF'])->name('usuarios.pdf');
-
 Route::get('estudiantes.export', [App\Http\Controllers\Modulo_PerfildeUsuario\EstudiantesController::class, 'exportExcelEstudiantes'])->name('estudiantes.export');
 
-// Route::get('profesores.export', [App\Http\Controllers\Modulo_PerfildeUsuario\ProfesoresController::class, 'exportExcelProfesores'])->name('profesores.export');
+Route::get('profesores.export', [App\Http\Controllers\Modulo_PerfildeUsuario\ProfesoresController::class, 'exportExcelProfesores'])->name('profesores.export');
 
-// Route::get('diagnosticopreventivo.export', [App\Http\Controllers\Modulo_PerfildeUsuario\DiagnosticopreventivoController::class, 'exportExcelDiagnosticopreventivo'])->name('diagnosticopreventivo.export');
+Route::get('diagnosticopreventivo.export', [App\Http\Controllers\Modulo_PerfildeUsuario\DiagnosticopreventivoController::class, 'exportExcelDiagnosticopreventivo'])->name('diagnosticopreventivo.export');
+
+Route::get('usuarios/exportpdfusuario/{usuario}', [App\Http\Controllers\Modulo_PerfildeUsuario\UsuariosController::class, 'createPDFUsuario'])->name('usuarios.exportpdfusuario');
 /*---------------Fin Rutas del Mododulo Perfil de usuario--------------------------------*/
 
 /*---------------Rutas del Mododulo Horario--------------------------------*/

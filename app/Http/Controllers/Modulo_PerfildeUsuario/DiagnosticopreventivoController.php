@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Modulo_PerfildeUsuario\Diagnosticopreventivo;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\User;
+use App\Exports\DiagnosticopreventivoExport;
 
 class DiagnosticopreventivoController extends Controller
 {
@@ -84,27 +86,63 @@ class DiagnosticopreventivoController extends Controller
 
 
         if (User::find(auth()->id())->hasRole('Vicedecana')) {
-            $diagnosticopreventivo = DB::select('SELECT e.user_id, users.anno as anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante,e.grupo, e.dp_id
-                               FROM users INNER JOIN (SELECT e.user_id, g.name as grupo, e.dp_id
-                                                      FROM (SELECT e.user_id, e.grupos_id,dp.id as dp_id
+            $diagnosticopreventivo = DB::select('SELECT e.user_id, users.anno as anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante,e.grupo, e.dp_id,
+            e.adicciones_Alcohol,e.adicciones_Tabaco,e.adicciones_Café,e.adicciones_Tecnoadicciones,e.adicciones_Drogas,e.tipo_medicamentos,e.grupo_social,
+            e.creencia_religiosa,e.prob_de_personalidad,e.prob_de_psiquiatricos,e.prob_de_economicos,e.prob_de_sociales,e.prob_de_familiares,
+            e.prob_de_academicos,e.prob_de_disciplina,e.prob_de_asistencia
+                               FROM users INNER JOIN (SELECT e.user_id, g.name as grupo, e.dp_id,
+            e.adicciones_Alcohol,e.adicciones_Tabaco,e.adicciones_Café,e.adicciones_Tecnoadicciones,e.adicciones_Drogas,e.tipo_medicamentos,e.grupo_social,
+            e.creencia_religiosa,e.prob_de_personalidad,e.prob_de_psiquiatricos,e.prob_de_economicos,e.prob_de_sociales,e.prob_de_familiares,
+            e.prob_de_academicos,e.prob_de_disciplina,e.prob_de_asistencia
+                                                      FROM (SELECT e.user_id, e.grupos_id,dp.id as dp_id,
+                                         dp.adicciones_Alcohol as adicciones_Alcohol,dp.adicciones_Tabaco as adicciones_Tabaco,dp.adicciones_Café as adicciones_Café,
+                                         dp.adicciones_Tecnoadicciones as adicciones_Tecnoadicciones,dp.adicciones_Drogas as adicciones_Drogas,dp.tipo_medicamentos as tipo_medicamentos,
+                                         dp.grupo_social as grupo_social,dp.creencia_religiosa as creencia_religiosa,dp.prob_de_personalidad as prob_de_personalidad,
+                                         dp.prob_de_psiquiatricos as prob_de_psiquiatricos,dp.prob_de_economicos as prob_de_economicos,dp.prob_de_sociales as prob_de_sociales,
+                                         dp.prob_de_familiares as prob_de_familiares,dp.prob_de_academicos as prob_de_academicos,dp.prob_de_disciplina as prob_de_disciplina,
+                                         dp.prob_de_asistencia as prob_de_asistencia
                                                             FROM estudiantes as e INNER JOIN diagnosticopreventivo as dp ON e.user_id = dp.user_id) as e
                                                       INNER JOIN profesores as p ON e.grupos_id = p.grupos_id
                                                       INNER JOIN grupos as g ON e.grupos_id = g.id
                                                       ) as e ON users.id = e.user_id AND users.tipo_de_usuario = "Estudiante"
         ');
         } else if (User::find(auth()->id())->hasRole('ProfesorJefeAño')) {
-            $diagnosticopreventivo = DB::select('SELECT e.user_id, users.anno as anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante,e.grupo, e.dp_id
-            FROM users INNER JOIN (SELECT e.user_id, g.name as grupo, e.dp_id
-                                   FROM (SELECT e.user_id, e.grupos_id,dp.id as dp_id
+            $diagnosticopreventivo = DB::select('SELECT e.user_id, users.anno as anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante,e.grupo, e.dp_id,
+            e.adicciones_Alcohol,e.adicciones_Tabaco,e.adicciones_Café,e.adicciones_Tecnoadicciones,e.adicciones_Drogas,e.tipo_medicamentos,e.grupo_social,
+            e.creencia_religiosa,e.prob_de_personalidad,e.prob_de_psiquiatricos,e.prob_de_economicos,e.prob_de_sociales,e.prob_de_familiares,
+            e.prob_de_academicos,e.prob_de_disciplina,e.prob_de_asistencia
+            FROM users INNER JOIN (SELECT e.user_id, g.name as grupo, e.dp_id,
+            e.adicciones_Alcohol,e.adicciones_Tabaco,e.adicciones_Café,e.adicciones_Tecnoadicciones,e.adicciones_Drogas,e.tipo_medicamentos,e.grupo_social,
+            e.creencia_religiosa,e.prob_de_personalidad,e.prob_de_psiquiatricos,e.prob_de_economicos,e.prob_de_sociales,e.prob_de_familiares,
+            e.prob_de_academicos,e.prob_de_disciplina,e.prob_de_asistencia
+                                   FROM (SELECT e.user_id, e.grupos_id,dp.id as dp_id,
+                                   dp.adicciones_Alcohol as adicciones_Alcohol,dp.adicciones_Tabaco as adicciones_Tabaco,dp.adicciones_Café as adicciones_Café,
+                                         dp.adicciones_Tecnoadicciones as adicciones_Tecnoadicciones,dp.adicciones_Drogas as adicciones_Drogas,dp.tipo_medicamentos as tipo_medicamentos,
+                                         dp.grupo_social as grupo_social,dp.creencia_religiosa as creencia_religiosa,dp.prob_de_personalidad as prob_de_personalidad,
+                                         dp.prob_de_psiquiatricos as prob_de_psiquiatricos,dp.prob_de_economicos as prob_de_economicos,dp.prob_de_sociales as prob_de_sociales,
+                                         dp.prob_de_familiares as prob_de_familiares,dp.prob_de_academicos as prob_de_academicos,dp.prob_de_disciplina as prob_de_disciplina,
+                                         dp.prob_de_asistencia as prob_de_asistencia
                                          FROM estudiantes as e INNER JOIN diagnosticopreventivo as dp ON e.user_id = dp.user_id) as e
                                    INNER JOIN profesores as p ON e.grupos_id = p.grupos_id
                                    INNER JOIN grupos as g ON e.grupos_id = g.id
                                    ) as e ON users.id = e.user_id AND users.tipo_de_usuario = "Estudiante" AND users.anno = ' . $anno . '
         ');
         } else {
-            $diagnosticopreventivo = DB::select('SELECT e.user_id, users.anno as anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante,e.grupo, e.dp_id
-        FROM users INNER JOIN (SELECT e.user_id, g.name as grupo, e.dp_id
-                               FROM (SELECT e.user_id, e.grupos_id,dp.id as dp_id
+            $diagnosticopreventivo = DB::select('SELECT e.user_id, users.anno as anno, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_estudiante,e.grupo, e.dp_id,
+            e.adicciones_Alcohol,e.adicciones_Tabaco,e.adicciones_Café,e.adicciones_Tecnoadicciones,e.adicciones_Drogas,e.tipo_medicamentos,e.grupo_social,
+            e.creencia_religiosa,e.prob_de_personalidad,e.prob_de_psiquiatricos,e.prob_de_economicos,e.prob_de_sociales,e.prob_de_familiares,
+            e.prob_de_academicos,e.prob_de_disciplina,e.prob_de_asistencia  
+        FROM users INNER JOIN (SELECT e.user_id, g.name as grupo, e.dp_id,
+            e.adicciones_Alcohol,e.adicciones_Tabaco,e.adicciones_Café,e.adicciones_Tecnoadicciones,e.adicciones_Drogas,e.tipo_medicamentos,e.grupo_social,
+            e.creencia_religiosa,e.prob_de_personalidad,e.prob_de_psiquiatricos,e.prob_de_economicos,e.prob_de_sociales,e.prob_de_familiares,
+            e.prob_de_academicos,e.prob_de_disciplina,e.prob_de_asistencia
+                               FROM (SELECT e.user_id, e.grupos_id,dp.id as dp_id,
+                               dp.adicciones_Alcohol as adicciones_Alcohol,dp.adicciones_Tabaco as adicciones_Tabaco,dp.adicciones_Café as adicciones_Café,
+                                         dp.adicciones_Tecnoadicciones as adicciones_Tecnoadicciones,dp.adicciones_Drogas as adicciones_Drogas,dp.tipo_medicamentos as tipo_medicamentos,
+                                         dp.grupo_social as grupo_social,dp.creencia_religiosa as creencia_religiosa,dp.prob_de_personalidad as prob_de_personalidad,
+                                         dp.prob_de_psiquiatricos as prob_de_psiquiatricos,dp.prob_de_economicos as prob_de_economicos,dp.prob_de_sociales as prob_de_sociales,
+                                         dp.prob_de_familiares as prob_de_familiares,dp.prob_de_academicos as prob_de_academicos,dp.prob_de_disciplina as prob_de_disciplina,
+                                         dp.prob_de_asistencia as prob_de_asistencia
                                      FROM estudiantes as e INNER JOIN diagnosticopreventivo as dp ON e.user_id = dp.user_id) as e
                                INNER JOIN profesores as p ON e.grupos_id = p.grupos_id
                                INNER JOIN grupos as g ON e.grupos_id = g.id
@@ -320,7 +358,7 @@ class DiagnosticopreventivoController extends Controller
         $diagnosticopreventivo->prob_de_asistencia = $request->get('prob_de_asistencia');
         $diagnosticopreventivo->update($request->all());
 
-        return redirect()->route('usuarios.show', $diagnosticopreventivo->users->id)->with('info', 'modificar-diagnostico');
+        return redirect()->route('diagnosticopreventivo.index')->with('info', 'modificar-diagnostico');
     }
 
     /**
@@ -337,8 +375,9 @@ class DiagnosticopreventivoController extends Controller
 
         return redirect()->route('diagnosticopreventivo.index')->with('info', 'eliminar-datos-diagnosticopreventivo');
     }
-    // public function exportExcel()
-    // {
-    //     return Excel::download(new BalancedecargaExport, 'Balance de Carga.xlsx');
-    // }
+
+    public function exportExcelDiagnosticopreventivo()
+    {
+        return Excel::download(new DiagnosticopreventivoExport, 'Diagnostico preventivo.xlsx');
+    }
 }

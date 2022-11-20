@@ -10,8 +10,8 @@ use App\Models\Modulo_Horario\Asignaturas;
 use App\Models\Modulo_Horario\Tipo_de_Clase;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
-//use App\Imports\ProfesoresImport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ProfesoresExport;
 
 class ProfesoresController extends Controller
 {
@@ -216,9 +216,9 @@ class ProfesoresController extends Controller
 
         return redirect()->route('profesores.index')->with('info', 'eliminar-datos-profesores');
     }
-    // public function exportExcel()
-    // {
-    //     return Excel::download(new BalancedecargaExport, 'Balance de Carga.xlsx');
-    // }
+    public function exportExcelProfesores()
+    {
+        return Excel::download(new ProfesoresExport, 'Profesores.xlsx');
+    }
 
 }

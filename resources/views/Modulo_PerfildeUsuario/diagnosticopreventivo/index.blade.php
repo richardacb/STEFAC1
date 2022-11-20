@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'STE')
+@section('title', 'Diagnostico preventivo')
 
 @section('content_header')
     <h1>Lista de Diagnósticos preventivos</h1>
@@ -17,8 +17,11 @@
         @can('Modulo_PerfildeUsuario.diagnosticopreventivo.create')
             <a href="{{ route('diagnosticopreventivo.create') }}" class="btn btn-primary ">Insertar diagnóstico</a>
         @endcan
-        <nav class="navbar navbar-expand-lg navbar-light bg-light float-right ">
-            <i class="fa fa-chart-pie fa-lg "></i>
+        @can('Export.DiagnosticopreventivoExport')
+        <a href="{{ route('diagnosticopreventivo.export') }}" class="btn btn-warning  float-right" role="button">Exportar datos a Excel</a>
+        @endcan
+        <nav class="navbar navbar-expand-lg navbar-light bg-light float-right narvar_personalizado mr-2">
+            <i class="fa fa-chart-pie fa-lg pl-2"></i>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
                 aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -41,8 +44,10 @@
                                 data-target="#grafica_reportes3">Grupo Social al que
                                 pertenecen</a>
                             <a class="dropdown-item" href="#" data-toggle="modal"
-                                data-target="#grafica_reportes3">Creencia Religiosa al
+                                data-target="#grafica_reportes4">Creencia Religiosa al
                                 que pertenecen</a>
+                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                data-target="#grafica_reportes5">Tipo de problemas al que pertenecen</a>
                         </div>
                     </li>
                 </ul>
@@ -57,6 +62,11 @@
                     <th>Nombre y Apellido</th>
                     <th>Año</th>
                     <th>Grupo</th>
+                    <th>Adicciones</th>
+                    <th>G.Sociales</th>
+                    <th>C.Religiosas</th>
+                    <th>C.Medicamentos</th>
+                    <th>T.Problemas</th>
                     <th>Acción</th>
                 </tr>
             </thead>
@@ -81,24 +91,69 @@
                             Quinto Año
                         @endif</td>
                         <td>{{ $dp->grupo }}</td>
+
+                        <td>
+                            @if (isset($dp->adicciones_Alcohol))
+                            {{ '-' .$dp->adicciones_Alcohol }}<br>
+                            @endif
+                            @if (isset($dp->adicciones_Tabaco))
+                            {{ '-' .$dp->adicciones_Tabaco }}<br>
+                            @endif
+                            @if (isset($dp->adicciones_Café))
+                            {{ '-' .$dp->adicciones_Café }}<br>
+                            @endif
+                            @if (isset($dp->adicciones_Tecnoadicciones))
+                            {{ '-' .$dp->adicciones_Tecnoadicciones }}<br>
+                            @endif
+                            @if (isset($dp->adicciones_Drogas))
+                            {{ '-' .$dp->adicciones_Drogas }}</td>
+                            @endif
+                        <td>{{ $dp->tipo_medicamentos }}</td>
+                        <td>{{ $dp->grupo_social }}</td>
+                        <td>{{ $dp->creencia_religiosa }}</td>
+                        <td>
+                             @if (isset($dp->prob_de_personalidad))
+                             {{ '-' .$dp->prob_de_personalidad }}<br>
+                            @endif
+                             @if (isset($dp->prob_de_psiquiatricos))
+                             {{ '-' .$dp->prob_de_psiquiatricos }}<br>
+                            @endif
+                             @if (isset($dp->prob_de_economicos))
+                             {{ '-' .$dp->prob_de_economicos }}<br>
+                            @endif
+                             @if (isset($dp->prob_de_sociales))
+                             {{ '-' .$dp->prob_de_sociales }}<br>
+                            @endif
+                             @if (isset($dp->prob_de_familiares))
+                             {{ '-' .$dp->prob_de_familiares }}<br>
+                            @endif
+                             @if (isset($dp->prob_de_academicos))
+                             {{ '-' .$dp->prob_de_academicos }}<br>
+                            @endif
+                             @if (isset($dp->prob_de_disciplina))
+                             {{ '-' .$dp->prob_de_disciplina }}<br>
+                            @endif
+                             @if (isset($dp->prob_de_asistencia))
+                             {{ '-' .$dp->prob_de_asistencia }}</td>
+                             @endif
                         <td>
                              <form action="{{ route('diagnosticopreventivo.destroy', $dp->dp_id) }}" method="POST"
                                 class="eliminar_datos_diagnosticopreventivo">
                                 @csrf
                                 @method('delete')
                                 @can('Modulo_PerfildeUsuario.diagnosticopreventivo.destroy')
-                                <button class="btn btn-danger float-right btn-sm mr-2" type="submit"
+                                <button class="btn btn-danger float-right btn-sm mr-2 mt-2" type="submit"
                                 data-bs-toggle="tooltip" data-bs-placement="right"
                                 title="Eliminar datos del diagnostico preventivo"><i class="fa fa-trash-alt"></i></button>
                                  @endcan
                                 @can('Modulo_PerfildeUsuario.diagnosticopreventivo.edit')
-                            <a class="btn btn-primary btn-sm float-right mr-2"
+                            <a class="btn btn-primary btn-sm float-right mr-2 mt-2"
                                 href="{{ route('diagnosticopreventivo.edit', $dp->dp_id) }}"><i class="fa fa-edit"
                                     data-bs-toggle="tooltip" data-bs-placement="right"
                                     title="Editar Diagnóstico Preventivo"></i></a>
                                      @endcan
                                 @can('Modulo_PerfildeUsuario.diagnosticopreventivo.create')
-                            <a class="btn btn-success btn-sm float-right mr-2"
+                            <a class="btn btn-success btn-sm float-right mr-2 mt-2"
                                 href="{{ route('usuarios.show', $dp->user_id) }}" data-bs-toggle="tooltip"
                                 data-bs-placement="right" title="Mostar Datos del Diagnóstico"><i
                                     class="fa fa-user"></i></a>

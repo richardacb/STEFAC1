@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'STE')
+@section('title', 'Insertar Profesor')
 
 @section('content_header')
     <h1>Insertar Profesores</h1>

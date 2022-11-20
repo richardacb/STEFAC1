@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Crear Grupos')
+@section('title', 'Crear Grupo')
 
 @section('content_header')
     <h1>Insertar Grupo</h1>

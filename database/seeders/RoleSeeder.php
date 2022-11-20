@@ -124,6 +124,8 @@ class RoleSeeder extends Seeder
                            'description' => 'Editar datos a un profesor'])->syncRoles([$role2,$role3]);
         Permission::create(['name' => 'Modulo_PerfildeUsuario.profesores.destroy',
                            'description' => 'Eliminar datos a un profesor'])->syncRoles([$role2,$role3]);
+        Permission::create(['name' => 'Export.ProfesoresExport',
+                           'description' => 'Exportar datos de los profesores como Excel'])->syncRoles([$role2,$role3]);
 
         Permission::create(['name' => 'Modulo_PerfildeUsuario.diagnosticopreventivo.index',
                            'description' => 'Ver listado de diagnostico preventivo'])->syncRoles([$role2,$role3,$role4]);
@@ -133,6 +135,8 @@ class RoleSeeder extends Seeder
                            'description' => 'Editar datos de diagnostico preventivo'])->syncRoles([$role2,$role3,$role4]);
         Permission::create(['name' => 'Modulo_PerfildeUsuario.diagnosticopreventivo.destroy',
                            'description' => 'Eliminar datos de diagnostico preventivo'])->syncRoles([$role2,$role3,$role4]);
+        Permission::create(['name' => 'Export.DiagnosticopreventivoExport',
+                           'description' => 'Exportar datos del diagnostico preventivo como Excel'])->syncRoles([$role2,$role3]);
 
         Permission::create(['name' => 'Modulo_PerfildeUsuario.usuarios.index',
                            'description' => 'Ver listado de usuarios'])->syncRoles([$role1]);
@@ -141,7 +145,7 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'Modulo_PerfildeUsuario.usuarios.editar',
                            'description' => 'Editar datos del usuario'])->syncRoles([$role1]);
         Permission::create(['name' => 'Modulo_PerfildeUsuario.usuarios.actualizar',
-                           'description' => 'Asignar roles'])->syncRoles([$role1]);
+                           'description' => 'Actualizar datos del usuario'])->syncRoles([$role1]);
         Permission::create(['name' => 'Modulo_PerfildeUsuario.usuarios.edit',
                            'description' => 'Ver lista de roles ha asignar'])->syncRoles([$role1]);
         Permission::create(['name' => 'Modulo_PerfildeUsuario.usuarios.update',
@@ -152,7 +156,8 @@ class RoleSeeder extends Seeder
 
         Permission::create(['name' => 'Modulo_PerfildeUsuario.usuarios.show',
                           'description' => 'Ver detalles del usuarios'])->syncRoles([$role1,$role2,$role3,$role4,$role5,$role6,$role7]);
-
+        Permission::create(['name' => 'Modulo_PerfildeUsuario.usuarios.indexpdfusers',
+                          'description' => 'Exportar Perfil de Usuario a PDF'])->syncRoles([$role1,$role2,$role3,$role4,$role7]);
 
         Permission::create(['name' => 'Modulo_PerfildeUsuario.roles.index',
                            'description' => 'Ver listado de roles'])->syncRoles([$role1]);
