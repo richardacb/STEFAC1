@@ -76,3 +76,7 @@ border-radius: 0px;
     padding: 20px;
   }
 }
+
+.narvar_personalizado{
+  padding: 0px !important;
+}

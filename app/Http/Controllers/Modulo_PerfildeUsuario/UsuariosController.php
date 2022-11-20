@@ -12,9 +12,9 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Barryvdh\DomPDF\Facade\PDF;
 use App\Imports\UsuariosImport;
 use Maatwebsite\Excel\Facades\Excel;
-use PDF;
 
 class UsuariosController extends Controller
 {
@@ -155,26 +155,27 @@ class UsuariosController extends Controller
 
         session()->put('anno', User::find(auth()->id())->anno);
         $anno = session()->get('anno');
-        // // $select_anno = DB::select('SELECT users.anno FROM users WHERE users.id = ' . $id . '');
-        // $select_anno_dp = DB::select('SELECT users.anno FROM users INNER JOIN diagnosticopreventivo ON users.id = diagnosticopreventivo.user_id  WHERE users.id =  ' . $id . '');
-        // $select_anno_e = DB::select('SELECT users.anno FROM users INNER JOIN estudiantes ON users.id = estudiantes.user_id  WHERE users.id = ' . $id . '');
-        // $select_anno_p = DB::select('SELECT users.anno FROM users INNER JOIN profesores ON users.id = profesores.user_id  WHERE users.id = ' . $id . '');
+        
 
+        $select_anno = "";
         if (DB::select('SELECT users.anno FROM users INNER JOIN diagnosticopreventivo ON users.id = diagnosticopreventivo.user_id  WHERE users.id =  ' . $id . '')) {
             $select_anno = DB::select('SELECT users.anno FROM users INNER JOIN diagnosticopreventivo ON users.id = diagnosticopreventivo.user_id  WHERE users.id =  ' . $id . '');
         }
         if (DB::select('SELECT users.anno FROM users INNER JOIN estudiantes ON users.id = estudiantes.user_id  WHERE users.id = ' . $id . '')) {
             $select_anno = DB::select('SELECT users.anno FROM users INNER JOIN estudiantes ON users.id = estudiantes.user_id  WHERE users.id = ' . $id . '');
         }
-
         if (DB::select('SELECT users.anno FROM users INNER JOIN profesores ON users.id = profesores.user_id  WHERE users.id = ' . $id . '')) {
             $select_anno = DB::select('SELECT users.anno FROM users INNER JOIN profesores ON users.id = profesores.user_id  WHERE users.id = ' . $id . '');
         }
 
-
+        if ($select_anno !== "") {
+            if (DB::select('SELECT users.anno FROM users WHERE users.id = ' . $id . '')) {
+                $select_anno = DB::select('SELECT users.anno FROM users WHERE users.id = ' . $id . '');
+            }
+        }
         if (($id == auth()->id()) ||
             ($anno == $select_anno[0]->anno  && (User::find(auth()->id())->hasRole('ProfesorJefeAño') || User::find(auth()->id())->hasRole('ProfesorGuia'))) ||
-            (User::find(auth()->id())->hasRole('Administrador')) ||
+            (User::find(auth()->id())->hasRole('Administrador') && $select_anno ) ||
             (User::find(auth()->id())->hasRole('Vicedecana'))
         ) {
 
@@ -188,7 +189,6 @@ class UsuariosController extends Controller
         } else {
             abort(401);
         }
-
     }
 
     public function importar_usuarios(Request $request)
@@ -201,22 +201,18 @@ class UsuariosController extends Controller
         return redirect()->route('usuarios.index')->with('info', 'importar-usuarios');
     }
 
-    // public function createPDF(){
-    //     //Recuperar todos los productos de la db
-    //     $users = User::all();
-    //     view()->share('users', $users);
-    //     $pdf = PDF::loadView('Modulo_PerfildeUsuario.usuarios.index', $users);
-    //     return $pdf->download('archivo-pdf.pdf');
-    // }
-    //     public function createPDF()
-    // {
-    //     $data = [
-    //         'titulo' => 'Styde.net'
-    //     ];
+    public function createPDFUsuario($id)
+    {
+        //Recuperar todos los productos de la db
+        session()->put('anno', User::find(auth()->id())->anno);
+        $anno = session()->get('anno');
 
-    //     $users = User::all();
-    //     $pdf = \PDF::loadView('Modulo_PerfildeUsuario.usuarios.index', compact('users'));
-    //     return $pdf->download('ejemplo.pdf');
-
-    // }
+        $users = User::findOrFail($id);
+        view()->share(
+            'Modulo_PerfildeUsuario.usuarios.indexpdfusers',
+            compact('users')
+        );
+        $pdf = PDF::loadView('Modulo_PerfildeUsuario.usuarios.indexpdfusers',  compact('users'));
+        return $pdf->download('Pefil de Usuario.pdf');
+    }
 }

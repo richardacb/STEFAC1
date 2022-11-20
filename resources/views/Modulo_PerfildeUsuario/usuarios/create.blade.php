@@ -1,18 +1,18 @@
 @extends('adminlte::page')
 
-@section('title', 'STE')
+@section('title', 'Insertar Rol')
 
 @section('content_header')
     <h1>Registrar Usuario</h1>
 @stop
 
 @section('content')
+
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap5.min.css') }}">
 @endsection
 
 <div class="card">
-
     <div class="card-body">
         <form method="POST" action="{{ route('usuarios.store') }}">
             @csrf

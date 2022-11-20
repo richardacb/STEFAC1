@@ -47,6 +47,7 @@ class BalancedecargaController extends Controller
         $pdf = PDF::loadView('Modulo_Horario.balancedecarga.indexpdf',  compact('balancedecarga'));
         return $pdf->download('archivo-pdf.pdf');
     }
+    
     public function index()
     {
 

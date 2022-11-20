@@ -19,7 +19,10 @@
          <button type="button" class="btn btn-danger float-right" data-toggle="modal"
                 data-target=".bd-example-modal-lg">Importar datos de usuarios</button>
         @endcan
-         {{-- <a href="{{ route('usuarios.pdf') }}" class="btn btn-primary ">Convertir a PDF</a> --}}
+        {{-- @can('Exports.BalancedecargaExport')
+        <a href="{{ route('usuarios.exportpdfusuario',$users->id) }}" class="btn badge-warning btn-sm"
+            role="button">Exportar a PDF</a>
+     @endcan --}}
           
     </div>
      

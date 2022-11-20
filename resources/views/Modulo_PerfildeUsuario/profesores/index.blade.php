@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'STE')
+@section('title', 'Profesores')
 
 @section('content_header')
     <h1>Lista de profesores</h1>
@@ -16,8 +16,9 @@
         @can('Modulo_PerfildeUsuario.profesores.create')
             <a href="{{ route('profesores.create') }}" class="btn btn-primary ">Insertar profesor</a>
         @endcan
-        {{-- <a href="{{ route('profesores.export') }}" class="btn btn-danger float-right" role="button">Exportar
-            datos de estudiantes</a> --}}
+        @can('Export.ProfesoresExport')
+        <a href="{{ route('profesores.export') }}" class="btn btn-warning  float-right" role="button">Exportar datos a Excel</a>
+        @endcan
 
     </div>
     <div class="card-body">

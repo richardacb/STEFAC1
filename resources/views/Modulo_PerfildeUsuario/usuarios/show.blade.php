@@ -83,12 +83,18 @@
                                     contraseña</a>
                             </li>
                         @endif
+                        
                     </ul>
+                    
                     <div class="tab-content pt-2">
 
                         <div class="tab-pane fade show active perfil" id="perfil">
 
                             <h5 class="card-title ml-5 my-2">Detalles del perfil</h5>
+                            {{-- @can('Exports.BalancedecargaExport') --}}
+        <a href="{{ route('usuarios.exportpdfusuario',$users->id) }}" class="btn badge-warning btn-sm float-right"
+            role="button">Exportar a PDF</a>
+        {{-- @endcan --}}
                             <br>
                             <hr width="90%">
                             <div class="row">

@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'STE')
+@section('title', 'Editar Diagnostico preventivo')
 
 @section('content_header')
     <h1>Editar Diagnostico preventivo</h1>

@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'STE')
+@section('title', 'Roles')
 
 @section('content_header')
     <h1>Lista de roles</h1>
