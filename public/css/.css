@@ -1,0 +1,78 @@
+/*--------------------------------------------------------------
+# Pagina de comision disciplinaria
+--------------------------------------------------------------*/
+.profile .profile-card img {
+    max-width: 120px;
+  }
+  .profile .profile-card h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2c384e;
+    margin: 10px 0 10px 0;
+  }
+  .profile .profile-card h3 {
+    font-size: 18px;
+  }
+ 
+  .profile .row {
+    margin-bottom: 10px;
+    font-size: 15px;
+
+  }
+  .profile .nav-link {
+    cursor: pointer !important;
+  }
+  
+  .profile .card-title {
+    color: #012970;
+  }
+  .profile .label {
+    font-weight: 600;
+    color: rgba(1, 41, 112, 0.6);
+    text-align: right;
+  }
+  /*--------------------------------------------------------------
+# Vista Form
+--------------------------------------------------------------*/
+.card .formulario-Comision_disciplinaria strong{
+  font-size: 14px;
+}
+.card .fieldset-personalizado{
+  border: solid 1px;
+padding: 1rem;
+margin: 0rem 1rem 3rem 0rem;
+border-radius: 20px 20px;
+}
+.card .fieldset-personalizado .legend-personalizado{
+  font-size: 20px;
+font-weight: bold;
+text-transform: uppercase;
+margin: 0px 37px;
+padding: 0 1rem;
+width: 25rem;
+}
+.card .fieldset-personalizado .legend-personalizado-dp{
+  font-size: 20px;
+font-weight: bold;
+text-transform: uppercase;
+margin: 0px 37px;
+padding: 0 1rem;
+width: 20rem;
+}
+
+.card .form-control{ 
+border-radius: 0px;
+}
+/*--------------------------------------------------------------
+# Main
+--------------------------------------------------------------*/
+#main {
+  margin-top: 60px;
+  padding: 20px 30px;
+  transition: all 0.3s;
+}
+@media (max-width: 1199px) {
+  #main {
+    padding: 20px;
+  }
+}

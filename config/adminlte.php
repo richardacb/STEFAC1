@@ -52,6 +52,19 @@ return [
     'logo_img_xl_class' => 'brand-image-xs',
     'logo_img_alt' => '.',
 
+
+
+
+    'preloader' => [
+        'enabled' => true,
+        'img' => [
+            'path' => 'vendor\adminlte\dist\img\zorros.png',
+            'alt' => 'AdminLTE Preloader Image',
+            'effect' => 'animation__shake',
+            'width' => 90,
+            'height' => 90,
+        ],
+    ],
     /*
     |--------------------------------------------------------------------------
     | User Menu
@@ -423,8 +436,35 @@ return [
             'url'  => '',
             'active' => [''],
 
-            'submenu' => [],
-        ],
+                'submenu' => [
+                    [
+                        'text'    => 'Comisiones Disciplinarias',
+                        'icon'    => 'far fa-fw fa-bookmark',
+                        'route'  => 'Comision_disciplinaria.index',
+                         'can'  => 'Modulo_ComisionDisciplinaria.Comision_disciplinaria.index',
+                        'active' => ['admin/Comision_disciplinaria*']
+                    ],
+                    [
+                        'text'    => 'Denuncias',
+                        'icon'    => 'far fa-fw fa-bookmark',
+                        'route'  => 'Denuncia.index',
+                        'can'  => 'Modulo_ComisionDisciplinaria.Denuncia.index',
+                        'active' => ['admin/Denuncia*']
+                    ],
+                    [
+                        'text'    => 'Expedientes',
+                        'icon'    => 'far fa-fw fa-bookmark',
+                        'route'  => 'Expediente.index', 
+                             'can'  => 'Modulo_ComisionDisciplinaria.Expediente.index',
+                        'active' => ['admin/Expediente*'] 
+                    ],
+                        [
+                            'text'    => 'Reportes',
+                            'icon'    => 'far fa-fw fa-bookmark',
+                            'route'  => 'Report.index',     
+                            'active' => ['admin/Report']       
+                                
+                        ], ],],
         [
             'text'    => 'Evaluación Integrada',
             'icon'    => 'fas fa-fw fa-share',

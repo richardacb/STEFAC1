@@ -21,6 +21,15 @@ use App\Http\Controllers\Modulo_Horario\ParcialesController;
 use App\Http\Controllers\Modulo_Actividades\ActividadesController;
 use App\Http\Controllers\Modulo_Actividades\EvidenciasController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Modulo_ComisionDisciplinaria\Comision_DisciplinariaController;
+use App\Http\Controllers\Modulo_ComisionDisciplinaria\DenunciaController;
+use App\Http\Controllers\Modulo_ComisionDisciplinaria\ExpedienteController;
+use App\Http\Controllers\Modulo_ComisionDisciplinaria\DeclaracionesController;
+use App\Http\Controllers\Modulo_ComisionDisciplinaria\DenunciadoController;
+use App\Http\Controllers\Modulo_ComisionDisciplinaria\OpinionesController;
+use App\Http\Controllers\Modulo_ComisionDisciplinaria\DictamenController;
+use App\Http\Controllers\Modulo_ComisionDisciplinaria\ReportController;
+use App\Http\Controllers\Modulo_ComisionDisciplinaria\EvidenciaController;
 
 
 Route::get('', [HomeController::class, 'index']);
@@ -68,3 +77,15 @@ Route::get('actividades.form', 'Modulo_Actividades\ActividadesController@edit')-
 Route::resource('evidencias',EvidenciasController::class)->name('*','Modulo_Actividades.evidencias');
 Route::post('evidencias.form', 'Modulo_Actividades\EvidenciasController@edit')->name('Modulo_Actividades.evidencias');
 Route::get('evidencias.form', 'Modulo_Actividades\EvidenciasController@edit')->name('Modulo_Actividades.evidencias');
+
+/*---------------Rutas del Mododulo Comisiones disciplinarias--------------------------------*/
+Route::resource('Comision_disciplinaria', Comision_DisciplinariaController::class)->name('*','Modulo_ComisionDisciplinaria.Comision_disciplinaria');
+Route::resource('Denuncia', DenunciaController::class)->name('*','Modulo_ComisionDisciplinaria.Denuncia');
+Route::resource('Expediente', ExpedienteController::class)->name('*','Modulo_ComisionDisciplinaria.Expediente');
+Route::resource('Declaraciones', DeclaracionesController::class)->name('*','Modulo_ComisionDisciplinaria.Declaraciones');
+Route::resource('Denunciado', DenunciadoController::class)->name('*','Modulo_ComisionDisciplinaria.Denunciado');
+Route::resource('Opiniones', OpinionesController::class)->name('*','Modulo_ComisionDisciplinaria.Opiniones');
+Route::resource('Dictamen', DictamenController::class)->name('*','Modulo_ComisionDisciplinaria.Dictamen');
+Route::resource('Report', ReportController::class)->name('*','Modulo_ComisionDisciplinaria.Report');
+Route::resource('Evidencia', EvidenciaController::class)->name('*','Modulo_ComisionDisciplinaria.Evidencia');
+/*---------------Fin Rutas del Mododulo Comisiones disciplinarias--------------------------------*/

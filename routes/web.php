@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function () { 
     return view('auth.login');
 });
 
@@ -116,3 +116,23 @@ Route::resource('opt_est', 'App\Http\Controllers\Modulo_Optativas\Opt_EstControl
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+/*--------------- Rutas del Modulo Comisiones disciplinarias--------------------------------*/
+Route::resource('Modulo_ComisionDisciplinaria.Comision_disciplinaria', App\Http\Controllers\Modulo_ComisionDisciplinaria\Comision_DisciplinariaController::class)->middleware('auth');
+Route::resource('Modulo_ComisionDisciplinaria.Denuncia', App\Http\Controllers\Modulo_ComisionDisciplinaria\DenunciaController::class)->middleware('auth');
+Route::resource('Modulo_ComisionDisciplinaria.Expediente', App\Http\Controllers\Modulo_ComisionDisciplinaria\ExpedienteController::class)->middleware('auth');
+Route::resource('Modulo_ComisionDisciplinaria.Declaraciones', App\Http\Controllers\Modulo_ComisionDisciplinaria\DeclaracionesController::class)->middleware('auth');
+Route::resource('Modulo_ComisionDisciplinaria.Denunciado', App\Http\Controllers\Modulo_ComisionDisciplinaria\DenunciadoController::class)->middleware('auth');
+Route::resource('Modulo_ComisionDisciplinaria.Opiniones', App\Http\Controllers\Modulo_ComisionDisciplinaria\OpinionesController::class)->middleware('auth');
+Route::resource('Modulo_ComisionDisciplinaria.Dictamen', App\Http\Controllers\Modulo_ComisionDisciplinaria\DictamenController::class)->middleware('auth');
+Route::resource('Modulo_ComisionDisciplinaria.Report', App\Http\Controllers\Modulo_ComisionDisciplinaria\ReportController::class)->middleware('auth');
+Route::resource('Modulo_ComisionDisciplinaria.Evidencia', App\Http\Controllers\Modulo_ComisionDisciplinaria\EvidenciaController::class)->middleware('auth');
+Route::get('/descargad-pdf', [App\Http\Controllers\Modulo_ComisionDisciplinaria\DenunciaController::class, 'downloadPDF'])->name('mydescarga-pdf');
+Route::get('/download-pdf', [App\Http\Controllers\Modulo_ComisionDisciplinaria\Comision_DisciplinariaController::class, 'downloadPDF'])->name('descargar-pdf');
+Route::get('/descargade-pdf', [App\Http\Controllers\Modulo_ComisionDisciplinaria\DenunciadoController::class, 'downloadPDF'])->name('descargard-pdf');
+Route::get('/downloadecl-pdf', [App\Http\Controllers\Modulo_ComisionDisciplinaria\DeclaracionesController::class, 'downloadPDF'])->name('descargardc-pdf');
+Route::get('/downloadop-pdf', [App\Http\Controllers\Modulo_ComisionDisciplinaria\OpinionesController::class, 'downloadPDF'])->name('descargarop-pdf');
+Route::get('/downloadex-pdf', [App\Http\Controllers\Modulo_ComisionDisciplinaria\ExpedienteController::class, 'downloadPDF'])->name('descargarex-pdf');
+Route::get('/downloaddi-pdf', [App\Http\Controllers\Modulo_ComisionDisciplinaria\DictamenController::class, 'downloadPDF'])->name('descargardic-pdf');
+Route::get('/downloadev-pdf', [App\Http\Controllers\Modulo_ComisionDisciplinaria\EvidenciaController::class, 'downloadPDF'])->name('descargarevd-pdf');
+/*---------------Fin Rutas del Modulo Comisiones disciplinarias--------------------------------*/

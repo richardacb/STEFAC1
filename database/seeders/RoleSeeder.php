@@ -23,9 +23,12 @@ class RoleSeeder extends Seeder
         $role5 = Role::create(['name' => 'Usuario']);
         $role6 = Role::create(['name' => 'Profesor']);
         $role7 = Role::create(['name' => 'OptProfesor']);
+        $role50 = Role::create(['name' => 'Decano']);
+        $role51 = Role::create(['name' => 'ProfesorMiembroComision']);
+        $role52 = Role::create(['name' => 'AsesordeTrabajo']);
 
         Permission::create(['name' => 'index inicio',
-                           'description' => 'Ver Página de inicio'])->syncRoles([$role1,$role2,$role3,$role4,$role5]);
+                           'description' => 'Ver Página de inicio'])->syncRoles([$role1,$role2,$role3,$role4,$role5,$role50,$role51,$role52]);
 
         /*====================================Start Modulo Horario=================================================================*/
 
@@ -192,6 +195,72 @@ class RoleSeeder extends Seeder
         /*====================================End Modulo Optativas================================================================*/
 
         /*====================================Start Modulo Comision Disciplinaria=================================================*/
+                      
+        Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Comision_disciplinaria.index',
+        'description' => 'Ver listado de comisiones'])->syncRoles($role1,[$role50]);
+        Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Comision_disciplinaria.create',
+        'description' => 'Crear comisiones'])->syncRoles([$role1,$role50]);
+        Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Comision_disciplinaria.edit',
+        'description' => 'Editar comisiones'])->syncRoles([$role1,$role50]);
+        Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Comision_disciplinaria.show',
+        'description' => 'Ver una comision'])->syncRoles([$role1,$role50]);
+        Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Comision_disciplinaria.destroy',
+        'description' => 'Eliminar comisiones'])->syncRoles([$role1,$role50]);
+        
+        
+                       Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Denuncia.index',
+                           'description' => 'Ver listado de denuncias'])->syncRoles([$role50,$role52,$role1]);
+                           Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Denuncia.create',
+                           'description' => 'Craer Denuncia'])->syncRoles([$role50,$role52,$role1]);
+                          Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Denuncia.edit',
+                           'description' => 'Editar Denuncia'])->syncRoles([$role50,$role52,$role1]);
+                           Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Denuncia.show',
+                           'description' => 'Ver una Denuncia'])->syncRoles([$role50,$role52,$role1]);
+                           Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Denuncia.destroy',
+                           'description' => 'Eliminar Denuncia'])->syncRoles([$role50,$role52,$role1]);
+
+                           Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Denunciado.index',
+                           'description' => 'Ver listado de denunciados'])->syncRoles([$role50,$role52,$role1]);
+                           Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Denunciado.create',
+                           'description' => 'Craer Denunciado'])->syncRoles([$role50,$role52,$role1]);
+                          Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Denunciado.edit',
+                           'description' => 'Editar Denunciados'])->syncRoles([$role50,$role52,$role1]);
+                           Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Denunciado.show',
+                           'description' => 'Ver una Denunciados'])->syncRoles([$role50,$role52,$role1]);
+                           Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Denunciado.destroy',
+                           'description' => 'Eliminar Denunciados'])->syncRoles([$role50,$role52,$role1]);
+
+                          
+
+                           Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Expediente.index',
+                           'description' => 'Ver listado de expedientes'])->syncRoles([$role1,$role50,$role1]);
+                           Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Expediente.create',
+                           'description' => 'Crear expedientes'])->syncRoles([$role1,$role51,$role1]);
+                           Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Expediente.show',
+                           'description' => 'Ver un expediente'])->syncRoles([$role1,$role51,$role1]);
+                           Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Expediente.edit',
+                           'description' => 'Editar expedientes'])->syncRoles([$role1,$role51,$role1]);
+                            Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Expediente.destroy',
+                           'description' => 'Eliminar expedientes'])->syncRoles([$role1,$role51,$role1]);
+
+
+                           Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Declaraciones.index',
+                           'description' => 'Ver listado de declaraciones'])->syncRoles([$role51,$role1]);
+                           Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Declaraciones.create',
+                           'description' => 'Crear declaraciones'])->syncRoles([$role51,$role1]);
+                           Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Declaraciones.show',
+                           'description' => 'Ver un declaracion'])->syncRoles([$role51,$role1]);
+                           Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Declaraciones.edit',
+                           'description' => 'Editar declaraciones'])->syncRoles([$role51,$role1]);
+                            Permission::create(['name' => 'Modulo_ComisionDisciplinaria.Declaraciones.destroy',
+                           'description' => 'Eliminar declaraciones'])->syncRoles([$role51,$role1]);
+
+
+
+
+
+
+
 
         /*====================================End Modulo Comision Disciplinaria===================================================*/
 
