@@ -1,28 +1,21 @@
 <?php
 
 namespace App\Http\Controllers\Modulo_GECE;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Modulo_GECE\Perfil;
-
-
 class PerfilController extends Controller
 {
-    
     public function index()
     {
-        //
         $perfil = Perfil::paginate();
 
         return view('Modulo_GECE.perfil.index', compact('perfil'))
             ->with('i', (request()->input('page', 1) - 1) * $perfil->perPage());
     }
 
-    
     public function create()
     {
-        //
         $perfil = new Perfil();
         
         return view('Modulo_GECE.perfil.create', compact('perfil'));

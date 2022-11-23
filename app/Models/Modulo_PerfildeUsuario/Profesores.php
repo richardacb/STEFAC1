@@ -31,4 +31,9 @@ class Profesores extends Model
     {
         return $this->belongsTo(User::class,'user_id');
     }
+
+    public function comite()
+    {
+        return $this->belongsTo('App\Models\Modulo_GECE\Comite');
+    }
 }

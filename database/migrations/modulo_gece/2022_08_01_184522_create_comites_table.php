@@ -14,8 +14,21 @@ return new class extends Migration
             $table->bigIncrements('id');
             
             $table->string('nombre');
-           
+            
+            $table->bigInteger('estudiante_id')->unsigned();
+            $table->bigInteger('profesor_id')->unsigned();
+            $table->bigInteger('estudiante2')->unsigned()->nullable();
+            $table->bigInteger('secretario')->unsigned();
+            $table->bigInteger('presidente')->unsigned();
+
             $table->timestamps();
+
+            
+            $table->foreign('estudiante_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('profesor_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('estudiante2')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('secretario')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('presidente')->references('id')->on('users')->onDelete('cascade');
 
         });
     }

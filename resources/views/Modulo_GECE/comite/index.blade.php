@@ -37,18 +37,21 @@
                                     <tr>
                                         <th>No</th>
                                         
-                                        <th>Nombre</th>
+                                        <th>Nombre del Comité</th>
+
+                                        
 
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($comites as $comite)
+                                        
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             
                                             <td>{{ $comite->nombre }}</td>
-                                            
+
                                             <td>
                                                 <form action="{{ route('comite.destroy',$comite->id) }}" method="POST">
                                                     <a class="btn btn-sm btn-primary " href="{{ route('comite.show',$comite->id) }}"><i class="fa fa-fw fa-eye"></i>Mostrar </a>
@@ -59,6 +62,8 @@
                                                 </form>
                                             </td>
                                         </tr>
+                                        
+                                        
                                     @endforeach
                                 </tbody>
                             </table>

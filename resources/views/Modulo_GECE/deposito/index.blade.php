@@ -26,10 +26,10 @@
                     </div>
                     
                     <div class="card-body">
-                        
 
                         {!! Form::open(['route' => ['documento.store'], 'files' => true]) !!}
-
+                            {{-- {!! Form::hidden('deposito_id', $deposito->id) !!} --}}
+                            
                             {!! Form::file('documentos[]', ['multiple' => 'multiple']) !!}
 
                             {!! Form::submit('Salvar', ['class' => 'btn btn-primary btn-sm']) !!}
@@ -46,11 +46,13 @@
                     </div>
                     <div class="card-body">
                         <table class="table" >
-                            @foreach ($deposito->id as $deposito)
+                            @foreach ($documentos as $d)
+                            
                                 <tr>
+                                    <td>{{$d->id}}</td>
                                     <td>
-                                        <a href="{{ route('documento.descargar', $documento->id) }}">
-                                            {{ $documento->nombre }}
+                                        <a href="{{ route('documento.descargar', $d->id) }}">
+                                            {{ $d->nombre }}
                                         </a>
                                         
                                     </td>
