@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Modulo_GECE;
 
+use App\Http\Controllers\Controller;
 use App\Models\Modulo_GECE\Documento;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\Controller;
+
 use Illuminate\Http\Request;
 
 

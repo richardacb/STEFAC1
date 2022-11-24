@@ -25,6 +25,11 @@
                             {{ $reporte->nombre }}
                         </div>
 
+                        <div class="form-group">
+                            <strong>Comité:</strong>
+                            {{ $reporte->comite->nombre }}
+                        </div>
+
                         
 
                     </div>

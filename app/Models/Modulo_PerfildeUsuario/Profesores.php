@@ -51,4 +51,9 @@ class Profesores extends Model
     {
         return $this->belongsTo('App\Models\Modulo_GECE\Tema');
     }
+
+    public function perfil()
+    {
+        return $this->belongsTo('App\Models\Modulo_GECE\Perfil');
+    }
 }

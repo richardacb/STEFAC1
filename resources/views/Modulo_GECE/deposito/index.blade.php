@@ -45,18 +45,23 @@
                         <h3 class="card-title">Listado de Documentos</h3>
                     </div>
                     <div class="card-body">
-                        <table class="table" >
-                            @foreach ($documentos as $d)
-                            
+                        <table class="table table-striped" >
+                            <thead>
                                 <tr>
-                                    <td>{{$d->id}}</td>
-                                    <td>
-                                        <a href="{{ route('documento.descargar', $d->id) }}">
-                                            {{ $d->nombre }}
-                                        </a>
-                                        
-                                    </td>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Nombre</th>
                                 </tr>
+                            </thead>
+                            @foreach ($documentos as $d)
+                            <tr>
+                                <td>{{$d->id}}</td>
+                                <td>
+                                    <a href="{{ route('documento.descargar', $d->id) }}">
+                                        {{ $d->nombre }}
+                                    </a>
+                                </td>
+                            </tr>
+                                
                             @endforeach
                         </table>
                     </div>

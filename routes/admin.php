@@ -31,6 +31,7 @@ use App\Http\Controllers\Modulo_GECE\TribunalTallerController;
 use App\Http\Controllers\Modulo_GECE\TribunalPDController;
 use App\Http\Controllers\Modulo_GECE\ReporteController;
 
+
 Route::get('', [HomeController::class, 'index']);
 
 Route::resource('asignaturas', AsignaturasController::class)->name('*', 'Modulo_Horario.asignaturas');
