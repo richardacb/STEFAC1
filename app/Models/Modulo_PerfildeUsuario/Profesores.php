@@ -46,4 +46,9 @@ class Profesores extends Model
     {
         return $this->belongsTo('App\Models\Modulo_GECE\TribunalPD');
     }
+
+    public function tema()
+    {
+        return $this->belongsTo('App\Models\Modulo_GECE\Tema');
+    }
 }
