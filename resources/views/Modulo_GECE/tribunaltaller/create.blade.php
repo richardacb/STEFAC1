@@ -17,7 +17,7 @@
                             <span class="card-title">Nuevo Tribunal Taller de Trabajo de Diploma</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary" href="{{ route('comite.index') }}"> Volver</a>
+                            <a class="btn btn-primary" href="{{ route('tribunaltaller.index') }}"> Volver</a>
                         </div>
                     </div>
                     <div class="card-body">

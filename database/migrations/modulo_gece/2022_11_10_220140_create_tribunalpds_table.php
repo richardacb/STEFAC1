@@ -18,8 +18,26 @@ return new class extends Migration
             $table->bigIncrements('id');
             
             $table->string('nombre');
+
+            $table->bigInteger('estudiante1')->unsigned();
+            $table->bigInteger('estudiante2')->unsigned()->nullable();
+            $table->bigInteger('profesor1')->unsigned();
+            $table->bigInteger('profesor2')->unsigned()->nullable();
+            $table->bigInteger('secretario')->unsigned();
+            $table->bigInteger('presidente')->unsigned();
+            $table->bigInteger('miembro')->unsigned();
+            $table->bigInteger('oponente')->unsigned();
            
             $table->timestamps();
+
+            $table->foreign('estudiante1')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('estudiante2')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('profesor1')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('profesor2')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('secretario')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('presidente')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('miembro')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('oponente')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

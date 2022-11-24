@@ -77,7 +77,7 @@ class TribunalTallerController extends Controller
         FROM users as u) as pte ON pte.id = t.presidente
         INNER JOIN
         (SELECT u.id, CONCAT(u.primer_nombre," ",u.segundo_nombre," ",u.primer_apellido," ",u.segundo_apellido) as miem
-        FROM users as u) as m ON m.id = t.presidente
+        FROM users as u) as m ON m.id = t.miembro
         ')[0];
 
         return view('Modulo_GECE.tribunaltaller.show', compact('tribunaltaller'));

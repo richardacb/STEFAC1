@@ -13,7 +13,7 @@ class TribunalTaller extends Model
     'estudiante1' => 'required',
     'estudiante2',
     'profesor1' => 'required',
-    'profesor2' => 'required',
+    'profesor2',
     'presidente' => 'required',
     'secretario' => 'required',
     'miembro' => 'required',
