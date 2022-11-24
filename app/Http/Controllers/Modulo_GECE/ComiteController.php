@@ -77,9 +77,13 @@ class ComiteController extends Controller
     public function edit($id)
     {
         $comite = Comite::find($id);
-        $estudiantes = User::pluck('primer_nombre','id');
-        $profesores = User::pluck('primer_nombre','id');
-        return view('Modulo_GECE.comite.edit', compact('comite', 'estudiantes', 'profesores'));
+
+        $estudiantes = User::pluck('primer_nombre', 'id');
+        $estudiante2 = User::pluck('primer_nombre', 'id');
+        $profesores = User::pluck('primer_nombre', 'id');
+        $secretario = User::pluck('primer_nombre', 'id');
+        $presidente = User::pluck('primer_nombre', 'id');
+        return view('Modulo_GECE.comite.edit', compact('comite', 'estudiantes', 'estudiante2', 'profesores', 'secretario', 'presidente'));
     }
 
     

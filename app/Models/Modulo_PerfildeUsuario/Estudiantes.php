@@ -30,11 +30,7 @@ class Estudiantes extends Model
         'organizacion_politica',
         'opcion_uci',
     ];
-    /**
-     * Get the grupos that owns the Estudiantes
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
+    
     public function grupos()
     {
         return $this->belongsTo(Grupos::class, 'grupos_id');
@@ -47,6 +43,11 @@ class Estudiantes extends Model
     public function comite()
     {
         return $this->belongsTo('App\Models\Modulo_GECE\Comite');
+    }
+
+    public function tribunaltaller()
+    {
+        return $this->belongsTo('App\Models\Modulo_GECE\TribunalTaller');
     }
 
     

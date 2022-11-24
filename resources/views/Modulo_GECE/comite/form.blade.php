@@ -39,7 +39,7 @@
             {{ Form::label('Presidente') }}
             <br>
             {{ Form::select('presidente', $presidente, $comite->presidente, ['class' => 'form-control' . ($errors->has('presidente') ? ' is-invalid' : ''), 'placeholder' => 'selecciona el presidente']) }}
-            {!! $errors->first('secretario', '<div class="invalid-feedback">:message</div>') !!}
+            {!! $errors->first('presidente', '<div class="invalid-feedback">:message</div>') !!}
         </div> 
     </div>
         <br>

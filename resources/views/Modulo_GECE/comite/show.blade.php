@@ -11,47 +11,54 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-left">
-                            <span class="card-title">Mostrar Comite</span>
+                            <span class="card-title">Información del Comité de Trabajo de Diploma</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary" href="{{ route('comite.index') }}"> Back</a>
+                            <a class="btn btn-primary" href="{{ route('comite.index') }}">Volver</a>
                         </div>
                     </div>
 
                     <div class="card-body">
-                        
-                        <div class="form-group">
-                            <strong>Nombre:</strong>
-                            {{ $comite->nombre }}
-                        </div>
 
-                        
-                        <div class="form-group">
-                            <strong>Tesista:</strong>
-                            {{$comite->est1}}
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                
+                            </div>
+                            <div class="col-sm-8">
+                                <table class="table table-striped">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="col">Nombre del Comité</th>
+                                            <th scope="col">{{$comite->nombre}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col">Tesista:</th>
+                                            <th scope="col"> {{$comite->est1}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col">Tesista:</th>
+                                            <th scope="col">{{$comite->est2}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col">Tutor:</th>
+                                            <th scope="col">{{$comite->prof}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col">Secretario:</th>
+                                            <th scope="col">{{$comite->sec}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col">Presidente:</th>
+                                            <th scope="col">{{$comite->pre}}</th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-sm-2">
+                                
+                            </div>
                         </div>
-                       
-                       
-                        <div class="form-group">
-                            <strong>Tesista:</strong>
-                            {{$comite->est2}}
-                        </div>
-
-                        <div class="form-group">
-                            <strong>Tutor:</strong>
-                            {{ $comite->prof}}
-                        </div>
-
-                        <div class="form-group">
-                            <strong>Secretario:</strong>
-                            {{ $comite->sec}}
-                        </div>
-
-                        <div class="form-group">
-                            <strong>Presidente:</strong>
-                            {{ $comite->pre}}
-                        </div>
-
                     </div>
                 </div>
             </div>
