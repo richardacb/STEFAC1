@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Modulo_Horario\Locales;
 use App\Models\Modulo_Horario\Tipo_de_locales;
+use Illuminate\Support\Facades\DB;
 
 class LocalesController extends Controller
 {
@@ -23,7 +24,13 @@ class LocalesController extends Controller
      */
     public function index()
     {
-        $locales=Locales::all();
+        //$locales = Locales::all();
+
+
+        $locales = DB::select('SELECT ls.id, tl.tipo, ls.local, ls.disponibilidad
+        FROM locales as ls INNER JOIN tipo_de_locales as tl ON ls.tipo_de_locales_id = tl.id
+         ');
+
         return view('Modulo_Horario.locales.index', compact('locales'));
     }
 
@@ -89,7 +96,6 @@ class LocalesController extends Controller
     public function edit($id)
     {
         $l = Locales::find($id);
-
         $tipo_de_locales=Tipo_de_locales::all();
         return view('Modulo_Horario.locales.edit', compact('l','tipo_de_locales'));
     }
@@ -122,7 +128,7 @@ class LocalesController extends Controller
 
         $l->update($request->all());
 
-        return redirect()->route('locales.index', compact('l'))->with('info', 'modificar-local');
+        return redirect()->route('locales.index')->with('info', 'modificar-local');
     }
 
     /**

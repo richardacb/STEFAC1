@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\HomeController;
 
-//use App\Http\Controllers\Modulo_PerfildeUsuario\UsuariosController;
+use App\Http\Controllers\Modulo_PerfildeUsuario\UsuariosController;
 use App\Http\Controllers\Modulo_PerfildeUsuario\GruposController;
 use App\Http\Controllers\Modulo_PerfildeUsuario\EstudiantesController;
 use App\Http\Controllers\Modulo_PerfildeUsuario\ProfesoresController;
@@ -17,41 +17,78 @@ use App\Http\Controllers\Modulo_Horario\AfectacionesController;
 use App\Http\Controllers\Modulo_Horario\LocalesController;
 use App\Http\Controllers\Modulo_Horario\PlanificacionController;
 use App\Http\Controllers\Modulo_Optativas\OptativaController;
-//use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Modulo_Horario\ParcialesController;
+use App\Http\Controllers\Modulo_Actividades\ActividadesController;
+use App\Http\Controllers\Modulo_Actividades\EvidenciasController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Modulo_GECE\CronogramaController;
+use App\Http\Controllers\Modulo_GECE\TemaController;
+use App\Http\Controllers\Modulo_GECE\PerfilController;
+use App\Http\Controllers\Modulo_GECE\ComiteController;
+use App\Http\Controllers\Modulo_GECE\DepositoController;
+use App\Http\Controllers\Modulo_GECE\DocumentoController;
+use App\Http\Controllers\Modulo_GECE\TribunalTallerController;
+use App\Http\Controllers\Modulo_GECE\TribunalPDController;
+use App\Http\Controllers\Modulo_GECE\ReporteController;
 
 
 Route::get('', [HomeController::class, 'index']);
 
-Route::resource('asignaturas', AsignaturasController::class)->name('*','Modulo_Horario.asignaturas');
+Route::resource('asignaturas', AsignaturasController::class)->name('*', 'Modulo_Horario.asignaturas');
 
-Route::resource('horario', HorarioController::class)->name('*','Modulo_Horario.horario');
+Route::resource('horario', HorarioController::class)->name('*', 'Modulo_Horario.horario');
 
-Route::resource('balancedecarga', BalancedecargaController::class)->name('*','Modulo_Horario.balancedecarga');
+Route::resource('balancedecarga', BalancedecargaController::class)->name('*', 'Modulo_Horario.balancedecarga');
 
-Route::resource('locales', LocalesController::class)->name('*','Modulo_Horario.locales');
+Route::resource('locales', LocalesController::class)->name('*', 'Modulo_Horario.locales');
 
-Route::resource('planificacion', PlanificacionController::class)->name('*','Modulo_Horario.planificacion');
+Route::resource('planificacion', PlanificacionController::class)->name('*', 'Modulo_Horario.planificacion');
 
-Route::resource('generarhorario', GenerarHorarioController::class)->name('*','Modulo_Horario.generarhorario');
+Route::resource('generarhorario', GenerarHorarioController::class)->name('*', 'Modulo_Horario.generarhorario');
 
-Route::resource('afectaciones', AfectacionesController::class)->name('*','Modulo_Horario.afectaciones');
+Route::resource('parciales', ParcialesController::class)->name('*', 'Modulo_Horario.parciales');
 
-Route::resource('optativa', OptativaController::class)->name('*','Modulo_Optativas.optativa');
+Route::resource('afectaciones', AfectacionesController::class)->name('*', 'Modulo_Horario.afectaciones');
+
+Route::resource('optativa', OptativaController::class)->name('*', 'Modulo_Optativas.optativa');
 
 /*---------------Rutas del Mododulo Perfil de usuario--------------------------------*/
 
-//Route::resource('usuarios', UsuariosController::class)->name('*','Modulo_PerfildeUsuario.usuarios');
+Route::resource('usuarios', UsuariosController::class)->name('*','Modulo_PerfildeUsuario.usuarios');
 
-Route::resource('diagnosticopreventivo', DiagnosticopreventivoController::class)->name('*','Modulo_PerfildeUsuario.diagnosticopreventivo');
+Route::resource('diagnosticopreventivo', DiagnosticopreventivoController::class)->name('*', 'Modulo_PerfildeUsuario.diagnosticopreventivo');
 
-Route::resource('grupos', GruposController::class)->name('*','Modulo_PerfildeUsuario.grupos');
+Route::resource('grupos', GruposController::class)->name('*', 'Modulo_PerfildeUsuario.grupos');
 
-Route::resource('estudiantes', EstudiantesController::class)->name('*','Modulo_PerfildeUsuario.estudiantes');
+Route::resource('estudiantes', EstudiantesController::class)->name('*', 'Modulo_PerfildeUsuario.estudiantes');
 
-Route::resource('profesores', ProfesoresController::class)->name('*','Modulo_PerfildeUsuario.profesores');
+Route::resource('profesores', ProfesoresController::class)->name('*', 'Modulo_PerfildeUsuario.profesores');
 
-Route::resource('roles', RolesController::class)->name('*','Modulo_PerfildeUsuario.roles');
+Route::resource('roles', RolesController::class)->name('*', 'Modulo_PerfildeUsuario.roles');
 
 
 
-/*---------------Fin Rutas del Mododulo Perfil de usuario--------------------------------*/
+Route::resource('actividades',ActividadesController::class)->name('*','Modulo_Actividades.actividades');
+Route::post('actividades.form', 'Modulo_Actividades\ActividadesController@edit')->name('Modulo_Actividades.actividades');
+Route::get('actividades.form', 'Modulo_Actividades\ActividadesController@edit')->name('Modulo_Actividades.actividades');
+
+
+
+Route::resource('evidencias',EvidenciasController::class)->name('*','Modulo_Actividades.evidencias');
+Route::post('evidencias.form', 'Modulo_Actividades\EvidenciasController@edit')->name('Modulo_Actividades.evidencias');
+Route::get('evidencias.form', 'Modulo_Actividades\EvidenciasController@edit')->name('Modulo_Actividades.evidencias');
+
+/*---------------Rutas del Mododulo GECE--------------------------------*/
+
+Route::resource('cronograma', CronogramaController::class)->name('*', 'Modulo_GECE.cronograma');
+Route::resource('cronograma/mostrar', CronogramaController::class)->name('*','Modulo_GECE.cronograma');
+Route::resource('cronograma/agregar', CronogramaController::class)->name('*','Modulo_GECE.cronograma');
+Route::resource('temas', TemaController::class)->name('*','Modulo_GECE.temas');
+Route::resource('perfil', PerfilController::class)->name('*','Modulo_GECE.perfil');
+Route::resource('comite', ComiteController::class)->name('*','Modulo_GECE.comite');
+Route::resource('deposito', DepositoController::class)->name('*','Modulo_GECE.deposito');
+Route::resource('documento', DocumentoController::class)->name('*','Modulo_GECE.documento');
+Route::resource('tribunaltaller', TribunalTallerController::class)->name('*','Modulo_GECE.tribunaltaller');
+Route::resource('tribunalpd', TribunalPDController::class)->name('*','Modulo_GECE.tribunalpd');
+Route::resource('reportes', ReporteController::class)->name('*','Modulo_GECE.reportes');
+/*---------------Rutas del Mododulo GECE--------------------------------*/

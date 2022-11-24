@@ -18,7 +18,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('grupos_id');
-            $table->string('periodo_lectivo');
+            $table->integer('periodo_lectivo');
             $table->string('tipo_curso');
             $table->string('plan_estudio');
             $table->string('organizacion_pe');
@@ -33,7 +33,6 @@ return new class extends Migration
             $table->string('nombre_madre');
             $table->string('organizacion_politica')->nullable();
             $table->string('opcion_uci')->nullable();
-            $table->boolean('is_enabled')->default(1);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->cascadeOnUpdate();

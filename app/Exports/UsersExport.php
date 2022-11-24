@@ -16,7 +16,7 @@ class UsersExport implements FromCollection, WithHeadings
 
     public function collection()
     {
-        return Balancedecarga::get(['asignaturas_id','name','semana','frecuencias','tipodeclase','created_at']);
+        return User::get(['asignaturas_id','name','semana','frecuencias','tipodeclase','created_at']);
     }
 
     public function headings():array{

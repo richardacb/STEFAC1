@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('ci')->unique();
+            $table->bigInteger('ci');
             $table->string('primer_nombre');
             $table->string('segundo_nombre')->nullable();
             $table->string('primer_apellido');
@@ -23,17 +23,17 @@ return new class extends Migration
             $table->string('tipo_de_usuario');
             $table->string('username');
             $table->longText('password');
-            $table->string('email')->unique()->nullable();
+            $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('sexo')->nullable();
-            $table->integer('anno');
+            $table->integer('anno')->nullable();
             $table->string('municipio')->nullable();
             $table->string('provincia')->nullable();
             $table->string('color_piel')->nullable();
             $table->string('telefono_casa')->nullable();
             $table->string('telefono_uci')->nullable();
             $table->string('celular')->nullable();
-            $table->string('solapin')->unique()->nullable();
+            $table->string('solapin')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

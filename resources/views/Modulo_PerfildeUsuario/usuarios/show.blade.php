@@ -18,15 +18,34 @@
 
             <div class="card">
                 <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                    @if ($users->sexo == 'Masculino')
+                        <img src="{{ asset('img/masculino.png') }}" alt="Profile" class="rounded-circle">
+                    @else
+                        <img src="{{ asset('img/femenino.png') }}" alt="Profile" class="rounded-circle">
+                    @endif
 
-                    <img src="{{ asset('img/profile-img.jpg') }}" alt="Profile" class="rounded-circle">
                     <h2>{{ $users->primer_nombre }} {{ $users->segundo_nombre }}</h2>
-                    <h3>Web Designer</h3>
-                    <div class="flex-row mt-2">
-                        <a href="{{ route('usuarios.index') }}" data-bs-toggle="tooltip" data-bs-placement="left"
-                            title="Regresar" class="btn btn-danger"><i class="fa fa-reply"></i></a>
-                    </div>
+                    {{-- @if (@Auth::user()->hasRole('Administrador'))
+                        <h3>Administrador</h3>
+                    @endif --}}
+                    <p>{{ $users->getRoleNames() }}</p>
+                    @if ($users->tipo_de_usuario == 'Profesor')
+                        <div class="row">
+                            <div class="label ">Grupo Guía: </div>
+                            @if (isset($users->profesores))
+                                <div>
+                                    @if (isset($users->profesores->grupos->name))
+                                        {{ $users->profesores->grupos->name }}
+                                    @else
+                                        <div> -- -- -- -- -- -- </div>
+                                    @endif
+                                </div>
+                            @else
+                                <div> -- -- -- -- -- -- </div>
+                            @endif
 
+                        </div>
+                    @endif
                 </div>
             </div>
 
@@ -51,19 +70,31 @@
                                 <a class="nav-link" data-bs-toggle="tab"
                                     data-bs-target="#perfil-dianostico-preventivo">Diagnostico preventivo</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#cambiar-contrasena">Cambiar
+                                    contraseña</a>
+                            </li>
                         @else
                             <li class="nav-item">
                                 <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#perfil">Perfil</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#cambiar-contrasena">Cambiar
+                                    contraseña</a>
+                            </li>
                         @endif
+                        
                     </ul>
+                    
                     <div class="tab-content pt-2">
 
                         <div class="tab-pane fade show active perfil" id="perfil">
 
-
-
                             <h5 class="card-title ml-5 my-2">Detalles del perfil</h5>
+                            {{-- @can('Exports.BalancedecargaExport') --}}
+        <a href="{{ route('usuarios.exportpdfusuario',$users->id) }}" class="btn badge-warning btn-sm float-right"
+            role="button">Exportar a PDF</a>
+        {{-- @endcan --}}
                             <br>
                             <hr width="90%">
                             <div class="row">
@@ -299,7 +330,7 @@
                                 @endif
                             </div>
                             <div class="row">
-                                <div class="col-lg-3 col-md-4 label">Tpo de curso:</div>
+                                <div class="col-lg-3 col-md-4 label">Tipo de curso:</div>
                                 @if (isset($users->estudiantes->periodo_lectivo))
                                     <div class="col-lg-9 col-md-8">{{ $users->estudiantes->tipo_curso }}</div>
                                 @else
@@ -486,26 +517,171 @@
                             </div>
                         </div>
 
+                        <hr>
+                        <h5 class="card-title ml-5 my-2">Tipos de problemas</h5>
+                        <br>
+                        <br>
                         <div class="row">
-                            <div class="col-lg-3 col-md-4 label">Tipo de problemas</div>
-                            <div class="col-lg-9 col-md-8">
-                                @if (isset($users->diagnosticopreventivo->tipos_de_problemas))
-                                    {{ $users->diagnosticopreventivo->tipos_de_problemas }}
-                                @else
-                                    <div class="col-lg-9 col-md-8"> -- -- -- -- -- -- </div>
-                                @endif
-                            </div>
+                            @if (isset($users->diagnosticopreventivo->prob_de_personalidad))
+                                <div class="col-lg-3 col-md-4 label">
+                                    {{ $users->diagnosticopreventivo->prob_de_personalidad }} :</div>
+                                <div class="col-lg-9 col-md-8">
+                                    {{ $users->diagnosticopreventivo->desc_prob_de_personalidad }}</div>
+                            @else
+                                <div class="col-lg-3 col-md-4 col-sm-12 label">1: -- -- -- -- -- -- </div>
+                            @endif
+                        </div>
+
+
+                        <div class="row">
+                            @if (isset($users->diagnosticopreventivo->prob_de_psiquiatricos))
+                                <div class="col-lg-3 col-md-4 label">
+                                    {{ $users->diagnosticopreventivo->prob_de_psiquiatricos }} :
+                                </div>
+                                <div class="col-lg-9 col-md-8">
+                                    {{ $users->diagnosticopreventivo->desc_prob_de_psiquiatricos }}
+                                </div>
+                            @else
+                                <div class="col-lg-3 col-md-4 col-sm-12 label">2: -- -- -- -- -- -- </div>
+                            @endif
+                        </div>
+
+
+                        <div class="row">
+                            @if (isset($users->diagnosticopreventivo->prob_de_economicos))
+                                <div class="col-lg-3 col-md-4 label">
+                                    {{ $users->diagnosticopreventivo->prob_de_economicos }} :
+                                </div>
+                                <div class="col-lg-9 col-md-8">
+                                    {{ $users->diagnosticopreventivo->desc_prob_de_economicos }}
+                                </div>
+                            @else
+                                <div class="col-lg-3 col-md-4 col-sm-12 label">3: -- -- -- -- -- -- </div>
+                            @endif
+                        </div>
+
+
+                        <div class="row">
+                            @if (isset($users->diagnosticopreventivo->prob_de_sociales))
+                                <div class="col-lg-3 col-md-4 label">
+                                    {{ $users->diagnosticopreventivo->prob_de_sociales }}
+                                    :
+                                </div>
+                                <div class="col-lg-9 col-md-8">
+                                    {{ $users->diagnosticopreventivo->desc_prob_de_sociales }}
+                                </div>
+                            @else
+                                <div class="col-lg-3 col-md-4 col-sm-12 label">4: -- -- -- -- -- -- </div>
+                            @endif
+                        </div>
+
+
+                        <div class="row">
+                            @if (isset($users->diagnosticopreventivo->prob_de_familiares))
+                                <div class="col-lg-3 col-md-4 label">
+                                    {{ $users->diagnosticopreventivo->prob_de_familiares }} :
+                                </div>
+                                <div class="col-lg-9 col-md-8">
+                                    {{ $users->diagnosticopreventivo->desc_prob_de_familiares }}
+                                </div>
+                            @else
+                                <div class="col-lg-3 col-md-4 col-sm-12 label">5: -- -- -- -- -- -- </div>
+                            @endif
+                        </div>
+
+
+                        <div class="row">
+                            @if (isset($users->diagnosticopreventivo->prob_de_academicos))
+                                <div class="col-lg-3 col-md-4 label">
+                                    {{ $users->diagnosticopreventivo->prob_de_academicos }} :
+                                </div>
+                                <div class="col-lg-9 col-md-8">
+                                    {{ $users->diagnosticopreventivo->desc_prob_de_academicos }}
+                                </div>
+                            @else
+                                <div class="col-lg-3 col-md-4 col-sm-12 label">6: -- -- -- -- -- -- </div>
+                            @endif
+                        </div>
+
+
+                        <div class="row">
+                            @if (isset($users->diagnosticopreventivo->prob_de_disciplina))
+                                <div class="col-lg-3 col-md-4 label">
+                                    {{ $users->diagnosticopreventivo->prob_de_disciplina }} :
+                                </div>
+                                <div class="col-lg-9 col-md-8">
+                                    {{ $users->diagnosticopreventivo->desc_prob_de_disciplina }}
+                                </div>
+                            @else
+                                <div class="col-lg-3 col-md-4 col-sm-12 label">7: -- -- -- -- -- -- </div>
+                            @endif
+                        </div>
+
+
+                        <div class="row">
+                            @if (isset($users->diagnosticopreventivo->prob_de_asistencia))
+                                <div class="col-lg-3 col-md-4 label">
+                                    {{ $users->diagnosticopreventivo->prob_de_asistencia }} :
+                                </div>
+                                <div class="col-lg-9 col-md-8">
+                                    {{ $users->diagnosticopreventivo->desc_prob_de_asistencia }}
+                                </div>
+                            @else
+                                <div class="col-lg-3 col-md-4 col-sm-12 label">8: -- -- -- -- -- -- </div>
+                            @endif
                         </div>
                     </div>
 
 
-                </div><!-- End Bordered Tabs -->
+                    <div class="tab-pane fade cambiar-contrasena pt-3" id="cambiar-contrasena">
 
-            </div>
+
+                        <form action="{{ route('update-password') }}" method="POST">
+                            @csrf
+                            <div class="card-body">
+
+                                <div class="col-md-12 col-sm-12">
+                                    <label for="oldPasswordInput" class="form-label">ACTUAL</label>
+                                    <input name="old_password" type="password"
+                                        class="form-control @error('old_password') is-invalid @enderror"
+                                        id="oldPasswordInput" placeholder="Contraseña Actual">
+                                    @error('old_password')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-12 col-sm-12">
+                                    <label for="newPasswordInput" class="form-label">NUEVA</label>
+                                    <input name="new_password" type="password"
+                                        class="form-control @error('new_password') is-invalid @enderror"
+                                        id="newPasswordInput" placeholder="Contraseña Nueva">
+                                    @error('new_password')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-12 col-sm-12">
+                                    <label for="confirmNewPasswordInput" class="form-label">COMFIRMAR</label>
+                                    <input name="new_password_confirmation" type="password" class="form-control"
+                                        id="confirmNewPasswordInput" placeholder="Confirmar Nueva Contraseña">
+                                </div>
+
+                            </div>
+
+                            <div class="card-footer">
+                                <button class="btn btn-success">Cambiar</button>
+                                <a href="{{ route('usuarios.index') }}" class="btn btn-danger">Cancelar</a>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+            </div><!-- End Bordered Tabs -->
 
         </div>
 
     </div>
+
+</div>
 </div>
 </section>
 
@@ -533,6 +709,24 @@
     Swal.fire(
         '¡Modificado!',
         'Los datos del estudiantes se modificaron con exito.',
+        'success'
+    )
+</script>
+@endif
+@if (session('error') == 'no')
+<script>
+    Swal.fire(
+        'Atencion!',
+        'Las contraseñas no coinciden.',
+        'error'
+    )
+</script>
+@endif
+@if (session('status') == 'si')
+<script>
+    Swal.fire(
+        'Cambiada!',
+        'La contraseña a sido cambiada con exito.',
         'success'
     )
 </script>

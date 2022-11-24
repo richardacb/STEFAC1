@@ -97,7 +97,7 @@ class RegisterController extends Controller
             'celular' => $data['celular'],
             'solapin' => $data['solapin'],
             'password' => Hash::make($data['password']),
-        ]);
+        ])->assignRole('Usuario');
     }
     
 }

@@ -12,11 +12,12 @@
                     </div>
                     <div class="col-md-3 py-2 ">
                         @can('Exports.BalancedecargaExport')
-                            <a href="{{ route('balancedecarga.export') }}" class="btn btn-primary btn-sm" role="button">Exportar
-                                Balance de Carga</a>
+                            <a href="{{ route('balancedecarga.export') }}" class="btn btn-primary btn-sm" role="button">Exportar a
+                                Excel</a>
                         @endcan
                         @can('Modulo_Horario.balancedecarga.create')
-                            <a class="btn btn-primary btn-sm" href="{{ route('balancedecarga.create') }}" role="button">Insertar
+                            <a class="btn btn-primary btn-sm" href="{{ route('balancedecarga.create') }}"
+                                role="button">Insertar
                                 Datos</a>
                         @endcan
                     </div>
@@ -37,11 +38,10 @@
             <table class="table table-striped table-bordered shadow-lg pt-4" id="balance">
                 <thead class="bg-primary text-white">
                     <tr>
-                        <th scope="col">Asignaturas</th>
-                        <th scope="col">Semanas</th>
-                        <th scope="col">Frecuencias</th>
+                        <th scope="col">Asignatura</th>
+                        <th scope="col">Frecuencia</th>
                         <th scope="col">Tipo de Clases</th>
-                        <th scope="col">Insertado</th>
+                        <th scope="col">Semana</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -50,55 +50,31 @@
                     @foreach ($balancedecarga as $bc)
                         <tr>
                             <td scope="row">
-                                @foreach ($nombreasignaturas as $na)
-                                    @if ($bc->asignaturas_id === $na->id)
-                                        {{ $na->nombre }}
-                                    @endif
-                                @endforeach
-
+                                {{ $bc->nombre }}
                             </td>
                             <td>
-                                @foreach ($nombreasignaturas as $na)
-                                    @if ($bc->asignaturas_id === $na->id)
-                                        {{ $bc->semana }}
-                                    @endif
-                                @endforeach
-
+                                {{ $bc->frecuencia }}
                             </td>
                             <td>
-
-                                @foreach ($nombreasignaturas as $na)
-                                    @if ($na->id === $bc->asignaturas_id)
-                                        {{ $bc->frecuencia }}
-                                    @endif
-                                @endforeach
-
+                                {{ $bc->tipo_clase }}
                             </td>
                             <td>
-
-                                @foreach ($nombreasignaturas as $na)
-                                    @if ($na->id === $bc->asignaturas_id)
-                                        {{ $bc->tipo_clase }}
-                                    @endif
-                                @endforeach
-
-                            </td>
-                            <td>
-                                {{ $bc->created_at }}
+                                {{ $bc->semana }}
                             </td>
                             <td width="150px">
-                                <form action="{{ route('balancedecarga.destroy', $bc) }}" method="POST"
+                                <form action="{{ route('balancedecarga.destroy', $bc->id) }}" method="POST"
                                     class="eliminar-balancedecarga">
                                     @csrf
                                     @method('delete')
                                     @can('Modulo_Horario.balancedecarga.edit')
-                                        <a class="btn btn-primary btn-sm"
-                                            href="{{ route('balancedecarga.edit', $bc) }}"><i
-                                            class="fa fa-edit"></i></a>
+                                        <a class="btn btn-primary btn-sm" href="{{ route('balancedecarga.edit', $bc->id) }}"
+                                            data-bs-toggle="tooltip" data-bs-placement="right"
+                                            title="Editar Balance de Carga"><i class="fa fa-edit"></i></a>
                                     @endcan
                                     @can('Modulo_Horario.balancedecarga.destroy')
-                                        <button class="btn btn-danger btn-sm" type="submit"><i
-                                            class="fa fa-trash-alt"></i></button>
+                                        <button class="btn btn-danger btn-sm" type="submit" data-bs-toggle="tooltip"
+                                            data-bs-placement="right" title="Eliminar Balance de Carga"><i
+                                                class="fa fa-trash-alt"></i></button>
                                     @endcan
                                 </form>
                             </td>
@@ -202,5 +178,12 @@
                 }
             })
         });
+    </script>
+    <script src="{{ asset('js/popper.min.js') }}"></script>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
     </script>
 @stop

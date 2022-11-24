@@ -6,13 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Modulo_PerfildeUsuario\Profesores;
 use App\Models\Modulo_PerfildeUsuario\Grupos;
-//use App\Models\Modulo_PerfildeUsuario\GrupoProfesor;
 use App\Models\Modulo_Horario\Asignaturas;
 use App\Models\Modulo_Horario\Tipo_de_Clase;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
-//use App\Imports\ProfesoresImport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ProfesoresExport;
 
 class ProfesoresController extends Controller
 {
@@ -21,6 +20,7 @@ class ProfesoresController extends Controller
         $this->middleware('can:Modulo_PerfildeUsuario.profesores.index')->only('index');
         $this->middleware('can:Modulo_PerfildeUsuario.profesores.create')->only('create', 'store');
         $this->middleware('can:Modulo_PerfildeUsuario.profesores.edit')->only('edit', 'update');
+        $this->middleware('can:Modulo_PerfildeUsuario.profesores.destroy')->only('destroy');
     }
     /**
      * Display a listing of the resource.
@@ -46,17 +46,21 @@ class ProfesoresController extends Controller
     public function index()
     {
         session()->put('anno', User::find(auth()->id())->anno);
+        $anno = session()->get('anno');
+        if (User::find(auth()->id())->hasRole('Vicedecana')) {
+            $profesores = DB::select('SELECT users.id, users.anno as anno, p.p_id, p.name as grupo, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_profesor
+        FROM users  INNER JOIN  (SELECT p.user_id ,  g.name ,p.id as p_id FROM profesores as p LEFT JOIN
+        grupos as g ON p.grupos_id = g.id) as p ON users.id = p.user_id
+        ');
+        } else {
+            $profesores = DB::select('SELECT users.id, users.anno as anno, p.p_id, p.name as grupo, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_profesor
+        FROM users  INNER JOIN  (SELECT p.user_id ,  g.name ,p.id as p_id FROM profesores as p LEFT JOIN
+        grupos as g ON p.grupos_id = g.id) as p ON users.id = p.user_id
+        WHERE users.anno = ' . $anno . '
+        ');
+        }
 
-        $users = DB::table('users')
-            ->join('profesores', 'users.id', '=', 'profesores.user_id')
-            ->select('users.*')
-            ->get();
-
-        $profesores = Profesores::all();
-        $asignaturas = Asignaturas::all();
-        $grupos = Grupos::all();
-
-        return view('Modulo_PerfildeUsuario.profesores.index', compact('users', 'profesores', 'grupos', 'asignaturas'));
+        return view('Modulo_PerfildeUsuario.profesores.index', compact('profesores'));
     }
 
     /**
@@ -68,21 +72,27 @@ class ProfesoresController extends Controller
     {
 
         $anno = session()->get('anno');
-
-
-        $users = DB::select('SELECT users.id, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as nombre_profesor
+        if (User::find(auth()->id())->hasRole('Vicedecana')) {
+            $users = DB::select('SELECT users.id,users.anno, users.primer_nombre,users.segundo_nombre,users.primer_apellido,users.segundo_apellido
+        FROM users WHERE users.id NOT IN (SELECT users.id FROM users
+        INNER JOIN profesores ON users.id = profesores.user_id) AND users.tipo_de_usuario = "Profesor"
+        ');
+            $grupos = DB::select('SELECT grupos.name as grupo, grupos.id
+        FROM grupos WHERE grupos.id NOT IN (SELECT grupos.id FROM grupos
+        INNER JOIN profesores ON grupos.id = profesores.grupos_id)
+        ');
+            $asignaturas = Asignaturas::pluck('nombre', 'id')->toArray();
+        } else {
+            $users = DB::select('SELECT users.id, users.primer_nombre,users.segundo_nombre,users.primer_apellido,users.segundo_apellido
         FROM users WHERE users.id NOT IN (SELECT users.id FROM users
         INNER JOIN profesores ON users.id = profesores.user_id) AND users.tipo_de_usuario = "Profesor" AND users.anno = ' . session()->get('anno') . '
         ');
-        $grupos = Grupos::all()->where('anno',session()->get('anno'));
-        $asignaturas = Asignaturas::all()->where('anno',session()->get('anno'));
-        // $anno = [
-        //     '1' => 'Primer Año',
-        //     '2' => 'Segundo Año',
-        //     '3' => 'Tercero Año',
-        //     '4' => 'Cuarto Año',
-        //     '5' => 'Quinto Año'
-        // ];
+            $grupos = DB::select('SELECT grupos.name as grupo, grupos.id
+        FROM grupos WHERE grupos.id NOT IN (SELECT grupos.id FROM grupos
+        INNER JOIN profesores ON grupos.id = profesores.grupos_id) AND grupos.anno = ' . session()->get('anno') . '
+        ');
+            $asignaturas = Asignaturas::where('anno', $anno)->pluck('nombre', 'id')->toArray();
+        }
         return view('Modulo_PerfildeUsuario.profesores.create', compact('users', 'grupos', 'asignaturas'));
     }
 
@@ -96,19 +106,16 @@ class ProfesoresController extends Controller
     {
 
         $rules = [
-            'user_id' => 'required|unique:profesores',
-            'grupos_id' => 'required',
-            // 'anno' => 'required',
+            'user_id' => 'required|not_in:0',
             'tipo_de_clases' => 'required',
+            'periodo_lectivo' => 'required',
             'asignaturas_id' => 'required',
         ];
 
         $messages = [
             'user_id.required' => 'Campo Requerido',
-            'user_id.unique' => 'Campo Unico',
-            'grupos_id.required' => 'Campo Requerido',
-            // 'anno.required' => 'Campo Requerido',
             'tipo_de_clases.required' => 'Campo Requerido',
+            'periodo_lectivo.required' => 'Campo Requerido',
             'asignaturas_id.required' => 'Campo Requerido',
 
         ];
@@ -116,7 +123,7 @@ class ProfesoresController extends Controller
 
         $profesores = Profesores::create($request->all());
 
-        return redirect()->route('profesores.index', compact('profesores'))->with('info', 'adicionar-profesor');
+        return redirect()->route('profesores.index')->with('info', 'adicionar-profesor');
     }
 
     /**
@@ -125,15 +132,7 @@ class ProfesoresController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        $users = User::all();
 
-        $profesores = Profesores::findOrFail($id);
-
-
-        return view('Modulo_PerfildeUsuario.usuarios.show', compact('users', 'profesores'));
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -143,17 +142,35 @@ class ProfesoresController extends Controller
      */
     public function edit($id)
     {
-        $profesores = Profesores::findOrFail($id);
-        $grupos = Grupos::pluck('name', 'id')->toArray();
-        $asignaturas = Asignaturas::pluck('nombre', 'id')->toArray();
-        $anno = [
-            '1' => 'Primer Año',
-            '2' => 'Segundo Año',
-            '3' => 'Tercero Año',
-            '4' => 'Cuarto Año',
-            '5' => 'Quinto Año'
-        ];
-        return view('Modulo_PerfildeUsuario.profesores.edit', compact('profesores', 'grupos', 'anno', 'asignaturas'));
+
+        session()->put('anno', User::find(auth()->id())->anno);
+        $anno = session()->get('anno');
+
+        $select_anno = DB::select('SELECT users.anno FROM users WHERE users.id = (SELECT profesores.user_id FROM profesores WHERE profesores.id = ' . $id . ')');
+
+        if ($anno === $select_anno[0]->anno || (User::find(auth()->id())->hasRole('Vicedecana'))) {
+
+            $profesores = Profesores::findOrFail($id);
+
+            $anno  = session()->get('anno');
+            if (User::find(auth()->id())->hasRole('Vicedecana')) {
+                $grupos = DB::select('SELECT grupos.name as grupo, grupos.id
+        FROM grupos WHERE grupos.id NOT IN (SELECT grupos.id FROM grupos
+        INNER JOIN profesores ON grupos.id = profesores.grupos_id)
+        ');
+                $asignaturas = Asignaturas::pluck('nombre', 'id')->toArray();
+            } else {
+                $grupos = DB::select('SELECT grupos.name as grupo, grupos.id
+            FROM grupos WHERE grupos.id NOT IN (SELECT grupos.id FROM grupos
+            INNER JOIN profesores ON grupos.id = profesores.grupos_id) AND grupos.anno = ' . session()->get('anno') . '
+            ');
+                $asignaturas = Asignaturas::where('anno', $anno)->pluck('nombre', 'id')->toArray();
+            }
+
+            return view('Modulo_PerfildeUsuario.profesores.edit', compact('profesores', 'grupos', 'asignaturas'));
+        } else {
+            abort(401);
+        }
     }
 
     /**
@@ -168,23 +185,21 @@ class ProfesoresController extends Controller
         $profesores = Profesores::findOrFail($id);
 
         $rules = [
-            'grupos_id' => 'required',
-            'anno' => 'required',
             'tipo_de_clases' => 'required',
+            'periodo_lectivo' => 'required',
             'asignaturas_id' => 'required',
         ];
 
         $messages = [
-            'grupos_id.required' => 'Campo Requerido',
-            'anno.required' => 'Campo Requerido',
             'tipo_de_clases.required' => 'Campo Requerido',
+            'periodo_lectivo.required' => 'Campo Requerido',
             'asignaturas_id.required' => 'Campo Requerido',
         ];
         $this->validate($request, $rules, $messages);
 
         $profesores->update($request->all());
 
-        return redirect()->route('profesores.index', compact('profesores'))->with('info', 'modificar-profesor');
+        return redirect()->route('profesores.index')->with('info', 'modificar-profesor');
     }
 
     /**
@@ -195,14 +210,15 @@ class ProfesoresController extends Controller
      */
     public function destroy($id)
     {
+        $profesores = Profesores::findOrFail($id);
+
+        $profesores->delete();
+
+        return redirect()->route('profesores.index')->with('info', 'eliminar-datos-profesores');
     }
-    // public function importar_profesores(Request $request)
-    // {
+    public function exportExcelProfesores()
+    {
+        return Excel::download(new ProfesoresExport, 'Profesores.xlsx');
+    }
 
-    //     $file = $request->file('import_file');
-
-    //     Excel::import(new ProfesoresImport, $file);
-
-    //     return redirect()->route('profesores.index')->with('info', 'importar-profesor');
-    // }
 }

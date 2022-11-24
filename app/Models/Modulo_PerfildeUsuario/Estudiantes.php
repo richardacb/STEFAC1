@@ -14,7 +14,6 @@ class Estudiantes extends Model
     protected $fillable = [
         'user_id',
         'grupos_id',
-        'anno',
         'periodo_lectivo',
         'tipo_curso',
         'plan_estudio',
@@ -30,13 +29,8 @@ class Estudiantes extends Model
         'nombre_madre',
         'organizacion_politica',
         'opcion_uci',
-        'is_enabled'
     ];
-    /**
-     * Get the grupos that owns the Estudiantes
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
+    
     public function grupos()
     {
         return $this->belongsTo(Grupos::class, 'grupos_id');
@@ -44,5 +38,30 @@ class Estudiantes extends Model
     public function users()
     {
         return $this->belongsTo(User::class,'user_id');
+    }
+
+    public function comite()
+    {
+        return $this->belongsTo('App\Models\Modulo_GECE\Comite');
+    }
+
+    public function tribunaltaller()
+    {
+        return $this->belongsTo('App\Models\Modulo_GECE\TribunalTaller');
+    }
+
+    public function tribunalpd()
+    {
+        return $this->belongsTo('App\Models\Modulo_GECE\TribunalPD');
+    }
+
+    public function tema()
+    {
+        return $this->belongsTo('App\Models\Modulo_GECE\Tema');
+    }
+
+    public function perfil()
+    {
+        return $this->belongsTo('App\Models\Modulo_GECE\Perfil');
     }
 }

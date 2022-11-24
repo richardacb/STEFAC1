@@ -1,10 +1,11 @@
 <!-- Modal Gráfica que representa las adicciones de los estudiantes-->
 <div class="modal fade" id="grafica_reportes1" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Gráfica que reprecenta las adicciones de los estudiantes</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Adicciones de los
+                    estudiantes</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -71,10 +72,11 @@
 <!-- Modal Medicamentos-->
 <div class="modal fade" id="grafica_reportes2" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Gráfica de tipo de medicamentos que consumen</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Tipo de medicamentos que
+                    consumen</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -122,13 +124,14 @@
 </div>
 <!--Fin Modal -->
 
-<!-- Modal alcohol-->
+<!-- Modal Grupo social-->
 <div class="modal fade" id="grafica_reportes3" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Gráfica de estudiantes por año</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Grupo Social al que
+                    pertenecen</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -189,13 +192,14 @@
 </div>
 <!--Fin Modal -->
 
-<!-- Modal alcohol-->
+<!-- Modal Creencia religiosa-->
 <div class="modal fade" id="grafica_reportes4" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Grafica de estudiantes por año</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Creencia Religiosa al
+                    que pertenecen</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -234,6 +238,73 @@
                             }
                         },
                         labels: ['Ateos', 'Católicos','Cristianos','Protestantes','Santería','Yoruba','Hermandad','Palo Monte'],
+                        responsive: [{
+                            breakpoint: 980,
+                            options: {
+                                chart: {
+                                    width: 400
+                                },
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            }
+                        }],
+                    };
+                    var chart = new ApexCharts(datos, options);
+                    chart.render();
+                });
+            </script>
+            <!-- End Donut Chart -->
+        </div>
+    </div>
+</div>
+<!--Fin Modal -->
+
+<!-- Tipo de problemas -->
+<div class="modal fade" id="grafica_reportes5" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tipo de problemas al que pertenecen</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="pieChart5"
+                data-bs-probPE ="{{ $count_probPE }}"
+                data-bs-probPS ="{{ $count_probPS }}"
+                data-bs-probEC ="{{ $count_probEC }}"
+                data-bs-probSO ="{{ $count_probSO }}"
+                data-bs-probFA ="{{ $count_probFA }}"
+                data-bs-probAC ="{{ $count_probAC }}"
+                data-bs-probDI ="{{ $count_probDI }}"
+                data-bs-probAS ="{{ $count_probAS }}">
+            </div>
+            </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                    var datos = document.querySelector("#pieChart5")
+                    var probPE   = Number(datos.getAttribute('data-bs-probPE'))
+                    var probPS  = Number(datos.getAttribute('data-bs-probPS'))
+                    var probEC  = Number(datos.getAttribute('data-bs-probEC'))
+                    var probSO  = Number(datos.getAttribute('data-bs-probSO'))
+                    var probFA  = Number(datos.getAttribute('data-bs-probFA'))
+                    var probAC  = Number(datos.getAttribute('data-bs-probAC'))
+                    var probDI  = Number(datos.getAttribute('data-bs-probDI'))
+                    var probAS  = Number(datos.getAttribute('data-bs-probAS'))
+
+                    var options = {
+                        series: [probPE,probPS,probEC,probSO,probFA,probAC,probDI,probAS],
+                        chart: {
+                            type: 'pie',
+                            width: 600,
+                            toolbar: {
+                                show: true,
+                            }
+                        },
+                        labels: ['Problemas de personalidad', 'Problemas psiquiátricos','Problemas económicos','Problemas sociales','Problemas familiares','Problemas académicos','Problemas de disciplina','Problemas de asistencia'],
                         responsive: [{
                             breakpoint: 980,
                             options: {

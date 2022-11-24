@@ -9,7 +9,9 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\Modulo_PerfildeUsuario\Estudiantes;
+use App\Models\Modulo_PerfildeUsuario\Profesores;
 use App\Models\Modulo_PerfildeUsuario\Diagnosticopreventivo;
+use App\Models\Modulo_Actividades\Evidencias;
 use DB;
 
 class User extends Authenticatable
@@ -33,6 +35,7 @@ class User extends Authenticatable
         'password',
         'email',
         'sexo',
+        'anno',
         'municipio',
         'provincia',
         'color_piel',
@@ -56,6 +59,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(Estudiantes::class);
     }
+    public function profesores()
+    {
+        return $this->hasOne(Profesores::class);
+    }
     public function diagnosticopreventivo()
     {
         return $this->hasOne(Diagnosticopreventivo::class);
@@ -65,20 +72,16 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
 
-    public function adminlte_image(){
-        return 'vendor\adminlte\dist\img\zorros.png';
+
+     /**
+    * Get all of the usuario for the Evidencia
+    *
+    * @return \Illuminate\Database\Eloquent\Relations\HasMany
+    */
+    public function evidencia()
+    {
+        return $this->hasMany(Evidencias::class, 'id');
     }
 
-    public function adminlte_desc(){
-
-         return 'Esta en veremos';
-    }
-
-    public function adminlte_profile_url(){
-        return 'profile/username';
-    }
 }

@@ -31,55 +31,38 @@
                         <th scope="col">Profesores</th>
                         <th scope="col">Asignaturas</th>
                         <th scope="col">Grupos</th>
-                        <th scope="col">Insertado</th>
+
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
 
-                    @foreach ($planificacion as $p)
+                    @foreach ($planificaciones as $p)
                         <tr>
                             <td scope="row">
-                                @foreach ($profesores as $prof)
-                                    @if ($p->profesores_id === $prof->id)
-                                        {{ $prof->primer_nombre }} {{ $prof->segundo_nombre }} {{ $prof->primer_apellido }} {{ $prof->segundo_apellido }}
-                                    @endif
-                                @endforeach
-
+                                {{ $p->normbre_prof }}
                             </td>
                             <td>
-                                @foreach ($asignaturas as $a)
-                                    @if ($p->asignaturas_id === $a->id)
-                                        {{ $a->nombre }}
-                                    @endif
-                                @endforeach
-
+                                {{ $p->asignatura }}
                             </td>
                             <td>
-
-                                @foreach ($grupos as $g)
-                                    @if ($p->grupos_id === $g->id)
-                                        {{ $g->name }}
-                                    @endif
-                                @endforeach
-
+                                {{ $p->grupo }}
                             </td>
-                            <td>
-                                {{ $p->created_at }}
-                            </td>
+
                             <td width="150px">
-                                <form action="{{ route('planificacion.destroy', $p) }}" method="POST"
+                                <form action="{{ route('planificacion.destroy', $p->id) }}" method="POST"
                                     class="eliminar-planificacion">
                                     @csrf
                                     @method('delete')
                                     @can('Modulo_Horario.planificacion.edit')
-                                        <a class="btn btn-primary btn-sm"
-                                            href="{{ route('planificacion.edit', $p) }}"><i
-                                            class="fa fa-edit"></i></a>
+                                        <a class="btn btn-primary btn-sm" href="{{ route('planificacion.edit', $p->id) }}"
+                                            data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Carga Docente"><i
+                                                class="fa fa-edit"></i></a>
                                     @endcan
                                     @can('Modulo_Horario.planificacion.destroy')
-                                        <button class="btn btn-danger btn-sm" type="submit"><i
-                                            class="fa fa-trash-alt"></i></button>
+                                        <button class="btn btn-danger btn-sm" type="submit" data-bs-toggle="tooltip"
+                                            data-bs-placement="right" title="Eliminar Carga Docente"><i
+                                                class="fa fa-trash-alt"></i></button>
                                     @endcan
                                 </form>
                             </td>
@@ -90,15 +73,6 @@
             </table>
         </div>
     </div>
-
-
-    @if (session('info'))
-        <div class="alert alert-succes">
-            <strong>{{ session('info') }}</strong>
-        </div>
-    @endif
-
-
 
 @stop
 @section('js')
@@ -188,5 +162,12 @@
                 }
             })
         });
+    </script>
+    <script src="{{ asset('js/popper.min.js') }}"></script>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
     </script>
 @endsection

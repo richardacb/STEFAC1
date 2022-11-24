@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'STE')
+@section('title', 'Estudiantes')
 
 @section('content_header')
     <h1>Lista de Estudiantes</h1>
@@ -18,11 +18,10 @@
             @can('Modulo_PerfildeUsuario.estudiantes.create')
                 <a href="{{ route('estudiantes.create') }}" class="btn btn-primary ">Insertar datos al estudiante</a>
             @endcan
-
-            {{--  @can('Import.EstudiantesImport')
-                <button type="button" class="btn btn-danger float-right" data-toggle="modal"
-                    data-target=".importar_estudiantes">Importar datos de estudiates</button>
-            @endcan  --}}
+            @can('Export.EstudiantesExport')
+                <a href="{{ route('estudiantes.export') }}" class="btn btn-warning float-right" role="button">Exportar
+                    datos a Excel</a>
+            @endcan
         </div>
     </div>
 
@@ -40,24 +39,60 @@
                 @foreach ($estudiantes as $e)
                     <tr>
                         <td>
-                            {{ $e->users->primer_nombre }}
-                            {{ $e->users->segundo_nombre }} {{ $e->users->primer_apellido }}
-                            {{ $e->users->segundo_apellido }}
+                            {{ $e->nombre_estudiante }}
                         </td>
-                        <td>{{ $e->anno }}</td>
-                        <td>{{ $e->grupos->name }}</td>
                         <td>
-                        <a class="btn btn-primary btn-sm float-right" href="{{ route('estudiantes.edit', $e->id) }}"><i class="fa fa-edit"></i></a>
-                        <a class="btn btn-success btn-sm float-right mr-2" href="{{ route('usuarios.show', $e->users->id) }}"><i
-                            class="fa fa-user"></i></a>
-                    </td>
+                            @if ($e->anno == '1')
+                            Primer Año
+                        @endif
+                        @if ($e->anno == '2')
+                            Segundo Año
+                        @endif
+                        @if ($e->anno == '3')
+                            Tercer Año
+                        @endif
+                        @if ($e->anno == '4')
+                            Cuarto Año
+                        @endif
+                        @if ($e->anno == '5')
+                            Quinto Año
+                        @endif</td>
+                        <td>{{ $e->grupo }}</td>
+                        <td>
+                            <form action="{{ route('estudiantes.destroy', $e->e_id) }}" method="POST"
+                                class="eliminar_datos_estudiantes">
+                                @csrf
+                                @method('delete')
+                                @can('Modulo_PerfildeUsuario.estudiantes.destroy')
+                                    <button class="btn btn-danger float-right btn-sm mr-2" type="submit"
+                                        data-bs-toggle="tooltip" data-bs-placement="right"
+                                        title="Eliminar datos de estudiante"><i class="fa fa-trash-alt"></i></button>
+                                @endcan
+
+                                @can('Modulo_PerfildeUsuario.estudiantes.edit')
+                                    <a class="btn btn-primary btn-sm float-right mr-2"
+                                        href="{{ route('estudiantes.edit', $e->e_id) }}"><i class="fa fa-edit"
+                                            data-bs-toggle="tooltip" data-bs-placement="right"
+                                            title="Editar Estudiante"></i></a>
+                                @endcan
+
+                                @can('Modulo_PerfildeUsuario.usuarios.show')
+                                    <a class="btn btn-success btn-sm float-right mr-2"
+                                        href="{{ route('usuarios.show', $e->id) }}" data-bs-toggle="tooltip"
+                                        data-bs-placement="right" title="Mostrar Datos del Estudiante"><i
+                                            class="fa fa-user"></i></a>
+                                @endcan
+
+
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
 </div>
-{{--  @include('Modulo_PerfildeUsuario.estudiantes.modal')  --}}
+
 @stop
 
 @section('js')
@@ -66,9 +101,9 @@
 <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('js/dataTables.bootstrap5.min.js') }}"></script>
 <script>
-    $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-  })
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 </script>
 
 
@@ -110,4 +145,39 @@
         )
     </script>
 @endif
+@if (session('info') == 'eliminar-datos-estudiantes')
+    <script>
+        Swal.fire(
+            '¡Eliminado!',
+            'Los datos del estudiante se eliminaron con exito.',
+            'success'
+        )
+    </script>
+@endif
+<script>
+    $('.eliminar_datos_estudiantes').submit(function(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Los datos del estudiante se eliminaran definitivamente",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, eliminar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.submit();
+            }
+        })
+    });
+</script>
+<script src="{{ asset('js/popper.min.js') }}"></script>
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>
 @endsection

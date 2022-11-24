@@ -14,7 +14,7 @@ class Profesores extends Model
     protected $fillable = [
         'user_id',
         'grupos_id',
-        'anno',
+        'periodo_lectivo',
         'tipo_de_clases',
         'asignaturas_id',
     ];
@@ -30,5 +30,30 @@ class Profesores extends Model
     public function users()
     {
         return $this->belongsTo(User::class,'user_id');
+    }
+
+    public function comite()
+    {
+        return $this->belongsTo('App\Models\Modulo_GECE\Comite');
+    }
+
+    public function tribunaltaller()
+    {
+        return $this->belongsTo('App\Models\Modulo_GECE\TribunalTaller');
+    }
+
+    public function tribunalpd()
+    {
+        return $this->belongsTo('App\Models\Modulo_GECE\TribunalPD');
+    }
+
+    public function tema()
+    {
+        return $this->belongsTo('App\Models\Modulo_GECE\Tema');
+    }
+
+    public function perfil()
+    {
+        return $this->belongsTo('App\Models\Modulo_GECE\Perfil');
     }
 }

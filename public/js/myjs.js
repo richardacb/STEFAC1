@@ -88,9 +88,9 @@ $(document).ready(function Validarfrecuencias5to(e){
 $(function () {
     $("#asignaturas_id").on("change", filtrarProf);
 });
-function filtrarProf () {
+function filtrarProf() {
     let asignaturas_id = $(this).val();
-    console.log(asignaturas_id);
+    // console.log(asignaturas_id);
     //Ajax
     $.get(`/api/asignaturas/${asignaturas_id}`, function (data) {
         let html_select =
@@ -121,148 +121,222 @@ function onSelectHorario(e) {
     let anno = document.getElementById("anno").value;
     let semana = document.getElementById("semana").value;
     let grupo = document.getElementById("grupo").value;
-    //Ajax
-    $.post(
-        `/api/horario/`,
-        {
-            anno,
-            semana,
-            grupo,
-        },
-        (data) => {
-            let rows = `
-            <div class="card">
-            <div class="card-body">
-            <table class="table table-striped shadow-lg pt-4 text-center" id="afect">
-                <thead class="bg-primary text-white">
-                <th style='border-style: solid; border-width: 1px; padding: 5px;' colspan='6'></th>
-                <tr>
-                    <th style='width: 5%';>Turno</th>
-                    <th>Lunes</th>
-                    <th>Martes</th>
-                    <th>Miercoles</th>
-                    <th>Jueves</th>
-                    <th>Viernes</th>
+    if (grupo == "" || anno == "" || semana == "") {
+        document.querySelector("#error_buscarhorario").innerHTML = "Todos los campos son requeridos";
+
+    }
+    else{
+        $.post(
+            `/api/horario/`,
+            {
+                anno,
+                semana,
+                grupo,
+            },
+            (data) => {
+                let rows = `
+                <div class="card">
+                <div class="card-body">
+                <table class="table table-striped shadow-lg pt-4 text-center" id="afect">
+                    <thead class="bg-primary text-white">
+                    <th style='border-style: solid; border-width: 1px; padding: 5px;' colspan='6'></th>
+                    <tr>
+                        <th style='width: 5%';>Turno</th>
+                        <th>Lunes</th>
+                        <th>Martes</th>
+                        <th>Miercoles</th>
+                        <th>Jueves</th>
+                        <th>Viernes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                 <tr>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>1</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[1][1] !== null ? data[1][1] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[2][1] !== null ? data[2][1] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[3][1] !== null ? data[3][1] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[4][1] !== null ? data[4][1] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[5][1] !== null ? data[5][1] : ""
+                    }</td>
                 </tr>
-            </thead>
-            <tbody>
-             <tr>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>1</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[1][1] !== null ? data[1][1] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[2][1] !== null ? data[2][1] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[3][1] !== null ? data[3][1] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[4][1] !== null ? data[4][1] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[5][1] !== null ? data[5][1] : ""
-                }</td>
-            </tr>
-            <tr>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>2</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[1][2] !== null ? data[1][2] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[2][2] !== null ? data[2][2] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[4][2] !== null ? data[4][2] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[3][2] !== null ? data[3][2] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[5][2] !== null ? data[5][2] : ""
-                }</td>
-            </tr>
-            <tr>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>3</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[1][3] !== null ? data[1][3] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[2][3] !== null ? data[2][3] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[3][3] !== null ? data[3][3] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[4][3] !== null ? data[4][3] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[5][3] !== null ? data[5][3] : ""
-                }</td>
-            </tr>
-            <tr>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>4</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[1][4] !== null ? data[1][4] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[2][4] !== null ? data[2][4] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[3][4] !== null ? data[3][4] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[4][4] !== null ? data[4][4] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[5][4] !== null ? data[5][4] : ""
-                }</td>
-            </tr>
-            <tr>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>5</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[1][5] !== null ? data[1][5] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[2][5] !== null ? data[2][5] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[3][5] !== null ? data[3][5] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[4][5] !== null ? data[4][5] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[5][5] !== null ? data[5][5] : ""
-                }</td>
-            </tr>
-            <tr>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>6</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[1][6] !== null ? data[1][6] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[2][6] !== null ? data[2][6] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[3][6] !== null ? data[3][6] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[4][6] !== null ? data[4][6] : ""
-                }</td>
-                <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
-                    data[5][6] !== null ? data[5][6] : ""
-                }</td>
-            </tr>
-            </tbody>
-            </table>
-            </div>
-            </div>
-             `;
-            $("#body_horario").html(rows);
+                <tr>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>2</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[1][2] !== null ? data[1][2] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[2][2] !== null ? data[2][2] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[3][2] !== null ? data[3][2] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[4][2] !== null ? data[4][2] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[5][2] !== null ? data[5][2] : ""
+                    }</td>
+                </tr>
+                <tr>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>3</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[1][3] !== null ? data[1][3] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[2][3] !== null ? data[2][3] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[3][3] !== null ? data[3][3] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[4][3] !== null ? data[4][3] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[5][3] !== null ? data[5][3] : ""
+                    }</td>
+                </tr>
+                <tr>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>4</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[1][4] !== null ? data[1][4] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[2][4] !== null ? data[2][4] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[3][4] !== null ? data[3][4] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[4][4] !== null ? data[4][4] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[5][4] !== null ? data[5][4] : ""
+                    }</td>
+                </tr>
+                <tr>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>5</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[1][5] !== null ? data[1][5] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[2][5] !== null ? data[2][5] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[3][5] !== null ? data[3][5] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[4][5] !== null ? data[4][5] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[5][5] !== null ? data[5][5] : ""
+                    }</td>
+                </tr>
+                <tr>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>6</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[1][6] !== null ? data[1][6] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[2][6] !== null ? data[2][6] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[3][6] !== null ? data[3][6] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[4][6] !== null ? data[4][6] : ""
+                    }</td>
+                    <td style='border-style: solid; border-width: 1px; padding: 5px;'>${
+                        data[5][6] !== null ? data[5][6] : ""
+                    }</td>
+                </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                 `;
+                $("#body_horario").html(rows);
+            }
+            );
         }
-    );
+    //Ajax
+
+
 }
+//Funcion para actualizar las afectaciones en el Horario
+// $(function () {
+//     $("#create_afect").on("submit", onUpdateAfect);
+// });
+// function onUpdateAfect(e) {
+//     e.preventDefault();
+//     let profesor_afectado_id = document.getElementById(
+//         "profesor_afectado_id"
+//     ).value;
+//     let semana = document.getElementById("semana").value;
+//     let dia = document.getElementById("dia").value;
+//     let turno = document.getElementById("turno").value;
+//     let anno = document.getElementById("anno").value;
+//     // console.log(afectado);
+//     // console.log(semana);
+//     // console.log(dia);
+//     // console.log(turno);
+//     // console.log(anno);
 
-//Codigo de Jose
+//     //Ajax
+//     $.post(
+//         `/api/afectaciones/`,
+//         {
+//             profesor_afectado_id,
+//             semana,
+//             dia,
+//             turno,
+//             anno,
+//         },
+//         (data) => {
+//             window.location.href = "/admin/afectaciones";
+//         }
+//         //console.log(data);
+//     );
+// }
 
+//dats del crear parciales
+// $(function () {
+//     $("#create_pp").on("submit", onSelectParcial);
+// });
+// function onSelectParcial(e) {
+//     e.preventDefault();
+//     let anno = document.getElementById("anno").value;
+//     let semestre = document.getElementById("semestre").value;
+//     let semana = document.getElementById("semana").value;
+//     let dia = document.getElementById("dia").value;
+//     let turno = document.getElementById("turno").value;
+//     let asignaturas_id = document.getElementById("asignaturas_id").value;
+//     let action = document.getElementById("create_pp").attributes[0].value;
+
+//     console.log(anno);
+//     console.log(semestre);
+//     console.log(semana);
+//     console.log(dia);
+//     console.log(turno);
+//     console.log(asignaturas_id);
+//     console.log(action);
+
+
+//     $.post(`app/generar_horario/update_horario.php`, function (data) {
+//         anno,
+//         semestre,
+//         semana,
+//         dia,
+//         turno,
+//         asignaturas_id,
+//         action
+//     });
+// }

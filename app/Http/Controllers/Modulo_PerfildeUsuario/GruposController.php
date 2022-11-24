@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Modulo_PerfildeUsuario\Grupos;
 use App\Models\User;
 use App\Imports\GruposImport;
+use App\Models\Modulo_Horario\Grupo;
 use Maatwebsite\Excel\Facades\Excel;
 
 class GruposController extends Controller
@@ -26,7 +27,11 @@ class GruposController extends Controller
     public function index()
     {
         session()->put('anno', User::find(auth()->id())->anno);
-        $grupos = Grupos::all()->where('anno', session()->get('anno'));
+        if(User::find(auth()->id())->hasRole('Vicedecana')){
+        $grupos = Grupos::all();
+        }else{
+            $grupos = Grupos::all()->where('anno', session()->get('anno')); 
+        }
 
         return view('Modulo_PerfildeUsuario.grupos.index', compact('grupos'));
     }
@@ -38,8 +43,14 @@ class GruposController extends Controller
      */
     public function create()
     {
+        if(User::find(auth()->id())->hasRole('Vicedecana')){
         $annosgrupos = session()->get('anno');
-        return view('Modulo_PerfildeUsuario.grupos.create', compact('annosgrupos'));
+        $grupos = Grupos::all()->where('anno', session()->get('anno'));
+        }else{
+        $annosgrupos = session()->get('anno');
+        $grupos = Grupos::all()->where('anno', session()->get('anno'));
+        }
+        return view('Modulo_PerfildeUsuario.grupos.create', compact('annosgrupos','grupos'));
     }
 
     /**
@@ -50,20 +61,25 @@ class GruposController extends Controller
      */
     public function store(Request $request)
     {
-        //  $rules = [
-        //     'name' => 'required|unique:grupos',
-        //  ];
-        //  $messages = [
-        //     'name.required' =>'Campo Requerido',
-        //     'name.unique' => 'Campo Único',
-        //  ];
-        //  $this->validate( $request,$rules, $messages);
+         $rules = [
+            'name' => 'required|unique:grupos',
+            'anno' => 'required',
+         ];
+         $messages = [
+            'name.required' =>'Campo Requerido',
+            'name.unique' => 'Campo Único',
+            'anno.required' =>'Campo Requerido',
+         ];
+         $this->validate( $request,$rules, $messages);
 
-        $grupos = Grupos::create($request->all());
-
-        $anno = session()->get('anno');
-
-        return redirect()->route('grupos.index', compact('grupos'))->with('info', 'adicionar-grupo', 'anno');
+        $grupo = new Grupo;
+        $grupo->name = "IDF1" . $request->get('anno') . "0" . $request->get('name');
+        $grupo->anno = $request->get('anno');
+        //$grupos = Grupos::create($request->all());
+        //var_dump($grupo->name);
+        //$anno = session()->get('anno');
+        $grupo->save();
+        return redirect()->route('grupos.index')->with('info', 'adicionar-grupo', 'anno');
     }
 
     /**
@@ -85,8 +101,12 @@ class GruposController extends Controller
      */
     public function edit($id)
     {
+        $annosgrupos = session()->get('anno');
         $grupos = Grupos::findOrFail($id);
-        return view('Modulo_PerfildeUsuario.grupos.edit', compact('grupos'));
+        $numero =  substr($grupos->name, - 1);
+        $grupos->name = $numero;
+
+        return view('Modulo_PerfildeUsuario.grupos.edit', compact('grupos', 'annosgrupos'));
     }
 
     /**
@@ -102,16 +122,22 @@ class GruposController extends Controller
 
         $rules = [
             'name' => "required|unique:grupos,name,$grupos->id",
+            'anno' => 'required',
         ];
         $messages = [
             'name.required' => 'Campo Requerido',
             'name.unique' => 'Campo Único',
+            'anno.required' =>'Campo Requerido',
         ];
         $this->validate($request, $rules, $messages);
 
-        $grupos->update($request->all());
+        $grupos->name = "IDF1" . $request->get('anno') . "0" . $request->get('name');
+        $grupos->anno = $request->get('anno');
 
-        return redirect()->route('grupos.index', compact('grupos'))->with('info', 'modificar-grupo');
+        $grupos->save();
+        var_dump($grupos->name);
+
+       return redirect()->route('grupos.index')->with('info', 'modificar-grupo');
     }
 
     /**
@@ -128,13 +154,5 @@ class GruposController extends Controller
 
         return redirect()->route('grupos.index')->with('info', 'eliminar-grupo');
     }
-    // public function importar_grupos(Request $request)
-    // {
-
-    //     $file = $request->file('import_file');
-
-    //     Excel::import(new GruposImport, $file);
-
-    //     return redirect()->route('grupos.index')->with('info', 'importar-grupo');
-    // }
+   
 }

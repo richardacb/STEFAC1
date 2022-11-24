@@ -80,15 +80,27 @@
             </div>
             <div class="mt-3 w-25 mx-1">
                 <label class="form-label">Año Académico</label>
-                <input type="number" name="anno_academico" id="anno_academico" class="form-control" min="1"
-                    max="5" value="{{ $optativa->anno_academico }}" min="{{ $optativa->anno_academico }}"
-                    max="{{ $optativa->anno_academico }}">
+
+                @role('Vicedecana')
+                    <input type="number" name="anno_academico" class="form-control" value="{{ $optativa->anno_academico }}"
+                        id="anno" name="anno" value="" min="1" max="5">
+                @else
+                    <input type="number" name="anno_academico" id="anno_academico" class="form-control"
+                        value="{{ $optativa->anno_academico }}" min="{{ $optativa->anno_academico }}"
+                        max="{{ $optativa->anno_academico }}" readonly>
+                @endrole
+
             </div>
             <div class="mt-3 w-25 mx-1">
                 <label class="form-label">Semestre</label>
-                <input type="number" name="semestre" id="semestre" class="form-control"
-                    min="{{ $optativa->anno_academico }}" max="{{ $optativa->anno_academico + 1 }}"
-                    value="{{ $optativa->semestre }}">
+                @role('Vicedecana')
+                    <input type="number" name="semestre" id="semestre" class="form-control" min="1" max="10"
+                        value="{{ $optativa->semestre }}">
+                @else
+                    <input type="number" name="semestre" id="semestre" class="form-control"
+                        min="{{ $optativa->anno_academico + ($optativa->anno_academico - 1) }}"
+                        max="{{ $optativa->anno_academico * 2 }}" value="{{ $optativa->semestre }}">
+                @endrole
             </div>
             <div class="mt-3 w-25 mx-1">
                 <label class="form-label">Estado</label>

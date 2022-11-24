@@ -46,7 +46,7 @@
             <option value="0" selected="selected">--Seleccione--</option>
             @foreach ( $grupos as $g)
             <option value="{{ $g->id }}">
-                {{ $g->nombre }}
+                {{ $g->name }}
             </option>
             @endforeach
         </select>

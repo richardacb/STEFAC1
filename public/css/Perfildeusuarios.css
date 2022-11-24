@@ -39,11 +39,9 @@
 }
 .card .fieldset-personalizado{
   border: solid 1px;
-  padding: 1rem;
-  margin: 0rem 1rem 3rem 0rem;
-  border-radius: 20px 0px;
-  -webkit-box-shadow: inset 0px 1px 1px #1c00f200, 15px 15px 15px #1e00f2;
-  box-shadow: inset 0px 1px 1px #1c00f200, 15px 15px 15px #1e00f2;
+padding: 1rem;
+margin: 0rem 1rem 3rem 0rem;
+border-radius: 20px 20px;
 }
 .card .fieldset-personalizado .legend-personalizado{
   font-size: 20px;
@@ -51,7 +49,7 @@ font-weight: bold;
 text-transform: uppercase;
 margin: 0px 37px;
 padding: 0 1rem;
-width: 15rem;
+width: 25rem;
 }
 .card .fieldset-personalizado .legend-personalizado-dp{
   font-size: 20px;
@@ -77,4 +75,8 @@ border-radius: 0px;
   #main {
     padding: 20px;
   }
+}
+
+.narvar_personalizado{
+  padding: 0px !important;
 }

@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\DB;
 
 class Opt_ProfController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('can:Modulo_Optativas.opt_prof.index')->only('index');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +20,7 @@ class Opt_ProfController extends Controller
      */
     public function index()
     {
-        $opt = DB::select('SELECT optativas.id, optativas.nombre
+        $opt = DB::select('SELECT optativas.id, optativas.nombre, optativas.capacidad
                             FROM optativas
                             WHERE optativas.prof_principal = ' . auth()->id() . ' OR optativas.prof_auxiliar = ' . auth()->id() . '
 
@@ -31,8 +36,12 @@ class Opt_ProfController extends Controller
                                     WHERE oe.id_opt = ' . $opt->id . ' ) as e
                                     ON u.id = e.user_id;
         ');
+
+        $cant_est = sizeof($est_matriculados);
+        
         return view('Modulo_Optativas.opt_prof.index')
             ->with('opt', $opt)
+            ->with('cant_est', $cant_est)
             ->with('est_matriculados', $est_matriculados);
 
         // $opt_prof_est = DB::select('SELECT opt_ests.id_est, opt_prof.id_prof, opt_prof.nomb_opt, opt_prof.id_opt

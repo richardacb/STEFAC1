@@ -29,15 +29,52 @@ class PlanificacionController extends Controller
     {
 
         session()->put('anno', User::find(auth()->id())->anno);
+        $anno = session()->get('anno');
 
-        $profesores = DB::select('SELECT users.id, users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido
-                                FROM users INNER JOIN (SELECT profesores.user_id
-                                                        FROM profesores INNER JOIN planificacions ON profesores.user_id = planificacions.profesores_id) as p ON
-                                                        users.id = p.user_id WHERE users.anno = ' . session()->get('anno') . '');
-        $grupos = Grupos::all();
-        $asignaturas = Asignaturas::all();
-        $planificacion = Planificacion::all();
-        return view('Modulo_Horario.planificacion.index', compact('profesores', 'grupos', 'asignaturas', 'planificacion'));
+
+
+        // $profesores = DB::select('SELECT users.id, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as normbre_prof
+        //                         FROM users INNER JOIN (SELECT profesores.user_id
+        //                                                 FROM profesores INNER JOIN planificacions ON profesores.user_id = planificacions.profesores_id) as p ON
+        //                                                 users.id = p.user_id WHERE users.anno = ' . session()->get('anno') . '');
+        // $grupos = Grupos::all()->where('anno', session()->get('anno'));
+        // $asignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
+        // $planificacion = Planificacion::all();
+        if(User::find(auth()->id())->hasRole('Vicedecana')){
+
+        $planificaciones = DB::select('SELECT p.id, prof.normbre_prof, g.name as grupo, a.nombre as asignatura
+        FROM planificacions as p
+        LEFT JOIN (SELECT users.id, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as normbre_prof
+        FROM users INNER JOIN profesores ON users.id = profesores.user_id
+        ) as prof ON p.profesores_id = prof.id
+
+        INNER JOIN
+        grupos as g ON p.grupos_id = g.id
+
+        INNER JOIN
+        asignaturas as a ON p.asignaturas_id = a.id
+
+        ');
+        }else{
+            $planificaciones = DB::select('SELECT p.id, prof.normbre_prof, g.name as grupo, a.nombre as asignatura
+            FROM planificacions as p
+            LEFT JOIN (SELECT users.id, CONCAT(users.primer_nombre," ",users.segundo_nombre," ",users.primer_apellido," ",users.segundo_apellido) as normbre_prof
+            FROM users INNER JOIN profesores ON users.id = profesores.user_id
+            WHERE users.anno = ' . $anno . ') as prof ON p.profesores_id = prof.id
+
+            INNER JOIN
+            grupos as g ON p.grupos_id = g.id
+
+            INNER JOIN
+            asignaturas as a ON p.asignaturas_id = a.id
+
+            WHERE g.anno = ' . $anno . '
+            AND a.anno = ' . $anno . '');
+        }
+
+        //var_dump($planificacion);
+
+        return view('Modulo_Horario.planificacion.index', compact('planificaciones'));
     }
 
     /**
@@ -47,11 +84,17 @@ class PlanificacionController extends Controller
      */
     public function create()
     {
-        $profesores = Profesores::all();
-        $grupos = Grupos::all();
-        $asignaturas = Asignaturas::all()->where('anno', session()->get('anno'));;
-        $id = 'gg';
-        return view('Modulo_Horario.planificacion.create', compact('profesores', 'grupos', 'asignaturas', 'id'));
+        if(User::find(auth()->id())->hasRole('Vicedecana')){
+            $profesores = Profesores::all();
+            $grupos = Grupos::all();
+            $asignaturas = Asignaturas::all();
+        }
+        else{
+            $profesores = Profesores::all();
+            $grupos = Grupos::all()->where('anno', session()->get('anno'));
+            $asignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
+        }
+        return view('Modulo_Horario.planificacion.create', compact('profesores', 'grupos', 'asignaturas'));
     }
 
     /**
@@ -83,7 +126,7 @@ class PlanificacionController extends Controller
 
         $planificacion->save();
 
-        return redirect()->route('planificacion.index', $planificacion)->with('info', 'adicionar-planificacion');
+        return redirect()->route('planificacion.index')->with('info', 'adicionar-planificacion');
     }
 
     /**
@@ -105,12 +148,24 @@ class PlanificacionController extends Controller
      */
     public function edit($id)
     {
-        $planificacion = Planificacion::find($id);
-        $profesores = Profesores::all();
-        $grupos = Grupos::all();
-        $asignaturas = Asignaturas::all();
 
-        return view('Modulo_Horario.planificacion.edit', compact('profesores', 'grupos', 'asignaturas', 'planificacion'));
+        session()->put('anno', User::find(auth()->id())->anno);
+        $anno  = session()->get('anno');
+
+        $select_anno = DB::select('SELECT a.anno
+        FROM planificacions as p INNER JOIN asignaturas as a ON p.asignaturas_id = a.id
+        WHERE p.id = ' . $id . '');
+
+        if ($anno === $select_anno[0]->anno || (User::find(auth()->id())->hasRole('Vicedecana'))) {
+            $planificacion = Planificacion::find($id);
+            $profesores = Profesores::all();
+            $grupos = Grupos::all();
+            $asignaturas = Asignaturas::all();
+
+            return view('Modulo_Horario.planificacion.edit', compact('profesores', 'grupos', 'asignaturas', 'planificacion'));
+        } else {
+            abort(401);
+        }
     }
 
     /**
@@ -149,7 +204,7 @@ class PlanificacionController extends Controller
 
         $planificacion->update($request->all());
 
-        return redirect()->route('planificacion.index', compact('planificacion'))->with('info', 'modificar-planificacion');
+        return redirect()->route('planificacion.index')->with('info', 'modificar-planificacion');
     }
 
     /**

@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'STE')
+@section('title', 'Diagnostico preventivo')
 
 @section('content_header')
-    <h1>Lista de Diagnosticos preventivos</h1>
+    <h1>Lista de Diagnósticos preventivos</h1>
 @stop
 
 @section('content')
@@ -15,33 +15,44 @@
 <div class="card">
     <div class="card-header ">
         @can('Modulo_PerfildeUsuario.diagnosticopreventivo.create')
-            <a href="{{ route('diagnosticopreventivo.create') }}" class="btn btn-primary ">Insertar diagnostico</a>
+            <a href="{{ route('diagnosticopreventivo.create') }}" class="btn btn-primary ">Insertar diagnóstico</a>
         @endcan
-        <nav class="navbar navbar-expand-lg navbar-light bg-light float-right ">
-            <i class="fa fa-chart-pie fa-lg "></i>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
+        @can('Export.DiagnosticopreventivoExport')
+        <a href="{{ route('diagnosticopreventivo.export') }}" class="btn btn-warning  float-right" role="button">Exportar datos a Excel</a>
+        @endcan
+        <nav class="navbar navbar-expand-lg navbar-light bg-light float-right narvar_personalizado mr-2">
+            <i class="fa fa-chart-pie fa-lg pl-2"></i>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
-              <ul class="navbar-nav">
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    --Seleccione Resporte Estadistico--
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#" data-toggle="modal"  data-target="#grafica_reportes1">Adicciones de los
-                        estudiantes</a>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#grafica_reportes2">Tipo de medicamentos que
-                        consumen</a>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#grafica_reportes3">Grupo Social al que
-                        pertenecen</a>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#grafica_reportes3">Creencia Religiosa al
-                        que pertenecen</a>
-                  </div>
-                </li>
-              </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            --Seleccione Resporte Estadistico--
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                data-target="#grafica_reportes1">Adicciones de los
+                                estudiantes</a>
+                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                data-target="#grafica_reportes2">Tipo de medicamentos que
+                                consumen</a>
+                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                data-target="#grafica_reportes3">Grupo Social al que
+                                pertenecen</a>
+                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                data-target="#grafica_reportes4">Creencia Religiosa al
+                                que pertenecen</a>
+                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                data-target="#grafica_reportes5">Tipo de problemas al que pertenecen</a>
+                        </div>
+                    </li>
+                </ul>
             </div>
-          </nav>
+        </nav>
     </div>
 
     <div class="card-body">
@@ -49,8 +60,13 @@
             <thead class="bg-primary text-white">
                 <tr>
                     <th>Nombre y Apellido</th>
-                    <th>Grupo</th>
                     <th>Año</th>
+                    <th>Grupo</th>
+                    <th>Adicciones</th>
+                    <th>G.Sociales</th>
+                    <th>C.Religiosas</th>
+                    <th>C.Medicamentos</th>
+                    <th>T.Problemas</th>
                     <th>Acción</th>
                 </tr>
             </thead>
@@ -58,12 +74,91 @@
                 @foreach ($diagnosticopreventivo as $dp)
                     <tr>
                         <td>{{ $dp->nombre_estudiante }}</td>
-                        <td>{{ $dp->grupo }}</td>
-                        <td>{{ $dp->anno }}</td>
                         <td>
-                            <a class="btn btn-primary btn-sm float-right" href="{{ route('diagnosticopreventivo.edit', $dp->dp_id) }}"><i class="fa fa-edit"></i></a>
-                            <a class="btn btn-primary btn-sm float-right mr-2" href="{{ route('usuarios.show', $dp->id) }}"><i
-                                class="fa fa-user"></i></a>
+                            @if ($dp->anno == '1')
+                            Primer Año
+                        @endif
+                        @if ($dp->anno == '2')
+                            Segundo Año
+                        @endif
+                        @if ($dp->anno == '3')
+                            Tercer Año
+                        @endif
+                        @if ($dp->anno == '4')
+                            Cuarto Año
+                        @endif
+                        @if ($dp->anno == '5')
+                            Quinto Año
+                        @endif</td>
+                        <td>{{ $dp->grupo }}</td>
+
+                        <td>
+                            @if (isset($dp->adicciones_Alcohol))
+                            {{ '-' .$dp->adicciones_Alcohol }}<br>
+                            @endif
+                            @if (isset($dp->adicciones_Tabaco))
+                            {{ '-' .$dp->adicciones_Tabaco }}<br>
+                            @endif
+                            @if (isset($dp->adicciones_Café))
+                            {{ '-' .$dp->adicciones_Café }}<br>
+                            @endif
+                            @if (isset($dp->adicciones_Tecnoadicciones))
+                            {{ '-' .$dp->adicciones_Tecnoadicciones }}<br>
+                            @endif
+                            @if (isset($dp->adicciones_Drogas))
+                            {{ '-' .$dp->adicciones_Drogas }}</td>
+                            @endif
+                        <td>{{ $dp->tipo_medicamentos }}</td>
+                        <td>{{ $dp->grupo_social }}</td>
+                        <td>{{ $dp->creencia_religiosa }}</td>
+                        <td>
+                             @if (isset($dp->prob_de_personalidad))
+                             {{ '-' .$dp->prob_de_personalidad }}<br>
+                            @endif
+                             @if (isset($dp->prob_de_psiquiatricos))
+                             {{ '-' .$dp->prob_de_psiquiatricos }}<br>
+                            @endif
+                             @if (isset($dp->prob_de_economicos))
+                             {{ '-' .$dp->prob_de_economicos }}<br>
+                            @endif
+                             @if (isset($dp->prob_de_sociales))
+                             {{ '-' .$dp->prob_de_sociales }}<br>
+                            @endif
+                             @if (isset($dp->prob_de_familiares))
+                             {{ '-' .$dp->prob_de_familiares }}<br>
+                            @endif
+                             @if (isset($dp->prob_de_academicos))
+                             {{ '-' .$dp->prob_de_academicos }}<br>
+                            @endif
+                             @if (isset($dp->prob_de_disciplina))
+                             {{ '-' .$dp->prob_de_disciplina }}<br>
+                            @endif
+                             @if (isset($dp->prob_de_asistencia))
+                             {{ '-' .$dp->prob_de_asistencia }}</td>
+                             @endif
+                        <td>
+                             <form action="{{ route('diagnosticopreventivo.destroy', $dp->dp_id) }}" method="POST"
+                                class="eliminar_datos_diagnosticopreventivo">
+                                @csrf
+                                @method('delete')
+                                @can('Modulo_PerfildeUsuario.diagnosticopreventivo.destroy')
+                                <button class="btn btn-danger float-right btn-sm mr-2 mt-2" type="submit"
+                                data-bs-toggle="tooltip" data-bs-placement="right"
+                                title="Eliminar datos del diagnostico preventivo"><i class="fa fa-trash-alt"></i></button>
+                                 @endcan
+                                @can('Modulo_PerfildeUsuario.diagnosticopreventivo.edit')
+                            <a class="btn btn-primary btn-sm float-right mr-2 mt-2"
+                                href="{{ route('diagnosticopreventivo.edit', $dp->dp_id) }}"><i class="fa fa-edit"
+                                    data-bs-toggle="tooltip" data-bs-placement="right"
+                                    title="Editar Diagnóstico Preventivo"></i></a>
+                                     @endcan
+                                @can('Modulo_PerfildeUsuario.diagnosticopreventivo.create')
+                            <a class="btn btn-success btn-sm float-right mr-2 mt-2"
+                                href="{{ route('usuarios.show', $dp->user_id) }}" data-bs-toggle="tooltip"
+                                data-bs-placement="right" title="Mostar Datos del Diagnóstico"><i
+                                    class="fa fa-user"></i></a>
+                                     @endcan
+                                </form>
                         </td>
                     </tr>
                 @endforeach
@@ -123,5 +218,39 @@
         )
     </script>
 @endif
-
+@if (session('info') == 'eliminar-datos-diagnosticopreventivo')
+    <script>
+        Swal.fire(
+            '¡Eliminado!',
+            'Los datos del diagnostico preventivo se eliminaron con exito.',
+            'success'
+        )
+    </script>
+@endif
+<script>
+    $('.eliminar_datos_diagnosticopreventivo').submit(function(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Los datos del diagnostico preventivo se eliminaran definitivamente",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, eliminar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.submit();
+            }
+        })
+    });
+</script>
+<script src="{{ asset('js/popper.min.js') }}"></script>
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>
 @endsection

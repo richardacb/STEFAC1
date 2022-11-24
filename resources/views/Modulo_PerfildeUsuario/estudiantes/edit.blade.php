@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'STE')
+@section('title', 'Editar Estudiantes')
 
 @section('content_header')
     <h1>Editar Estudiantes</h1>
@@ -17,7 +17,22 @@
 
             <p class="form-control">{{ $estudiantes->users->primer_nombre }}
                 {{ $estudiantes->users->segundo_nombre }} {{ $estudiantes->users->primer_apellido }}
-                {{ $estudiantes->users->segundo_apellido }}</p>
+                {{ $estudiantes->users->segundo_apellido }}
+                ( @if ($estudiantes->users->anno == '1')
+                Primer Año
+            @endif
+            @if ($estudiantes->users->anno == '2')
+                Segundo Año
+            @endif
+            @if ($estudiantes->users->anno == '3')
+                Tercer Año
+            @endif
+            @if ($estudiantes->users->anno == '4')
+                Cuarto Año
+            @endif
+            @if ($estudiantes->users->anno == '5')
+                Quinto Año
+            @endif)</p>
             {!! Form::model($estudiantes, ['route' => ['estudiantes.update', $estudiantes->id], 'method' => 'put']) !!}
             @include('Modulo_PerfildeUsuario.estudiantes.form')
             <a href="{{ route('estudiantes.index', $estudiantes->users->id) }}" class="btn btn-danger">Cancelar</a>

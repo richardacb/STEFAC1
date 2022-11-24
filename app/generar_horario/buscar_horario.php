@@ -166,10 +166,10 @@ include('conexion.php');
             $result3 = $conn->query($sql3);
             $tipo = $result3->fetch_assoc()['tipo'];
 
-            if ($tipo_de_local == 2) {
+            if ($tipo_de_local == 1) {
                 $tipo_de_clase = 'C';
             }
-            if ($tipo_de_local == 1) {
+            if ($tipo_de_local == 2) {
                 $tipo_de_clase = 'CP';
             }
             if ($tipo_de_local == 3) {

@@ -24,7 +24,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    
+
 
     public function boot()
     {
@@ -41,9 +41,7 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web', 'auth')
                 ->prefix('admin')
                 ->group(base_path('routes/admin.php'));
-            
-            Route::middleware('web')
-                ->group(base_path('routes/Rutas_Modulo_PerfildeUsuario/perfildeusuario.php'));
+
         });
     }
 

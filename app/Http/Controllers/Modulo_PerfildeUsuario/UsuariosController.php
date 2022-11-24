@@ -11,6 +11,10 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Barryvdh\DomPDF\Facade\PDF;
+use App\Imports\UsuariosImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UsuariosController extends Controller
 {
@@ -19,7 +23,9 @@ class UsuariosController extends Controller
     public function __construct()
     {
         $this->middleware('can:Modulo_PerfildeUsuario.usuarios.index')->only('index');
+        $this->middleware('can:Modulo_PerfildeUsuario.usuarios.create')->only('create');
         $this->middleware('can:Modulo_PerfildeUsuario.usuarios.edit')->only('edit', 'update');
+        $this->middleware('can:Modulo_PerfildeUsuario.usuarios.show')->only('show');
     }
 
     /**
@@ -47,7 +53,7 @@ class UsuariosController extends Controller
         $users = new User();
         $users->ci = $request->get('ci');
         $users->primer_nombre = $request->get('primer_nombre');
-        $users->segundo_nombre = $request->get('segundo_nombre') == NULL ? " ": $request->get('segundo_nombre');
+        $users->segundo_nombre = $request->get('segundo_nombre') == NULL ? " " : $request->get('segundo_nombre');
         $users->primer_apellido = $request->get('primer_apellido');
         $users->segundo_apellido = $request->get('segundo_apellido');
         $users->tipo_de_usuario = $request->get('tipo_de_usuario');
@@ -66,6 +72,8 @@ class UsuariosController extends Controller
 
 
         $users->save();
+        $users->roles()->attach(Role::where('name', 'Usuario')->first());
+
 
         return redirect()->route('usuarios.index', compact('users'));
     }
@@ -89,7 +97,7 @@ class UsuariosController extends Controller
     {
         $users = User::findOrFail($id);
         //echo $users->password;
-         return view('Modulo_PerfildeUsuario.usuarios.editar', compact('users'));
+        return view('Modulo_PerfildeUsuario.usuarios.editar', compact('users'));
     }
 
     /**
@@ -105,7 +113,7 @@ class UsuariosController extends Controller
         $users = User::findOrFail($id);
         $users->roles()->sync($request->roles);
 
-        return redirect()->route('usuarios.edit', $users)->with('info', 'asignar-rol-usuario');
+        return redirect()->route('usuarios.index')->with('info', 'asignar-rol-usuario');
     }
 
     public function actualizar(Request $request, $id)
@@ -116,12 +124,11 @@ class UsuariosController extends Controller
 
         $users->ci = $request->get('ci');
         $users->primer_nombre = $request->get('primer_nombre');
-        $users->segundo_nombre = $request->get('segundo_nombre');
+        $users->segundo_nombre = $request->get('segundo_nombre') == NULL ? " " : $request->get('segundo_nombre');
         $users->primer_apellido = $request->get('primer_apellido');
         $users->segundo_apellido = $request->get('segundo_apellido');
         $users->tipo_de_usuario = $request->get('tipo_de_usuario');
         $users->username = $request->get('username');
-        $users->password = bcrypt($request->get('password'));
         $users->email = $request->get('email');
         $users->sexo = $request->get('sexo');
         $users->anno = $request->get('anno');
@@ -145,12 +152,67 @@ class UsuariosController extends Controller
      */
     public function show($id)
     {
-        $users = User::findOrFail($id);
-        $cant_opt_finalizadas = DB::select('SELECT COUNT(opt_ests.id_est) as cant_opt
+
+        session()->put('anno', User::find(auth()->id())->anno);
+        $anno = session()->get('anno');
+        
+
+        $select_anno = "";
+        if (DB::select('SELECT users.anno FROM users INNER JOIN diagnosticopreventivo ON users.id = diagnosticopreventivo.user_id  WHERE users.id =  ' . $id . '')) {
+            $select_anno = DB::select('SELECT users.anno FROM users INNER JOIN diagnosticopreventivo ON users.id = diagnosticopreventivo.user_id  WHERE users.id =  ' . $id . '');
+        }
+        if (DB::select('SELECT users.anno FROM users INNER JOIN estudiantes ON users.id = estudiantes.user_id  WHERE users.id = ' . $id . '')) {
+            $select_anno = DB::select('SELECT users.anno FROM users INNER JOIN estudiantes ON users.id = estudiantes.user_id  WHERE users.id = ' . $id . '');
+        }
+        if (DB::select('SELECT users.anno FROM users INNER JOIN profesores ON users.id = profesores.user_id  WHERE users.id = ' . $id . '')) {
+            $select_anno = DB::select('SELECT users.anno FROM users INNER JOIN profesores ON users.id = profesores.user_id  WHERE users.id = ' . $id . '');
+        }
+
+        if ($select_anno !== "") {
+            if (DB::select('SELECT users.anno FROM users WHERE users.id = ' . $id . '')) {
+                $select_anno = DB::select('SELECT users.anno FROM users WHERE users.id = ' . $id . '');
+            }
+        }
+        if (($id == auth()->id()) ||
+            ($anno == $select_anno[0]->anno  && (User::find(auth()->id())->hasRole('ProfesorJefeAño') || User::find(auth()->id())->hasRole('ProfesorGuia'))) ||
+            (User::find(auth()->id())->hasRole('Administrador') && $select_anno ) ||
+            (User::find(auth()->id())->hasRole('Vicedecana'))
+        ) {
+
+            $users = User::findOrFail($id);
+            $cant_opt_finalizadas = DB::select('SELECT COUNT(opt_ests.id_est) as cant_opt
                                             FROM opt_ests
                                             WHERE opt_ests.id_est = ' . $id . ' AND opt_ests.estado = 1')[0];
 
-        $cant_opt = $cant_opt_finalizadas->cant_opt;
-        return view('Modulo_PerfildeUsuario.usuarios.show', compact('users','cant_opt'));
+            $cant_opt = $cant_opt_finalizadas->cant_opt;
+            return view('Modulo_PerfildeUsuario.usuarios.show', compact('users', 'cant_opt'));
+        } else {
+            abort(401);
+        }
+    }
+
+    public function importar_usuarios(Request $request)
+    {
+
+        $file = $request->file('import_file');
+
+        Excel::import(new UsuariosImport, $file);
+
+        return redirect()->route('usuarios.index')->with('info', 'importar-usuarios');
+    }
+
+    public function createPDFUsuario($id)
+    {
+        //Recuperar todos los productos de la db
+        session()->put('anno', User::find(auth()->id())->anno);
+        $anno = session()->get('anno');
+
+        $users = User::findOrFail($id);
+        view()->share(
+            'Modulo_PerfildeUsuario.usuarios.indexpdfusers',
+            compact('users')
+        );
+        $pdf = PDF::loadView('Modulo_PerfildeUsuario.usuarios.indexpdfusers',  compact('users'));
+        return $pdf->download('Pefil de Usuario.pdf');
     }
 }

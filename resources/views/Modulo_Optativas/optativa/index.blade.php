@@ -57,17 +57,21 @@
                         <form action="{{ route('optativa.destroy', $optativa->id) }}" method="POST"
                             class="eliminar-optativa">
                             @can('Modulo_Optativas.optativa.show')
-                                <a href="{{ route('optativa.show', $optativa->id) }}" class="btn btn-warning"><i
+                                <a href="{{ route('optativa.show', $optativa->id) }}" class="btn btn-warning"
+                                    data-bs-toggle="tooltip" data-bs-placement="right" title="Mostrar Datos"><i
                                         class="fa fa-user"></i></a>
                             @endcan
                             @can('Modulo_Optativas.optativa.edit')
-                                <a href="{{ route('optativa.edit', $optativa->id) }}" class="btn btn-primary"><i
+                                <a href="{{ route('optativa.edit', $optativa->id) }}" class="btn btn-primary"
+                                    data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Asignatura Optativa"><i
                                         class="fa fa-edit"></i></a>
                             @endcan
                             @csrf
                             @method('DELETE')
                             @can('Modulo_Optativas.optativa.destroy')
-                                <button type="submit" class="btn btn-danger"><i class="fa fa-trash-alt"></i></button>
+                                <button type="submit" class="btn btn-danger"><i class="fa fa-trash-alt"
+                                        data-bs-toggle="tooltip" data-bs-placement="right"
+                                        title="Eliminar Optativa"></i></button>
                             @endcan
                         </form>
                     </td>
@@ -163,5 +167,12 @@
                 }
             })
         });
+    </script>
+    <script src="{{ asset('js/popper.min.js') }}"></script>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
     </script>
 @endsection

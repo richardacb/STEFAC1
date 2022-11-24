@@ -33,8 +33,7 @@
                             <thead class="bg-primary text-white">
                                 <tr>
                                     <th>Profesor Afectado</th>
-                                    <th>Profesor Suplente</th>
-                                    <th>año</th>
+                                    <th>Año</th>
                                     <th>Semana</th>
                                     <th>Dia</th>
                                     <th>Turno</th>
@@ -45,7 +44,6 @@
                                 @foreach ($afectaciones as $a)
                                     <tr>
                                         <td>{{ $a->afectado }}</td>
-                                        <td>{{ $a->suplente }}</td>
                                         <td>{{ $a->anno }}</td>
                                         <td>{{ $a->semana }}</td>
                                         <td>{{ $a->dia }}</td>
@@ -56,13 +54,15 @@
                                                 @csrf
                                                 @method('delete')
                                                 @can('Modulo_Horario.afectaciones.edit')
-                                                <a class="btn btn-primary btn-sm"
-                                                    href="{{ route('afectaciones.edit', $a->id) }}"><i
-                                                    class="fa fa-edit"></i></a>
+                                                    <a class="btn btn-primary btn-sm"
+                                                        href="{{ route('afectaciones.edit', $a->id) }}" data-bs-toggle="tooltip"
+                                                        data-bs-placement="right" title="Editar Afectación"><i
+                                                            class="fa fa-edit"></i></a>
                                                 @endcan
                                                 @can('Modulo_Horario.afectaciones.destroy')
-                                                <button class="btn btn-danger btn-sm" type="submit"><i
-                                                    class="fa fa-trash-alt"></i></button>
+                                                    <button class="btn btn-danger btn-sm" type="submit"
+                                                        data-bs-toggle="tooltip" data-bs-placement="right"
+                                                        title="Eliminar Afectación"><i class="fa fa-trash-alt"></i></button>
                                                 @endcan
                                             </form>
                                         </td>
@@ -163,5 +163,12 @@
                 }
             })
         });
+    </script>
+    <script src="{{ asset('js/popper.min.js') }}"></script>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
     </script>
 @endsection

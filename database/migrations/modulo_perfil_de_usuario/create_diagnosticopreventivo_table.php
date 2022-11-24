@@ -27,7 +27,22 @@ return new class extends Migration
             $table->string('tipo_medicamentos_consumo')->nullable();
             $table->string('grupo_social')->nullable();
             $table->string('creencia_religiosa')->nullable();
-            $table->string('tipos_de_problemas')->nullable();
+            $table->string('prob_de_personalidad')->nullable();
+            $table->string('desc_prob_de_personalidad')->nullable();
+            $table->string('prob_de_psiquiatricos')->nullable();
+            $table->string('desc_prob_de_psiquiatricos')->nullable();
+            $table->string('prob_de_economicos')->nullable();
+            $table->string('desc_prob_de_economicos')->nullable();
+            $table->string('prob_de_sociales')->nullable();
+            $table->string('desc_prob_de_sociales')->nullable();
+            $table->string('prob_de_familiares')->nullable();
+            $table->string('desc_prob_de_familiares')->nullable();
+            $table->string('prob_de_academicos')->nullable();
+            $table->string('desc_prob_de_academicos')->nullable();
+            $table->string('prob_de_disciplina')->nullable();
+            $table->string('desc_prob_de_disciplina')->nullable();
+            $table->string('prob_de_asistencia')->nullable();
+            $table->string('desc_prob_de_asistencia')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->cascadeOnUpdate();

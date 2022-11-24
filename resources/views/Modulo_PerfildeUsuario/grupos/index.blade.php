@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'STE')
+@section('title', 'Grupos')
 
 @section('content_header')
     <h1>Lista de Grupos</h1>
@@ -17,11 +17,6 @@
             <a href="{{ route('grupos.create') }}" class="btn btn-primary ">Insertar grupo</a>
         @endcan
 
-        {{-- @can('Import.GruposImport')
-            <button type="button" class="btn btn-danger float-right" data-toggle="modal"
-                data-target=".bd-example-modal-lg">Importar grupos</button>
-        @endcan --}}
-
     </div>
     <div class="card-body">
         <table id="grupos_id" class="table table-striped shadow-lg w-100">
@@ -29,26 +24,43 @@
                 <tr>
                     <th>Nombre</th>
                     <th>Año</th>
-                    <th width="160px">Accion</th>
+                    <th width="160px">Acción</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($grupos as $grupo)
                     <tr>
                         <td>{{ $grupo->name }}</td>
-                        <td>{{ $grupo->anno }}</td>
                         <td>
-                            <form action="{{ route('grupos.destroy', $grupo) }}" method="POST"
-                                class="eliminar_grupo">
+                            @if ($grupo->anno == '1')
+                            Primer Año
+                        @endif
+                        @if ($grupo->anno == '2')
+                            Segundo Año
+                        @endif
+                        @if ($grupo->anno == '3')
+                            Tercer Año
+                        @endif
+                        @if ($grupo->anno == '4')
+                            Cuarto Año
+                        @endif
+                        @if ($grupo->anno == '5')
+                            Quinto Año
+                        @endif
+                    </td>
+                        <td>
+                            <form action="{{ route('grupos.destroy', $grupo) }}" method="POST" class="eliminar_grupo">
                                 @csrf
                                 @method('delete')
                                 @can('Modulo_PerfildeUsuario.grupos.edit')
-                                    <a class="btn btn-primary btn-sm" href="{{ route('grupos.edit', $grupo->id) }}"><i
+                                    <a class="btn btn-primary btn-sm" href="{{ route('grupos.edit', $grupo->id) }}"
+                                        data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Grupo"><i
                                             class="fa fa-edit"></i></a>
                                 @endcan
 
                                 @can('Modulo_PerfildeUsuario.grupos.destroy')
-                                    <button class="btn btn-danger btn-sm " type="submit"><i
+                                    <button class="btn btn-danger btn-sm " type="submit" data-bs-toggle="tooltip"
+                                        data-bs-placement="right" title="Eliminar Grupo"><i
                                             class="fa fa-trash-alt"></i></button>
                                 @endcan
 
@@ -60,31 +72,6 @@
         </table>
     </div>
 </div>
-{{-- <!-- Modal -->
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Importar Grupos</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('grupos.import') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <input type="file" name="import_file" />
-                    <div class="float-right">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Importar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!--Fin Modal --> --}}
 @stop
 
 @section('js')
@@ -173,5 +160,12 @@
             }
         })
     });
+</script>
+<script src="{{ asset('js/popper.min.js') }}"></script>
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
 </script>
 @endsection

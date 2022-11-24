@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Modulo_Horario;
+
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
@@ -9,6 +10,7 @@ use App\Models\Modulo_Horario\Balancedecarga;
 use App\Models\Modulo_Horario\Asignaturas;
 use App\Models\User;
 use App\Exports\BalancedecargaExport;
+use Barryvdh\DomPDF\Facade\PDF;
 
 class BalancedecargaController extends Controller
 {
@@ -24,15 +26,51 @@ class BalancedecargaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function exportExcel()
+    {
+        return Excel::download(new BalancedecargaExport, 'Balance de Carga.xlsx');
+    }
+    public function createPDF()
+    {
+        //Recuperar todos los productos de la db
+        session()->put('anno', User::find(auth()->id())->anno);
+        $anno = session()->get('anno');
+
+        $balancedecarga = Balancedecarga::join('asignaturas', 'asignaturas.id', '=', 'balance_de_carga.asignaturas_id')
+            ->select('asignaturas.nombre', 'balance_de_carga.semana', 'balance_de_carga.frecuencia', 'balance_de_carga.tipo_clase')
+            ->where('asignaturas.anno', '=', $anno)->get();
+
+        view()->share(
+            'Modulo_Horario.balancedecarga.indexpdf',
+            compact('balancedecarga')
+        );
+        $pdf = PDF::loadView('Modulo_Horario.balancedecarga.indexpdf',  compact('balancedecarga'));
+        return $pdf->download('archivo-pdf.pdf');
+    }
+    
     public function index()
     {
 
         session()->put('anno', User::find(auth()->id())->anno);
+        $anno = session()->get('anno');
+        if(User::find(auth()->id())->hasRole('Vicedecana')){
+        $balancedecarga = DB::select('SELECT bc.id, a.nombre, bc.frecuencia, bc.tipo_clase, bc.semana
+        FROM balance_de_carga as bc INNER JOIN asignaturas as a ON bc.asignaturas_id = a.id
+         ');
+        }else{
+            $balancedecarga = DB::select('SELECT bc.id, a.nombre, bc.frecuencia, bc.tipo_clase, bc.semana
+        FROM balance_de_carga as bc INNER JOIN asignaturas as a ON bc.asignaturas_id = a.id
+        WHERE a.anno = ' . $anno . ' ');
+        }
 
-        $balancedecarga['balancedecarga']=Balancedecarga::all();
-        $nombreasignaturas['nombreasignaturas']=Asignaturas::all()->where('anno',session()->get('anno'));
+        // $balancedecarga['balancedecarga']= Balancedecarga::all()->where('anno',session()->get('anno'));
+        //var_dump($balancedecarga);
+        //$nombreasignaturas = DB::select('SELECT a.id, a.nombre FROM asignaturas as a WHERE a.anno = ' . $anno . ' ');
 
-        return view('Modulo_Horario.balancedecarga.index',$balancedecarga,$nombreasignaturas);
+        //Asignaturas::all()->where('anno', session()->get('anno'));
+        //var_dump($nombreasignaturas);
+        return view('Modulo_Horario.balancedecarga.index',)
+            ->with('balancedecarga', $balancedecarga);
     }
 
     /**
@@ -42,9 +80,12 @@ class BalancedecargaController extends Controller
      */
     public function create()
     {
-
-        $nombreasignaturas['nombreasignaturas'] = Asignaturas::all()->where('anno',session()->get('anno'));
-        return view('Modulo_Horario.balancedecarga.create',$nombreasignaturas);
+        if(User::find(auth()->id())->hasRole('Vicedecana')){
+        $nombreasignaturas['nombreasignaturas'] = Asignaturas::all()->where('estado', 1);
+        }else{
+        $nombreasignaturas['nombreasignaturas'] = Asignaturas::all()->where('anno', session()->get('anno'))->where('estado', 1);
+        }
+        return view('Modulo_Horario.balancedecarga.create', $nombreasignaturas);
     }
 
     /**
@@ -57,29 +98,29 @@ class BalancedecargaController extends Controller
     {
         $rules = [
             'asignaturas_id' => 'required|not_in:0',
-            'frecuencia' => 'required',
             'tipo_clase' => 'required',
             'semana' => 'required',
 
-             ];
-             $messages = [
-                'asignaturas_id.required' =>'Campo Requerido',
-                'frecuencia.required' =>'Campo Requerido',
-                'tipo_clase.required' =>'Campo Requerido',
-                'semana.required' =>'Campo Requerido',
+        ];
+        $messages = [
+            'asignaturas_id.required' => 'Campo Requerido',
+            'tipo_clase.required' => 'Campo Requerido',
+            'semana.required' => 'Campo Requerido',
 
-             ];
-             $this->validate( $request, $rules, $messages);
+        ];
+        $this->validate($request, $rules, $messages);
 
-        $balancedecarga=new Balancedecarga();
+        $value = explode(',', $request->get('tipo_clase'));
+
+        $balancedecarga = new Balancedecarga();
         $balancedecarga->asignaturas_id = $request->get('asignaturas_id');
-        $balancedecarga->frecuencia = $request->get('frecuencia');
+        $balancedecarga->frecuencia = sizeof($value);
         $balancedecarga->tipo_clase = $request->get('tipo_clase');
         $balancedecarga->semana = $request->get('semana');
 
         $balancedecarga->save();
 
-        return redirect()->route('balancedecarga.index', $balancedecarga)->with('info', 'adicionar-balancedecarga');
+        return redirect()->route('balancedecarga.index')->with('info', 'adicionar-balancedecarga');
     }
 
     /**
@@ -90,7 +131,6 @@ class BalancedecargaController extends Controller
      */
     public function show(Balancedecarga $balancedecarga)
     {
-
     }
 
     /**
@@ -101,9 +141,29 @@ class BalancedecargaController extends Controller
      */
     public function edit($id)
     {
-        $balancedecarga = Balancedecarga::find($id);
-        $nombreasignaturas=Asignaturas::all();
-        return view('Modulo_Horario.balancedecarga.edit', compact('balancedecarga','nombreasignaturas'));
+
+        session()->put('anno', User::find(auth()->id())->anno);
+        $anno  = session()->get('anno');
+
+        $select_anno = DB::select('SELECT a.anno
+        FROM balance_de_carga as bc INNER JOIN asignaturas as a ON bc.asignaturas_id = a.id
+        WHERE bc.id = ' . $id . '');
+
+        if ($anno === $select_anno[0]->anno || (User::find(auth()->id())->hasRole('Vicedecana'))) {
+            $balancedecarga = Balancedecarga::find($id);
+
+            $nombreasignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
+
+            if(User::find(auth()->id())->hasRole('Vicedecana')){
+                $nombreasignaturas = Asignaturas::all();
+                }else{
+                $nombreasignaturas = Asignaturas::all()->where('anno', session()->get('anno'));
+                }
+        } else {
+            abort(401);
+        }
+        return view('Modulo_Horario.balancedecarga.edit', compact('balancedecarga', 'nombreasignaturas'));
+
     }
 
     /**
@@ -118,29 +178,29 @@ class BalancedecargaController extends Controller
         $balancedecarga = Balancedecarga::findOrFail($id);
         $rules = [
             'asignaturas_id' => 'required|not_in:0',
-            'frecuencias' => 'required',
             'tipo_clase' => 'required',
             'semana' => 'required',
 
-             ];
-             $messages = [
-                'asignaturas_id.required' =>'Campo Requerido',
-                'frecuencias.required' =>'Campo Requerido',
-                'tipo_clase.required' =>'Campo Requerido',
-                'semana.required' =>'Campo Requerido',
+        ];
+        $messages = [
+            'asignaturas_id.required' => 'Campo Requerido',
+            'tipo_clase.required' => 'Campo Requerido',
+            'semana.required' => 'Campo Requerido',
 
-             ];
-             $this->validate( $request, $rules, $messages);
+        ];
+        $this->validate($request, $rules, $messages);
 
+
+        $value = explode(',', $request->get('tipo_clase'));
 
         $balancedecarga->asignaturas_id = $request->get('asignaturas_id');
-        $balancedecarga->frecuencia = $request->get('frecuencias');
+        $balancedecarga->frecuencia =  sizeof($value);
         $balancedecarga->tipo_clase = $request->get('tipo_clase');
         $balancedecarga->semana = $request->get('semana');
 
         $balancedecarga->update($request->all());
 
-        return redirect()->route('balancedecarga.index', compact('balancedecarga'))->with('info', 'modificar-balancedecarga');
+        return redirect()->route('balancedecarga.index')->with('info', 'modificar-balancedecarga');
     }
 
     /**
@@ -154,8 +214,4 @@ class BalancedecargaController extends Controller
         $balancedecarga->delete();
         return redirect()->route('balancedecarga.index')->with('info', 'eliminar-balancedecarga');
     }
-    public function exportExcel(){
-        return Excel::download(new BalancedecargaExport, 'Balance de Carga.xlsx');
-    }
-
 }

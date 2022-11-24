@@ -9,7 +9,7 @@
                         {!! Form::text('nombre_madre', null, [
                             'class' => 'form-control',
                             'id' => 'nombre_madre',
-                            'placeholder' => 'Ingrece Nombre de la madre o tutora',
+                            'placeholder' => 'Ingrese Nombre de la madre o tutora',
                         ]) !!}
                         @error('nombre_madre')
                             <strong class="error-message text-danger"> {{ $message }} </strong>
@@ -24,7 +24,7 @@
                             'class' => 'form-control',
                             'rows' => 1,
                             'id' => 'direccion_completa',
-                            'placeholder' => 'Ingrece la direccion completa',
+                            'placeholder' => 'Ingrese la direccion completa',
                         ]) !!}
                         @error('direccion_completa')
                             <strong class="error-message text-danger"> {{ $message }} </strong>
@@ -77,7 +77,7 @@
                         {!! Form::text('organizacion_politica', null, [
                             'class' => 'form-control',
                             'id' => 'organizacion_politica',
-                            'placeholder' => 'Ingrece Organización política',
+                            'placeholder' => 'Ingrese Organización política',
                         ]) !!}
                         @error('organizacion_politica')
                             <strong class="error-message text-danger"> {{ $message }} </strong>
@@ -113,7 +113,7 @@
                         {!! Form::text('centro_trabajo', null, [
                             'class' => 'form-control',
                             'id' => 'centro_trabajo',
-                            'placeholder' => 'Ingrece Centro de trabajo',
+                            'placeholder' => 'Ingrese Centro de trabajo',
                         ]) !!}
                         @error('centro_trabajo')
                             <strong class="error-message text-danger"> {{ $message }} </strong>
@@ -126,34 +126,15 @@
                         {!! Form::text('discapacidad', null, [
                             'class' => 'form-control',
                             'id' => 'discapacidad',
-                            'placeholder' => 'Ingrece Discapacidad',
+                            'placeholder' => 'Ingrese Discapacidad',
                         ]) !!}
                         @error('discapacidad')
                             <strong class="error-message text-danger"> {{ $message }} </strong>
                         @enderror
                     </div>
                 </div>
-                {{--  <div class="col-md-6 col-sm-12">
-                    <div class="form-group">
-                        {!! Form::label('name', 'Año académico:') !!}
-                        {!! Form::select(
-                            'anno',
-                            [
-                                'Primer Año' => 'Primer Año',
-                                'Segundo Año' => 'Segundo Año',
-                                'Tercer Año' => 'Tercer Año',
-                                'Cuarto Año' => 'Cuarto Año',
-                                'Quinto Año' => 'Quinto Año',
-                            ],
-                            null,
-                            ['class' => 'form-control', 'id' => 'anno', 'placeholder' => '--Seleccione--'],
-                        ) !!}
-                        @error('anno')
-                            <strong class="error-message text-danger"> {{ $message }} </strong>
-                        @enderror
-                    </div>
-                </div>  --}}
-                {{--  <div class="col-md-6 col-sm-12">
+
+                 <div class="col-md-6 col-sm-12">
                     <div class="form-group">
                         {!! Form::label('name', 'Grupos:') !!}
                         {!! Form::select('grupos_id', $grupos, null, [
@@ -165,44 +146,24 @@
                             <strong class="error-message text-danger"> {{ $message }} </strong>
                         @enderror
                     </div>
-                </div>  --}}
-                {{--  <div class="col-md-6 col-sm-12 form-group">
-                    <label for="" class="form-label">Año Docente</label>
-                    <input type="number" class="form-control" id="anno" name="anno" value="{{ $anno }}" min="{{ $anno }}" max="{{ $anno }}">
-                    @error('anno')
-                        <strong class="error-message text-danger"> {{ 'Campos Requeridos' }} </strong>
-                    @enderror
-                </div>  --}}
-                <div class="col-md-6 col-sm-12 form-group">
-                    <label for="" class="form-label">Grupos</label>
-                    <select name="grupos_id" id="grupos_id" class="form-control mr-sm-2 form-select">
-                        <option value="0" selected="selected">--Seleccione el Grupo--</option>
-                        @foreach ($grupos as $g)
-                            <option value="{{ $g->id }}">
-                                {{ $g->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('grupos_id')
-                        <strong class="error-message text-danger"> {{ 'Campos Requeridos' }} </strong>
-                    @enderror
                 </div>
+                
                 <div class="col-md-6 col-sm-12">
                     <div class="form-group">
                         {!! Form::label('name', 'Perído lectivo:') !!}
                         {!! Form::select(
                             'periodo_lectivo',
                             [
-                                'Primer Semestre' => 'Primer Semestre',
-                                'Segundo Semestre' => 'Segundo Semestre',
-                                'Tercer Semestre' => 'Tercer Semestre',
-                                'Cuarto Semestre' => 'Cuarto Semestre',
-                                'Quinto Semestre' => 'Quinto Semestre',
-                                'Sexto Semestre' => 'Sexto Semestre',
-                                'Séptimo Semestre' => 'Séptimo Semestre',
-                                'Octavo Semestre' => 'Octavo Semestre',
-                                'Noveno Semestre' => 'Noveno Semestre',
-                                'Decimo Semestre' => 'Decimo Semestre',
+                                    '1' => 'Primer Semestre',
+                                    '2' => 'Segundo Semestre',
+                                    '3' => 'Tercer Semestre',
+                                    '4' => 'Cuarto Semestre',
+                                    '5' => 'Quinto Semestre',
+                                    '6' => 'Sexto Semestre',
+                                    '7' => 'Séptimo Semestre',
+                                    '8' => 'Octavo Semestre',
+                                    '9' => 'Noveno Semestre',
+                                    '10' => 'Decimo Semestre',
                             ],
                             null,
                             ['class' => 'form-control', 'id' => 'periodo_lectivo', 'placeholder' => '--Seleccione--'],
@@ -242,7 +203,7 @@
                         {!! Form::text('tipo_curso', null, [
                             'class' => 'form-control',
                             'id' => 'tipo_curso',
-                            'placeholder' => 'Ingrece Tipo de curso',
+                            'placeholder' => 'Ingrese Tipo de curso',
                         ]) !!}
                         @error('tipo_curso')
                             <strong class="error-message text-danger"> {{ $message }} </strong>
@@ -256,7 +217,7 @@
                         {!! Form::text('plan_estudio', null, [
                             'class' => 'form-control',
                             'id' => 'plan_estudio',
-                            'placeholder' => 'Ingrece Versión plan de estudio',
+                            'placeholder' => 'Ingrese Versión plan de estudio',
                         ]) !!}
                         @error('plan_estudio')
                             <strong class="error-message text-danger"> {{ $message }} </strong>
@@ -270,7 +231,7 @@
                         {!! Form::text('organizacion_pe', null, [
                             'class' => 'form-control',
                             'id' => 'organizacion_pe',
-                            'placeholder' => 'Ingrece Organizacion de P.E',
+                            'placeholder' => 'Ingrese Organizacion de P.E',
                         ]) !!}
                         @error('organizacion_pe')
                             <strong class="error-message text-danger"> {{ $message }} </strong>
@@ -284,7 +245,7 @@
                         {!! Form::text('cohorte_estudiantil', null, [
                             'class' => 'form-control',
                             'id' => 'cohorte_estudiantil',
-                            'placeholder' => 'Ingrece Cohorte estudiantil',
+                            'placeholder' => 'Ingrese Cohorte estudiantil',
                         ]) !!}
                         @error('cohorte_estudiantil')
                             <strong class="error-message text-danger"> {{ $message }} </strong>
@@ -298,7 +259,7 @@
                         {!! Form::number('opcion_uci', null, [
                             'class' => 'form-control',
                             'id' => 'opcion_uci',
-                            'placeholder' => 'Ingrece el Valor opción UCI',
+                            'placeholder' => 'Ingrese el Valor opción UCI',
                         ]) !!}
                         @error('opcion_uci')
                             <strong class="error-message text-danger"> {{ $message }} </strong>

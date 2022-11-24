@@ -22,13 +22,6 @@
 @endsection
 
 @section('content')
-
-    @if (session('info'))
-        <div class="alert alert-succes">
-            <strong>{{ session('info') }}</strong>
-        </div>
-    @endif
-
     <div class="container-fluid">
         <div class="row">
             <div class="col-xl-12">
@@ -40,6 +33,8 @@
                                     <th>Nombre</th>
                                     <th>Año Docente</th>
                                     <th>Sesión de Clases</th>
+                                    <th>Semestre</th>
+                                    <th>Estado</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -53,6 +48,14 @@
                                                 <td>{{ $s->nombre }}</td>
                                             @endif
                                         @endforeach
+                                        <td>{{ $asignatura->semestre }}</td>
+                                        <td>
+                                        @if ($asignatura->estado == '1')
+                                            Activa
+                                        @endif
+                                        @if ($asignatura->estado == '0')
+                                            Inactiva
+                                        @endif</td>
                                         <td width="150px">
                                             <form action="{{ route('asignaturas.destroy', $asignatura) }}" method="POST"
                                                 class="eliminar-asignatura">
@@ -60,12 +63,14 @@
                                                 @method('delete')
                                                 @can('Modulo_Horario.asignaturas.edit')
                                                     <a class="btn btn-primary btn-sm"
-                                                        href="{{ route('asignaturas.edit', $asignatura->id) }}"><i
-                                                        class="fa fa-edit"></i></a>
+                                                        href="{{ route('asignaturas.edit', $asignatura->id) }}"
+                                                        data-bs-toggle="tooltip" data-bs-placement="right"
+                                                        title="Editar Asignatura"><i class="fa fa-edit"></i></a>
                                                 @endcan
                                                 @can('Modulo_Horario.asignaturas.destroy')
-                                                    <button class="btn btn-danger btn-sm" type="submit"><i
-                                                        class="fa fa-trash-alt"></i></button>
+                                                    <button class="btn btn-danger btn-sm" type="submit"
+                                                        data-bs-toggle="tooltip" data-bs-placement="right"
+                                                        title="Eliminar Asignatura"><i class="fa fa-trash-alt"></i></button>
                                                 @endcan
                                             </form>
                                         </td>
@@ -167,5 +172,12 @@
                 }
             })
         });
+    </script>
+    <script src="{{ asset('js/popper.min.js') }}"></script>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
     </script>
 @endsection

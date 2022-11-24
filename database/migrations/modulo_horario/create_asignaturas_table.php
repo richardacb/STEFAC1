@@ -19,6 +19,8 @@ return new class extends Migration
             $table->unsignedBigInteger('secciones_id');
             $table->string('nombre');
             $table->integer('anno');
+            $table->integer('semestre');
+            $table->integer('estado');
             $table->timestamps();
 
             $table->foreign('secciones_id')->references('id')->on('secciones')->onDelete('cascade')->cascadeOnUpdate();
